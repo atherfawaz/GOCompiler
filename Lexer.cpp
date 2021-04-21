@@ -105,6 +105,17 @@ namespace Lexer {
                     return Token(ASS_OP, ":=");
                 } else currentPtr--;
                 return Token(VAR_DEC, charToString(currTok));
+            case '"': {
+                std::string str;
+                str += '"';
+                currentPtr++;
+                while (*currentPtr != '"') {
+                    str += *currentPtr;
+                    currentPtr++;
+                }
+                str += '"';
+                return Token(STRING, str);
+            }
             default:
                 while (*currentPtr == ' ') {
                     currentPtr++;
