@@ -12,7 +12,6 @@ namespace Lexer {
     enum TOKEN {
         AR_OP,
         RO_OP,
-        COMMENT,
         IDENTIFIER,
         NUMBER,
         LIT_CONST,

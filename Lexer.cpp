@@ -70,6 +70,29 @@ namespace Lexer {
             currentPtr++;
             currTok = *currentPtr;
         }
+        if (*currentPtr == '/') {
+            currentPtr++;
+            if (*currentPtr == '*') {
+                //comment found
+                currentPtr++;
+                bool end = false;
+                while (!end) {
+                    while (*currentPtr != '*') {
+                        currentPtr++;
+                    }
+                    currentPtr++;
+                    if (*currentPtr == '/') {
+                        //end of comment
+                        end = true;
+                        currentPtr++;
+                        currTok = *currentPtr;
+                    }
+                }
+            } else {
+                currentPtr--;
+                currTok = *currentPtr;
+            }
+        }
         switch (currTok) {
             case '(':
                 return Token(PRNT, charToString(currTok));
