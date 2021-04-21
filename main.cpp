@@ -19,6 +19,17 @@ std::string getSourceCode() {
     return "";
 }
 
+void exportTokens(const std::vector<Lexer::Token> &tokens) {
+    std::string path = R"(D:\dev\GO-Compiler\exportedTokens.txt)";
+    std::ofstream file(path);
+    if (file.is_open()) {
+        for (const auto &tok: tokens) {
+            file << tok << std::endl;
+        }
+        file.close();
+    } else std::cout << "ERROR: FILE WRITING ERROR.";
+}
+
 int main() {
     std::string sourceCode = getSourceCode();
     Lexer::Lexer Lexer(sourceCode);
@@ -27,5 +38,8 @@ int main() {
     for (const auto &tok: tokens) {
         std::cout << tok << std::endl;
     }
+
+    std::cout << "\nEXPORTING TOKENS.\n";
+    exportTokens(tokens);
     return 0;
 }
