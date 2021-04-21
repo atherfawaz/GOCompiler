@@ -6,8 +6,14 @@
 
 namespace Lexer {
 
-    Lexer::Lexer() {
-        currentPtr = std::string("string").begin();
+    Lexer::Lexer() = default;
+
+    Lexer::~Lexer() {
+        keywords.clear();
+    }
+
+    Lexer::Lexer(std::string &code) {
+        currentPtr = code.begin();
         keywords["if"] = "IF";
         keywords["elif"] = "ELIF";
         keywords["else"] = "ELSE";
@@ -17,14 +23,6 @@ namespace Lexer {
         keywords["println"] = "PRINTLN";
         keywords["integer"] = "INTEGER";
         keywords["char"] = "CHAR";
-    }
-
-    Lexer::~Lexer() {
-        keywords.clear();
-    }
-
-    Lexer::Lexer(std::string &code) {
-        currentPtr = code.begin();
     }
 
     void Lexer::next() {
@@ -45,5 +43,59 @@ namespace Lexer {
 
     char Lexer::getCurrent() {
         return *currentPtr;
+    }
+
+    std::vector<Token> Lexer::generateTokens() {
+        std::vector<Token> toks;
+        while (this->getNext()) {
+            toks.push_back(findToken(this->getCurrent()));
+            this->next();
+        }
+        return toks;
+    }
+
+    Token Lexer::findToken(char currTok) {
+        switch (currTok) {
+            case '(':
+                return Token(PRNT, currTok);
+            case ')':
+                return Token(PRNT, currTok);
+            case '{':
+                return Token(BRACES, currTok);
+            case '}':
+                return Token(BRACES, currTok);
+            case '[':
+                return Token(SQR_BRKT, currTok);
+            case ']':
+                return Token(SQR_BRKT, currTok);
+            case '+':
+                return Token(AR_OP, currTok);
+            case '-':
+                return Token(AR_OP, currTok);
+            case '*':
+                return Token(AR_OP, currTok);
+            case '%':
+                return Token(AR_OP, currTok);
+            case ';':
+                return Token(SEMICOLON, currTok);
+            case ',':
+                return Token(COMMA, currTok);
+            case '/':
+                return Token(AR_OP, currTok);
+            case '>':
+                currentPtr++;
+                if (*currentPtr == '>') {
+                    return Token(INPUT_OP, '^');
+                } else currentPtr--;
+                return Token(RO_OP, currTok);
+            case ':':
+                currentPtr++;
+                if (*currentPtr == '=') {
+                    return Token(ASS_OP, '^');
+                } else currentPtr--;
+                return Token(VAR_DEC, currTok);
+            default:
+                return Token();
+        }
     }
 }

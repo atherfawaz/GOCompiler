@@ -5,11 +5,11 @@
 
 std::string getSourceCode() {
     std::string path = R"(D:\dev\GO-Compiler\code.go)";
-    std::ifstream newFile(path);
-    if (newFile.is_open()) {
-        std::string sourceCode((std::istreambuf_iterator<char>(newFile)),
+    std::ifstream file(path);
+    if (file.is_open()) {
+        std::string sourceCode((std::istreambuf_iterator<char>(file)),
                                (std::istreambuf_iterator<char>()));
-        newFile.close();
+        file.close();
         return sourceCode;
     } else std::cout << "ERROR: FILE READING ERROR.";
     return "";
@@ -18,9 +18,10 @@ std::string getSourceCode() {
 int main() {
     std::string sourceCode = getSourceCode();
     Lexer::Lexer Lexer(sourceCode);
-    while (Lexer.getNext()) {
-        std::cout << Lexer.getCurrent();
-        Lexer.next();
+    auto tokens = Lexer.generateTokens();
+
+    for (const auto &tok: tokens) {
+        std::cout << tok << std::endl;
     }
     return 0;
 }

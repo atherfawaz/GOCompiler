@@ -7,13 +7,15 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
+#include "Token.h"
 
 namespace Lexer {
 
     class Lexer {
     private:
         std::string::iterator currentPtr;
-        std::unordered_map<std::string,std::string> keywords;
+        std::unordered_map<std::string, std::string> keywords;
     public:
         Lexer();
 
@@ -26,6 +28,10 @@ namespace Lexer {
         void prev();
 
         char getCurrent();
+
+        std::vector<Token> generateTokens();
+
+        Token findToken(char currTok);
 
         ~Lexer();
     };
