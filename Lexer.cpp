@@ -66,6 +66,10 @@ namespace Lexer {
 
 
     Token Lexer::findToken(char currTok) {
+        while (*currentPtr == ' ') {
+            currentPtr++;
+            currTok = *currentPtr;
+        }
         switch (currTok) {
             case '(':
                 return Token(PRNT, charToString(currTok));
@@ -93,6 +97,20 @@ namespace Lexer {
                 return Token(COMMA, charToString(currTok));
             case '/':
                 return Token(AR_OP, charToString(currTok));
+            case '<':
+                return Token(RO_OP, charToString(currTok));
+            case '=': {
+                std::string op;
+                op += '=';
+                currentPtr++;
+                if (*currentPtr == '=') {
+                    op += *currentPtr;
+                    return Token(RO_OP, op);
+                } else {
+                    std::cout << "Syntax error!";
+                    return Token();
+                }
+            }
             case '>':
                 currentPtr++;
                 if (*currentPtr == '>') {
@@ -117,10 +135,6 @@ namespace Lexer {
                 return Token(STRING, str);
             }
             default:
-                while (*currentPtr == ' ') {
-                    currentPtr++;
-                    currTok = *currentPtr;
-                }
                 if (isalpha(currTok)) {
                     std::string word;
                     word += currTok;
@@ -144,6 +158,8 @@ namespace Lexer {
                     currentPtr--;
                     return Token(NUMBER, number);
                 }
+                currTok = *currentPtr;
+                std::cout << "Returning default token for: " << currTok << std::endl;
                 return Token();
         }
     }
