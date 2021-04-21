@@ -54,56 +54,73 @@ namespace Lexer {
         return toks;
     }
 
+    std::string charToString(char x) {
+        return std::string(1, x);
+    }
+
+
     Token Lexer::findToken(char currTok) {
         switch (currTok) {
             case '(':
-                return Token(PRNT, currTok);
+                return Token(PRNT, charToString(currTok));
             case ')':
-                return Token(PRNT, currTok);
+                return Token(PRNT, charToString(currTok));
             case '{':
-                return Token(BRACES, currTok);
+                return Token(BRACES, charToString(currTok));
             case '}':
-                return Token(BRACES, currTok);
+                return Token(BRACES, charToString(currTok));
             case '[':
-                return Token(SQR_BRKT, currTok);
+                return Token(SQR_BRKT, charToString(currTok));
             case ']':
-                return Token(SQR_BRKT, currTok);
+                return Token(SQR_BRKT, charToString(currTok));
             case '+':
-                return Token(AR_OP, currTok);
+                return Token(AR_OP, charToString(currTok));
             case '-':
-                return Token(AR_OP, currTok);
+                return Token(AR_OP, charToString(currTok));
             case '*':
-                return Token(AR_OP, currTok);
+                return Token(AR_OP, charToString(currTok));
             case '%':
-                return Token(AR_OP, currTok);
+                return Token(AR_OP, charToString(currTok));
             case ';':
-                return Token(SEMICOLON, currTok);
+                return Token(SEMICOLON, charToString(currTok));
             case ',':
-                return Token(COMMA, currTok);
+                return Token(COMMA, charToString(currTok));
             case '/':
-                return Token(AR_OP, currTok);
+                return Token(AR_OP, charToString(currTok));
             case '>':
                 currentPtr++;
                 if (*currentPtr == '>') {
-                    return Token(INPUT_OP, '^');
+                    return Token(INPUT_OP, ">>");
                 } else currentPtr--;
-                return Token(RO_OP, currTok);
+                return Token(RO_OP, charToString(currTok));
             case ':':
                 currentPtr++;
                 if (*currentPtr == '=') {
-                    return Token(ASS_OP, '^');
+                    return Token(ASS_OP, ":=");
                 } else currentPtr--;
-                return Token(VAR_DEC, currTok);
+                return Token(VAR_DEC, charToString(currTok));
             default:
                 while (*currentPtr == ' ') {
                     currentPtr++;
                     currTok = *currentPtr;
                 }
                 if (isalpha(currTok)) {
-                    //add code here.
-                    //check if we should change definition of Token to Token(TOKEN, String) from Token(TOKEN,char)
+                    std::string word;
+                    word += currTok;
+                    currentPtr++;
+                    while (isalnum(*currentPtr)) {
+                        word += *currentPtr;
+                        currentPtr++;
+                    }
+                    if (isKeyword(word)) return Token(KEYWORD, word);
+                    else return Token(IDENTIFIER, word);
                 }
                 return Token();
         }
+    }
+
+    bool Lexer::isKeyword(const std::string &word) {
+        if (keywords.find(word) == keywords.end()) return false;
+        return true;
     }
 }

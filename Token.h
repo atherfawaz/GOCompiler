@@ -6,6 +6,7 @@
 #define GO_COMPILER_TOKEN_H
 
 #include <iostream>
+#include <string>
 
 namespace Lexer {
     enum TOKEN {
@@ -32,15 +33,15 @@ namespace Lexer {
     class Token {
     private:
         TOKEN token;
-        char lexeme;
+        std::string lexeme;
     public:
         Token();
 
-        Token(TOKEN tok, char lexeme);
+        Token(TOKEN tok, std::string lexeme);
 
         ~Token();
 
-        char getLexeme() const;
+        std::string getLexeme() const;
 
         TOKEN getToken();
 

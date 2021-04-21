@@ -4,6 +4,7 @@
 
 #include "Token.h"
 #include <iostream>
+#include <utility>
 
 Lexer::Token::Token() {
     lexeme = '0';
@@ -12,7 +13,7 @@ Lexer::Token::Token() {
 
 Lexer::Token::~Token() = default;
 
-char Lexer::Token::getLexeme() const {
+std::string Lexer::Token::getLexeme() const {
     return this->lexeme;
 }
 
@@ -20,7 +21,7 @@ Lexer::TOKEN Lexer::Token::getToken() {
     return this->token;
 }
 
-Lexer::Token::Token(Lexer::TOKEN tok, char lexeme) : token(tok), lexeme(lexeme) {
+Lexer::Token::Token(Lexer::TOKEN tok, std::string lexeme) : token(tok), lexeme(std::move(lexeme)) {
 }
 
 std::ostream &Lexer::operator<<(std::ostream &out, const Lexer::Token &tok) {

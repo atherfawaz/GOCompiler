@@ -33,6 +33,8 @@ namespace Lexer {
 
         Token findToken(char currTok);
 
+        bool isKeyword(const std::string& word);
+
         ~Lexer();
     };
 
