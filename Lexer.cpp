@@ -99,6 +99,20 @@ namespace Lexer {
                 return Token(AR_OP, charToString(currTok));
             case '<':
                 return Token(RO_OP, charToString(currTok));
+            case '\'': {
+                std::string litConst;
+                litConst += '\'';
+                currentPtr++;
+                litConst += *currentPtr;
+                currentPtr++;
+                if (*currentPtr == '\'') {
+                    litConst += *currentPtr;
+                    return Token(LIT_CONST, litConst);
+                } else {
+                    std::cout << "Syntax error!";
+                    return Token();
+                }
+            }
             case '=': {
                 std::string op;
                 op += '=';
