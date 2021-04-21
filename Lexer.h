@@ -16,6 +16,7 @@ namespace Lexer {
     private:
         std::string::iterator currentPtr;
         std::unordered_map<std::string, std::string> keywords;
+        std::unordered_map<std::string, std::string> datatypes;
     public:
         Lexer();
 
@@ -33,7 +34,9 @@ namespace Lexer {
 
         Token findToken(char currTok);
 
-        bool isKeyword(const std::string& word);
+        bool isKeyword(const std::string &word);
+
+        bool isDataType(const std::string &word);
 
         ~Lexer();
     };

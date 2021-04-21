@@ -25,7 +25,7 @@ Lexer::Token::Token(Lexer::TOKEN tok, std::string lexeme) : token(tok), lexeme(s
 }
 
 std::ostream &Lexer::operator<<(std::ostream &out, const Lexer::Token &tok) {
-    out << "(" << tok.token << " | " << tok.lexeme << " )";
+    out << "(" << tok.token << " | " << tok.lexeme << ")";
     return out;
 }
 

@@ -10,10 +10,13 @@ namespace Lexer {
 
     Lexer::~Lexer() {
         keywords.clear();
+        datatypes.clear();
     }
 
     Lexer::Lexer(std::string &code) {
+
         currentPtr = code.begin();
+
         keywords["if"] = "IF";
         keywords["elif"] = "ELIF";
         keywords["else"] = "ELSE";
@@ -23,6 +26,9 @@ namespace Lexer {
         keywords["println"] = "PRINTLN";
         keywords["integer"] = "INTEGER";
         keywords["char"] = "CHAR";
+
+        datatypes["Integer"] = "INTEGER";
+        datatypes["Char"] = "CHAR";
     }
 
     void Lexer::next() {
@@ -112,8 +118,20 @@ namespace Lexer {
                         word += *currentPtr;
                         currentPtr++;
                     }
+                    currentPtr--;
                     if (isKeyword(word)) return Token(KEYWORD, word);
+                    else if (isDataType(word)) return Token(DATATYPE, word);
                     else return Token(IDENTIFIER, word);
+                } else if (isdigit(currTok)) {
+                    std::string number;
+                    number += currTok;
+                    currentPtr++;
+                    while (isdigit(*currentPtr)) {
+                        number += *currentPtr;
+                        currentPtr++;
+                    }
+                    currentPtr--;
+                    return Token(NUMBER, number);
                 }
                 return Token();
         }
@@ -121,6 +139,11 @@ namespace Lexer {
 
     bool Lexer::isKeyword(const std::string &word) {
         if (keywords.find(word) == keywords.end()) return false;
+        return true;
+    }
+
+    bool Lexer::isDataType(const std::string &word) {
+        if (datatypes.find(word) == datatypes.end()) return false;
         return true;
     }
 }
