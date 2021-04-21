@@ -95,6 +95,14 @@ namespace Lexer {
                 } else currentPtr--;
                 return Token(VAR_DEC, currTok);
             default:
+                while (*currentPtr == ' ') {
+                    currentPtr++;
+                    currTok = *currentPtr;
+                }
+                if (isalpha(currTok)) {
+                    //add code here.
+                    //check if we should change definition of Token to Token(TOKEN, String) from Token(TOKEN,char)
+                }
                 return Token();
         }
     }
