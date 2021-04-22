@@ -25,7 +25,15 @@ Lexer::Token::Token(Lexer::TOKEN tok, std::string lexeme) : token(tok), lexeme(s
 }
 
 std::ostream &Lexer::operator<<(std::ostream &out, const Lexer::Token &tok) {
-    out << "(" << tok.token << " | " << tok.lexeme << ")";
+    std::map<int , std::string> token_mapping;
+    std::string tokens[] = { "AR_OP", "RO_OP", "IDENTIFIER", "NUMBER", "LIT_CONST", "STRING" ,"VAR_DEC", "ASS_OP", "INPUT_OP", "PRNT", "SQR_BRKT", "BRACES" ,"SEMICOLON", "COMMA", "KEYWORD","DATATYPE","NONE"};
+    int i = 0;
+    for (auto a_token : tokens){
+        token_mapping.insert({i, a_token});
+        ++i;
+    }
+
+    out << "(" << token_mapping.at(tok.token) << " | " << tok.lexeme << ")";
     return out;
 }
 
