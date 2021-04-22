@@ -43,7 +43,7 @@ namespace Lexer {
         return '\0';
     }
 
-    void Lexer::prev() {
+    [[maybe_unused]] void Lexer::prev() {
         currentPtr--;
     }
 

@@ -41,7 +41,7 @@ namespace Lexer {
 
         ~Token();
 
-        std::string getLexeme() const;
+        [[maybe_unused]] [[nodiscard]] std::string getLexeme() const;
 
         TOKEN getToken();
 
