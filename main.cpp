@@ -3,6 +3,7 @@
 #include <fstream>
 #include <algorithm>
 #include "Lexer.h"
+#include "global.h"
 
 std::string getSourceCode() {
     std::string path = R"(C:\Users\Mujtaba\CLionProjects\GOCompiler\code.go)";
@@ -33,9 +34,18 @@ void exportTokens(const std::vector<Lexer::Token> &tokens) {
 int main() {
     std::string sourceCode = getSourceCode();
     Lexer::Lexer Lexer(sourceCode);
+    std::string tokens_list[] = { "AR_OP", "RO_OP", "IDENTIFIER", "NUMBER", "LIT_CONST", "STRING" ,"VAR_DEC", "ASS_OP", "INPUT_OP", "PRNT", "SQR_BRKT", "BRACES" ,"SEMICOLON", "COMMA", "KEYWORD","DATATYPE","NONE"};
+
+    int i = 0;
+    for (auto a_token : tokens_list){
+        token_mapping.insert({i, a_token});
+        ++i;
+    }
+
+
+
     auto tokens = Lexer.generateTokens();
 
-    //Lexer::Token::Initialize_Maping();
 
     for (const auto &tok: tokens) {
         std::cout << tok << std::endl;
