@@ -5,7 +5,7 @@
 #include "Lexer.h"
 
 std::string getSourceCode() {
-    std::string path = R"(C:\Users\Mujtaba\CLionProjects\GOCompiler\code.go)";
+    std::string path = R"(D:\dev\GO-Compiler\code.go)";
     std::ifstream file(path);
     if (file.is_open()) {
         std::string sourceCode((std::istreambuf_iterator<char>(file)),
@@ -34,8 +34,6 @@ int main() {
     std::string sourceCode = getSourceCode();
     Lexer::Lexer Lexer(sourceCode);
     auto tokens = Lexer.generateTokens();
-
-    //Lexer::Token::Initialize_Maping();
 
     for (const auto &tok: tokens) {
         std::cout << tok << std::endl;

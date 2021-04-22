@@ -26,7 +26,7 @@ namespace Lexer {
 
         char getNext();
 
-        void prev();
+        [[maybe_unused]] void prev();
 
         char getCurrent();
 
