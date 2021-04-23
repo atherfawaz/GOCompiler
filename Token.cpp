@@ -5,6 +5,7 @@
 #include "Token.h"
 #include <iostream>
 #include <utility>
+#include "globals.h"
 
 Lexer::Token::Token() {
     lexeme = '0';
@@ -24,20 +25,16 @@ Lexer::TOKEN Lexer::Token::getToken() {
 Lexer::Token::Token(Lexer::TOKEN tok, std::string lexeme) : token(tok), lexeme(std::move(lexeme)) {
 }
 
-std::ostream &Lexer::operator<<(std::ostream &out, const Lexer::Token &tok) {
-    std::map<int , std::string> token_mapping;
-    std::string tokens[] = { "AR_OP", "RO_OP", "IDENTIFIER", "NUMBER", "LIT_CONST", "STRING" ,"VAR_DEC", "ASS_OP", "INPUT_OP", "PRNT", "SQR_BRKT", "BRACES" ,"SEMICOLON", "COMMA", "KEYWORD","DATATYPE","NONE"};
+void Lexer::init_mapping() {
     int i = 0;
-    for (const auto& a_token : tokens){
+    for (const auto &a_token : tokens_list) {
         token_mapping.insert({i, a_token});
         ++i;
     }
+}
+
+std::ostream& Lexer::operator<<(std::ostream &out, const Lexer::Token &tok) {
 
     out << token_mapping.at(tok.token) << " " << tok.lexeme;
     return out;
-}
-
-std::ostream &operator<<(std::ostream &os, Lexer::Token &tok) {
-    os << tok.getToken() << " | " << tok.getToken();
-    return os;
 }

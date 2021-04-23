@@ -1,11 +1,11 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <cctype>
 #include <algorithm>
 #include "Lexer.h"
 
 std::string dir_path;
+
 
 
 std::string getSourceCode() {
@@ -43,7 +43,7 @@ int main() {
     Lexer::Lexer Lexer(sourceCode);
     auto tokens = Lexer.generateTokens();
 
-
+    Lexer::init_mapping();
     for (const auto &tok: tokens) {
         std::cout << tok << std::endl;
     }

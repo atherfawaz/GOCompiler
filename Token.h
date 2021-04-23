@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <string>
-#include <map>
+
 
 namespace Lexer {
     enum TOKEN {
@@ -45,10 +45,13 @@ namespace Lexer {
 
         TOKEN getToken();
 
-        friend std::ostream &operator<<(std::ostream &out, const Lexer::Token &tok);
+        friend std::ostream& operator<<(std::ostream &out, const Lexer::Token &tok);
 
     };
 
+    std::ostream& operator<<(std::ostream &out, const Lexer::Token &tok);
+
+    void init_mapping();
 }
 
 
