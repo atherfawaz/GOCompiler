@@ -18,3 +18,4 @@ Ensure right compiler is selcted
 Run the program
 
 ```
+Our code will be accepting any input file containing GO-- code
