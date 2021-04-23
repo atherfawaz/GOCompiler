@@ -1,11 +1,24 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cctype>
 #include <algorithm>
 #include "Lexer.h"
 
+bool isValidSourceCode(std::string path) {
+    std::transform(path.begin(), path.end(), path.begin(), [](unsigned char c) { return std::tolower(c); });
+    if (path.substr(path.length() - 2)== "go") return true;
+    return false;
+}
+
 std::string getSourceCode() {
-    std::string path = R"(C:\Users\Mujtaba\CLionProjects\GOCompiler\code.go)";
+    std::cout << "Enter the path of the source file: ";
+    std::string path;
+    std::cin >> path;
+    while (!isValidSourceCode(path)) {
+        std::cout << "\nNot a valid .go source code file. Please re-enter path: ";
+        std::cin >> path;
+    }
     std::ifstream file(path);
     if (file.is_open()) {
         std::string sourceCode((std::istreambuf_iterator<char>(file)),
@@ -20,7 +33,7 @@ std::string getSourceCode() {
 }
 
 void exportTokens(const std::vector<Lexer::Token> &tokens) {
-    std::string path = R"(C:\Users\Mujtaba\CLionProjects\GOCompiler\exportedTokens.txt)";
+    std::string path = R"(D:\dev\GO-Compiler\exportedTokens.txt)";
     std::ofstream file(path);
     if (file.is_open()) {
         for (const auto &tok: tokens) {
@@ -42,5 +55,6 @@ int main() {
 
     std::cout << "\nEXPORTING TOKENS.\n";
     exportTokens(tokens);
+    std::cout << "\nEXPORTED TOKENS.\n";
     return 0;
 }

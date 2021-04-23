@@ -33,7 +33,7 @@ std::ostream &Lexer::operator<<(std::ostream &out, const Lexer::Token &tok) {
         ++i;
     }
 
-    out << "(" << token_mapping.at(tok.token) << " " << tok.lexeme << ")";
+    out << token_mapping.at(tok.token) << " " << tok.lexeme;
     return out;
 }
 
