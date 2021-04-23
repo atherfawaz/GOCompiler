@@ -5,9 +5,9 @@
 #include <algorithm>
 #include "Lexer.h"
 
-bool isValidSourceCode(std::string path) {
+bool isValidSourceFile(std::string path) {
     std::transform(path.begin(), path.end(), path.begin(), [](unsigned char c) { return std::tolower(c); });
-    if (path.substr(path.length() - 2)== "go") return true;
+    if (path.substr(path.length() - 2) == "go") return true;
     return false;
 }
 
@@ -15,7 +15,7 @@ std::string getSourceCode() {
     std::cout << "Enter the path of the source file: ";
     std::string path;
     std::cin >> path;
-    while (!isValidSourceCode(path)) {
+    while (!isValidSourceFile(path)) {
         std::cout << "\nNot a valid .go source code file. Please re-enter path: ";
         std::cin >> path;
     }
@@ -33,7 +33,7 @@ std::string getSourceCode() {
 }
 
 void exportTokens(const std::vector<Lexer::Token> &tokens) {
-    std::string path = R"(D:\dev\GO-Compiler\exportedTokens.txt)";
+    std::string path = R"(D:\dev\GO-Compiler\words.txt)";
     std::ofstream file(path);
     if (file.is_open()) {
         for (const auto &tok: tokens) {
