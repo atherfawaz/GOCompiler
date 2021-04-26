@@ -12,6 +12,10 @@
 
 namespace Lexer {
 
+    // This class implements the main logic of an lexer
+    // It store current position in input code and keywords + datatype dictionary mapping
+    // for the main logic it iterates over the whole code and uses case statements to implements a DFA which reads characters and output
+    // respective tokens based on character combinations defined
     class Lexer {
     private:
         std::string::iterator currentPtr;
@@ -20,22 +24,36 @@ namespace Lexer {
     public:
         Lexer();
 
+        // initializes start pointer and keyword + datatype dictionaries
         explicit Lexer(std::string &code);
 
+        // moves to next pointer
         void next();
 
+        // get the next token
         char getNext();
 
-        [[maybe_unused]] void prev();
+        // peak at the next character without moving the pointer forward
+        char peakNext();
 
+        // moves to previous pointer
+        void prev();
+
+        // dereferences the pointer to get the current character
         char getCurrent();
 
+        // iterate over all characters using findToken function
+        // to generate and return all possible tokens
         std::vector<Token> generateTokens();
 
+        // This is the main function that implements the DFA given in documentation
+        // it uses cases statements and isalpha + isalphanumeric to map lexemes to their respective tokens
         Token findToken(char currTok);
 
+        // Checks if Identifier from findToken maps to some predefined keyword
         bool isKeyword(const std::string &word);
 
+        // Checks if Identifier from findToken maps to some predefined Datatype
         bool isDataType(const std::string &word);
 
         ~Lexer();

@@ -7,7 +7,9 @@
 std::string dir_path;
 
 
-
+// This function asks user for file path
+// Reads information from specified file and removes cartridge return newline and tabs
+// Additionally it updates the directory path in the global variable
 std::string getSourceCode() {
     std::cout << "Enter the path of the source file: ";
     std::string path;
@@ -27,6 +29,9 @@ std::string getSourceCode() {
     return "";
 }
 
+// This function writes the tokens to the file words.txt
+// and directory extracted when we asked for the source file
+
 void exportTokens(const std::vector<Lexer::Token> &tokens) {
     std::string path = dir_path + "words.txt";
     std::ofstream file(path);
@@ -38,6 +43,11 @@ void exportTokens(const std::vector<Lexer::Token> &tokens) {
     } else std::cout << "ERROR: FILE WRITING ERROR.";
 }
 
+// we run the main logic of program in this main
+// 1. Get source code from specified file
+// 2. Create a new Lexer object from the given sourceCode
+// 3. Get tokens from the lexer object
+// 4. Print those token and write them to the file
 int main() {
     std::string sourceCode = getSourceCode();
     Lexer::Lexer Lexer(sourceCode);

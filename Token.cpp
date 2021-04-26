@@ -23,7 +23,10 @@ Lexer::TOKEN Lexer::Token::getToken() {
 }
 
 Lexer::Token::Token(Lexer::TOKEN tok, std::string lexeme) : token(tok), lexeme(std::move(lexeme)) {
+
 }
+
+// the maping information is imported from global.h
 
 void Lexer::init_mapping() {
     int i = 0;
