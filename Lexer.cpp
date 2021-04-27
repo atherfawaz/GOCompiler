@@ -31,10 +31,13 @@ namespace Lexer {
 
         datatypes["Integer"] = "INTEGER";
         datatypes["Char"] = "CHAR";
+        row_num = 0;
+        col_num = 0;
     }
 
     void Lexer::next() {
         currentPtr++;
+        col_num++;
     }
 
     char Lexer::peakNext() {
@@ -57,6 +60,7 @@ namespace Lexer {
 
     void Lexer::prev() {
         currentPtr--;
+        col_num--;
     }
 
     char Lexer::getCurrent() {
@@ -66,7 +70,14 @@ namespace Lexer {
     std::vector<Token> Lexer::generateTokens() {
         std::vector<Token> toks;
         while (this->peakNext()) {
-            toks.push_back(findToken(this->getCurrent()));
+            try {
+                toks.push_back(findToken(this->getCurrent()));
+            }
+            catch (const char * msg){
+                std::cerr << "Exiting code due to follwing error";
+                std::cerr << msg;
+                exit(-1);
+            }
             this->next();
         }
         return toks;
@@ -94,7 +105,14 @@ namespace Lexer {
                 this->next();
                 bool end = false;
                 while (!end) {
-                    while (this->getNext() != '*') {}
+                    while (this->getNext() != '*') {
+                        if (this->getCurrent() == '\n' || this->getCurrent() == '\r'){
+                            inc_row();
+                        }
+                        else if (this->getCurrent() == '\t'){
+                            col_num+=4;
+                        }
+                    }
 
                     // we need / right after * like */ to close our comment
                     if (this->peakNext() == '/') {
@@ -108,46 +126,46 @@ namespace Lexer {
         }
         switch (currTok) {
             case '(':
-                return Token(PRNT, charToString(currTok));
+                return Token(PRNT, charToString(currTok), row_num, col_num);
 
             case ')':
-                return Token(PRNT, charToString(currTok));
+                return Token(PRNT, charToString(currTok), row_num, col_num);
 
             case '{':
-                return Token(BRACES, charToString(currTok));
+                return Token(BRACES, charToString(currTok), row_num, col_num);
 
             case '}':
-                return Token(BRACES, charToString(currTok));
+                return Token(BRACES, charToString(currTok), row_num, col_num);
 
             case '[':
-                return Token(SQR_BRKT, charToString(currTok));
+                return Token(SQR_BRKT, charToString(currTok), row_num, col_num);
 
             case ']':
-                return Token(SQR_BRKT, charToString(currTok));
+                return Token(SQR_BRKT, charToString(currTok), row_num, col_num);
 
             case '+':
-                return Token(AR_OP, charToString(currTok));
+                return Token(AR_OP, charToString(currTok), row_num, col_num);
 
             case '-':
-                return Token(AR_OP, charToString(currTok));
+                return Token(AR_OP, charToString(currTok), row_num, col_num);
 
             case '*':
-                return Token(AR_OP, charToString(currTok));
+                return Token(AR_OP, charToString(currTok), row_num, col_num);
 
             case '%':
-                return Token(AR_OP, charToString(currTok));
+                return Token(AR_OP, charToString(currTok), row_num, col_num);
 
             case ';':
-                return Token(SEMICOLON, charToString(currTok));
+                return Token(SEMICOLON, charToString(currTok), row_num, col_num);
 
             case ',':
-                return Token(COMMA, charToString(currTok));
+                return Token(COMMA, charToString(currTok), row_num, col_num);
 
             case '/':
-                return Token(AR_OP, charToString(currTok));
+                return Token(AR_OP, charToString(currTok), row_num, col_num);
 
             case '<':
-                return Token(RO_OP, charToString(currTok));
+                return Token(RO_OP, charToString(currTok), row_num, col_num);
 
             // a lit const is simple character enclosed in single quotes e.g 'a'
             case '\'': {
@@ -156,9 +174,9 @@ namespace Lexer {
                 litConst += this->getNext();
                 if (this->getNext() == '\'') {
                     litConst += this->getCurrent();
-                    return Token(LIT_CONST, litConst);
+                    return Token(LIT_CONST, litConst, row_num, col_num);
                 } else {
-                    std::cout << "Syntax error!";
+                    throw "Syntax error!";
                     return Token();
                 }
             }
@@ -168,9 +186,9 @@ namespace Lexer {
                 op += '=';
                 if (this->getNext() == '=') {
                     op += this->getCurrent();
-                    return Token(RO_OP, op);
+                    return Token(RO_OP, op, row_num, col_num);
                 } else {
-                    std::cout << "Syntax error!";
+                    throw "Syntax error!";
                     return Token();
                 }
             }
@@ -178,18 +196,18 @@ namespace Lexer {
             case '>':
                 if (this->peakNext() == '>') {
                     this->next();
-                    return Token(INPUT_OP, ">>");
+                    return Token(INPUT_OP, ">>", row_num, col_num);
                 }
 
-                return Token(RO_OP, charToString(currTok));
+                return Token(RO_OP, charToString(currTok), row_num, col_num);
 
             case ':':
 
                 if (this->peakNext() == '=') {
                     this->next();
-                    return Token(ASS_OP, ":=");
+                    return Token(ASS_OP, ":=", row_num, col_num);
                 }
-                return Token(VAR_DEC, charToString(currTok));
+                return Token(VAR_DEC, charToString(currTok), row_num, col_num);
 
             case '"': {
                 std::string str;
@@ -198,9 +216,15 @@ namespace Lexer {
                 // possible error if quots don't close at all
                 while (this->getCurrent() != '"') {
                     str += this->getNext();
+                    if (this->getCurrent() == '\n' || this->getCurrent() == '\r'){
+                        inc_row();
+                    }
+                    else if (this->getCurrent() == '\t'){
+                        col_num+=4;
+                    }
                 }
 
-                return Token(STRING, str);
+                return Token(STRING, str, row_num, col_num);
             }
 
             default:
@@ -213,11 +237,11 @@ namespace Lexer {
                     }
                     // checking to see if the identifier exists in Keyword or Datatype map
                     if (isKeyword(word))
-                        return Token(KEYWORD, word);
-                    else if (isDataType(word))
-                        return Token(DATATYPE, word);
+                        return Token(KEYWORD, word, row_num, col_num);
+                    else if (isDataType(word), row_num, col_num)
+                        return Token(DATATYPE, word, row_num, col_num);
                     else
-                        return Token(IDENTIFIER, word);
+                        return Token(IDENTIFIER, word, row_num, col_num);
 
 
                 }
@@ -229,12 +253,21 @@ namespace Lexer {
                     while (isdigit(this->peakNext() )) {
                         number += this->getNext();
                     }
-                    return Token(NUMBER, number);
+                    return Token(NUMBER, number, row_num, col_num);
                 }
                 // if nothing matches return default
                 currTok = this->getCurrent();
-                std::cout << "Returning default token for: " << currTok << std::endl;
-                return Token();
+                if (currTok == '\n' || currTok == '\r'){
+                    inc_row();
+                }
+                else if (currTok == '\t'){
+                    col_num+=4;
+                }
+                else {
+                    throw "invalid token";
+                }
+
+
         }
     }
     // map Identifier to Keyword

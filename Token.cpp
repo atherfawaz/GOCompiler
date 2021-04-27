@@ -10,6 +10,8 @@
 Lexer::Token::Token() {
     lexeme = '0';
     token = Lexer::NONE;
+    row = 0;
+    col = 0;
 }
 
 Lexer::Token::~Token() = default;
@@ -22,9 +24,7 @@ Lexer::TOKEN Lexer::Token::getToken() {
     return this->token;
 }
 
-Lexer::Token::Token(Lexer::TOKEN tok, std::string lexeme) : token(tok), lexeme(std::move(lexeme)) {
-
-}
+Lexer::Token::Token(Lexer::TOKEN tok, std::string lexeme, int row, int col) : token(tok), lexeme(std::move(lexeme)), row(row), col(col) {}
 
 // the maping information is imported from global.h
 
@@ -38,6 +38,6 @@ void Lexer::init_mapping() {
 
 std::ostream& Lexer::operator<<(std::ostream &out, const Lexer::Token &tok) {
 
-    out << token_mapping.at(tok.token) << " " << tok.lexeme;
+    out << token_mapping.at(tok.token) << " " << tok.lexeme << " row " + std::to_string(tok.row) + " col " + std::to_string(tok.col);
     return out;
 }

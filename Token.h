@@ -39,9 +39,11 @@ namespace Lexer {
         TOKEN token;
         std::string lexeme;
     public:
+        int row;
+        int col;
         Token();
 
-        Token(TOKEN tok, std::string lexeme);
+        Token(TOKEN tok, std::string lexeme, int row, int col);
 
         ~Token();
 

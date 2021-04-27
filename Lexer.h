@@ -22,6 +22,8 @@ namespace Lexer {
         std::unordered_map<std::string, std::string> keywords;
         std::unordered_map<std::string, std::string> datatypes;
     public:
+        int row_num;
+        int col_num;
         Lexer();
 
         // initializes start pointer and keyword + datatype dictionaries
@@ -56,6 +58,10 @@ namespace Lexer {
         // Checks if Identifier from findToken maps to some predefined Datatype
         bool isDataType(const std::string &word);
 
+        void inc_row(){
+            row_num+=1;
+            col_num = 0;
+        }
         ~Lexer();
     };
 

@@ -21,9 +21,9 @@ std::string getSourceCode() {
         std::string sourceCode((std::istreambuf_iterator<char>(file)),
                                (std::istreambuf_iterator<char>()));
         file.close();
-        sourceCode.erase(std::remove(sourceCode.begin(), sourceCode.end(), '\r'), sourceCode.end());
-        sourceCode.erase(std::remove(sourceCode.begin(), sourceCode.end(), '\t'), sourceCode.end());
-        sourceCode.erase(std::remove(sourceCode.begin(), sourceCode.end(), '\n'), sourceCode.end());
+//        sourceCode.erase(std::remove(sourceCode.begin(), sourceCode.end(), '\r'), sourceCode.end());
+//        sourceCode.erase(std::remove(sourceCode.begin(), sourceCode.end(), '\t'), sourceCode.end());
+//        sourceCode.erase(std::remove(sourceCode.begin(), sourceCode.end(), '\n'), sourceCode.end());
         return sourceCode;
     } else std::cout << "ERROR: FILE READING ERROR.";
     return "";
