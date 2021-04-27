@@ -33,7 +33,7 @@ std::string getSourceCode() {
 // and directory extracted when we asked for the source file
 
 void exportTokens(const std::vector<Lexer::Token> &tokens) {
-    std::string path = dir_path + "words.txt";
+    std::string path = dir_path + "\\words.txt";
     std::ofstream file(path);
     if (file.is_open()) {
         for (const auto &tok: tokens) {
