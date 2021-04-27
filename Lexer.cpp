@@ -265,7 +265,7 @@ namespace Lexer {
                     col_num+=4;
                 }
                 else {
-                    throw "invalid token";
+                    throw "invalid token " + charToString(currTok);
                 }
 
                 return Token();

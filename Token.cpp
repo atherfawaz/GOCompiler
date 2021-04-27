@@ -36,7 +36,7 @@ void Lexer::init_mapping() {
     }
 }
 bool Lexer::Token::non_empty() const {
-    if (lexeme != "0")
+    if (token != NONE)
         return true;
     else
         return false;

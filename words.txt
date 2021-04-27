@@ -51,10 +51,12 @@ SEMICOLON ; row 7 col 17
 KEYWORD while row 8 col 10
 IDENTIFIER i row 8 col 12
 RO_OP > row 8 col 14
+NUMBER 0 row 8 col 16
 VAR_DEC : row 8 col 18
 BRACES { row 9 col 6
 IDENTIFIER first row 10 col 10
 ASS_OP := row 10 col 12
+NUMBER 0 row 10 col 14
 SEMICOLON ; row 10 col 15
 IDENTIFIER j row 11 col 6
 ASS_OP := row 11 col 9
