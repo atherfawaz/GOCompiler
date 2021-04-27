@@ -37,7 +37,9 @@ void exportTokens(const std::vector<Lexer::Token> &tokens) {
     std::ofstream file(path);
     if (file.is_open()) {
         for (const auto &tok: tokens) {
-            file << tok << std::endl;
+            if (tok.non_empty()) {
+                file << tok << std::endl;
+            }
         }
         file.close();
     } else std::cout << "ERROR: FILE WRITING ERROR.";
@@ -55,7 +57,8 @@ int main() {
 
     Lexer::init_mapping();
     for (const auto &tok: tokens) {
-        std::cout << tok << std::endl;
+        if (tok.non_empty())
+            std::cout << tok << std::endl;
     }
 
     std::cout << "\nEXPORTING TOKENS.\n";

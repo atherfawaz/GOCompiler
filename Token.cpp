@@ -35,9 +35,16 @@ void Lexer::init_mapping() {
         ++i;
     }
 }
+bool Lexer::Token::non_empty() const {
+    if (lexeme != "0")
+        return true;
+    else
+        return false;
+}
 
 std::ostream& Lexer::operator<<(std::ostream &out, const Lexer::Token &tok) {
 
     out << token_mapping.at(tok.token) << " " << tok.lexeme << " row " + std::to_string(tok.row) + " col " + std::to_string(tok.col);
+
     return out;
 }

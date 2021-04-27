@@ -28,6 +28,7 @@ namespace Lexer {
         keywords["println"] = "PRINTLN";
         keywords["integer"] = "INTEGER";
         keywords["char"] = "CHAR";
+        keywords["func"] = "FUNC";
 
         datatypes["Integer"] = "INTEGER";
         datatypes["Char"] = "CHAR";
@@ -238,7 +239,7 @@ namespace Lexer {
                     // checking to see if the identifier exists in Keyword or Datatype map
                     if (isKeyword(word))
                         return Token(KEYWORD, word, row_num, col_num);
-                    else if (isDataType(word), row_num, col_num)
+                    else if (isDataType(word))
                         return Token(DATATYPE, word, row_num, col_num);
                     else
                         return Token(IDENTIFIER, word, row_num, col_num);
@@ -267,7 +268,7 @@ namespace Lexer {
                     throw "invalid token";
                 }
 
-
+                return Token();
         }
     }
     // map Identifier to Keyword

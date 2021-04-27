@@ -51,12 +51,14 @@ namespace Lexer {
         [[maybe_unused]] [[nodiscard]] std::string getLexeme() const;
 
         TOKEN getToken();
-
+        bool non_empty() const;
         friend std::ostream& operator<<(std::ostream &out, const Lexer::Token &tok);
 
     };
 
     std::ostream& operator<<(std::ostream &out, const Lexer::Token &tok);
+
+
 
     // maps the the token number returned from enum to their string value
     void init_mapping();
