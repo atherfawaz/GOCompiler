@@ -74,7 +74,7 @@ namespace Lexer {
             try {
                 toks.push_back(findToken(this->getCurrent()));
             }
-            catch (const char * msg){
+            catch (const char *msg) {
                 std::cerr << "Exiting code due to follwing error";
                 std::cerr << msg;
                 exit(-1);
@@ -92,7 +92,7 @@ namespace Lexer {
 
 
     Token Lexer::findToken(char currTok) {
-        
+
         // Ignoring all the whitespaces
         while (currTok == ' ') {
             currTok = this->getNext();
@@ -107,11 +107,10 @@ namespace Lexer {
                 bool end = false;
                 while (!end) {
                     while (this->getNext() != '*') {
-                        if (this->getCurrent() == '\n' || this->getCurrent() == '\r'){
+                        if (this->getCurrent() == '\n' || this->getCurrent() == '\r') {
                             inc_row();
-                        }
-                        else if (this->getCurrent() == '\t'){
-                            col_num+=4;
+                        } else if (this->getCurrent() == '\t') {
+                            col_num += 4;
                         }
                     }
 
@@ -168,7 +167,7 @@ namespace Lexer {
             case '<':
                 return Token(RO_OP, charToString(currTok), row_num, col_num);
 
-            // a lit const is simple character enclosed in single quotes e.g 'a'
+                // a lit const is simple character enclosed in single quotes e.g 'a'
             case '\'': {
                 std::string litConst;
                 litConst += '\'';
@@ -217,11 +216,10 @@ namespace Lexer {
                 // possible error if quots don't close at all
                 while (this->getCurrent() != '"') {
                     str += this->getNext();
-                    if (this->getCurrent() == '\n' || this->getCurrent() == '\r'){
+                    if (this->getCurrent() == '\n' || this->getCurrent() == '\r') {
                         inc_row();
-                    }
-                    else if (this->getCurrent() == '\t'){
-                        col_num+=4;
+                    } else if (this->getCurrent() == '\t') {
+                        col_num += 4;
                     }
                 }
 
@@ -237,48 +235,47 @@ namespace Lexer {
                         word += this->getNext();
                     }
                     // checking to see if the identifier exists in Keyword or Datatype map
-                    if (isKeyword(word))
+                    std::string out = isKeyword(word);
+                    if (!out.empty())
                         return Token(KEYWORD, word, row_num, col_num);
                     else if (isDataType(word))
                         return Token(DATATYPE, word, row_num, col_num);
                     else
                         return Token(IDENTIFIER, word, row_num, col_num);
-
-
                 }
                 // checking for number input which is kind of similar to Integer input
                 // should we check for negative sign
                 else if (isdigit(currTok)) {
                     std::string number;
                     number += currTok;
-                    while (isdigit(this->peakNext() )) {
+                    while (isdigit(this->peakNext())) {
                         number += this->getNext();
                     }
                     return Token(NUMBER, number, row_num, col_num);
                 }
                 // if nothing matches return default
                 currTok = this->getCurrent();
-                if (currTok == '\n' || currTok == '\r'){
+                if (currTok == '\n' || currTok == '\r') {
                     inc_row();
-                }
-                else if (currTok == '\t'){
-                    col_num+=4;
-                }
-                else {
+                } else if (currTok == '\t') {
+                    col_num += 4;
+                } else {
                     throw "invalid token " + charToString(currTok);
                 }
 
                 return Token();
         }
     }
+
     // map Identifier to Keyword
-    bool Lexer::isKeyword(const std::string &word) {
-        if (keywords.find(word) == keywords.end()) return false;
-        return true;
+    std::string Lexer::isKeyword(const std::string &word) {
+        if (keywords.find(word) == keywords.end()) return "";
+        return keywords[word];
     }
+
     // map Identifier to Datatype
-    bool Lexer::isDataType(const std::string &word) {
-        if (datatypes.find(word) == datatypes.end()) return false;
-        return true;
+    std::string Lexer::isDataType(const std::string &word) {
+        if (datatypes.find(word) == datatypes.end()) return "";
+        return datatypes[word];
     }
 }

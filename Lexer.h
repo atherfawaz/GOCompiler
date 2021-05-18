@@ -56,7 +56,7 @@ namespace Lexer {
         bool isKeyword(const std::string &word);
 
         // Checks if Identifier from findToken maps to some predefined Datatype
-        bool isDataType(const std::string &word);
+        std::string isDataType(const std::string &word);
 
         void inc_row(){
             row_num+=1;

@@ -26,8 +26,8 @@ namespace Lexer {
         BRACES,     // Regular Braces { }
         SEMICOLON,  // ;
         COMMA,      // ,
-        KEYWORD,    // a special identifier that is stored in the keyword table
-        DATATYPE,   // a string or an Integer
+        KEYWORD,
+        DATATYPE,
         NONE,       // None of the above
     };
 
@@ -41,6 +41,7 @@ namespace Lexer {
     public:
         int row;
         int col;
+
         Token();
 
         Token(TOKEN tok, std::string lexeme, int row, int col);
@@ -51,13 +52,14 @@ namespace Lexer {
         [[maybe_unused]] [[nodiscard]] std::string getLexeme() const;
 
         TOKEN getToken();
+
         bool non_empty() const;
-        friend std::ostream& operator<<(std::ostream &out, const Lexer::Token &tok);
+
+        friend std::ostream &operator<<(std::ostream &out, const Lexer::Token &tok);
 
     };
 
-    std::ostream& operator<<(std::ostream &out, const Lexer::Token &tok);
-
+    std::ostream &operator<<(std::ostream &out, const Lexer::Token &tok);
 
 
     // maps the the token number returned from enum to their string value
