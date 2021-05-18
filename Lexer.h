@@ -53,7 +53,7 @@ namespace Lexer {
         Token findToken(char currTok);
 
         // Checks if Identifier from findToken maps to some predefined keyword
-        bool isKeyword(const std::string &word);
+        std::string isKeyword(const std::string &word);
 
         // Checks if Identifier from findToken maps to some predefined Datatype
         std::string isDataType(const std::string &word);

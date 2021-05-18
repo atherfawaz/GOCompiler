@@ -238,13 +238,14 @@ namespace Lexer {
                     std::string out = isKeyword(word);
                     if (!out.empty())
                         return Token(KEYWORD, word, row_num, col_num);
-                    else if (isDataType(word))
+                    out = isDataType(word);
+                    if (!out.empty())
                         return Token(DATATYPE, word, row_num, col_num);
                     else
                         return Token(IDENTIFIER, word, row_num, col_num);
                 }
-                // checking for number input which is kind of similar to Integer input
-                // should we check for negative sign
+                    //ing fo  r number input which is kind of similar to Integer input
+                    // should we check for negative sign
                 else if (isdigit(currTok)) {
                     std::string number;
                     number += currTok;
