@@ -81,6 +81,10 @@ namespace Parser {
 
         void LIT_CONST();
 
+        void TO_PRINT();
+
+        void STRING();
+
     };
 
 }

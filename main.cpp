@@ -56,9 +56,9 @@ int main() {
     std::string sourceCode = getSourceCode();
     Lexer::Lexer Lexer(sourceCode);
 
-    std::cout << "GENERATING TOKENS.\n";
+    //std::cout << "GENERATING TOKENS.\n";
     std::vector<Lexer::Token> tokens = Lexer.generateTokens();
-    std::cout << "GENERATED TOKENS.\n";
+    //std::cout << "GENERATED TOKENS.\n";
 
     Lexer::init_mapping();
 
@@ -67,15 +67,15 @@ int main() {
             tokens.erase(tokens.begin() + i);
     }
 
-    std::cout << "PARSING PROGRAM.\n";
+    //std::cout << "PARSING PROGRAM.\n";
     Parser::Parser Parser(tokens);
     auto parseResult = Parser.parse();
-    std::cout << "Parsing result: " << parseResult << std::endl;
-    std::cout << "PARSED PROGRAM.\n";
+    //std::cout << "Parsing result: " << parseResult << std::endl;
+    //std::cout << "PARSED PROGRAM.\n";
 
-    std::cout << "\nEXPORTING TOKENS.\n";
+    //std::cout << "\nEXPORTING TOKENS.\n";
     exportTokens(tokens);
-    std::cout << "\nEXPORTED TOKENS.\n";
+    //std::cout << "\nEXPORTED TOKENS.\n";
 
     return 0;
 }
