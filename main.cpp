@@ -62,10 +62,14 @@ int main() {
 
     Lexer::init_mapping();
 
+    std::cout << "Before deletion: " << tokens.size() << std::endl;
+
     for (int i = 0; i < tokens.size(); i++) {
         if (!tokens[i].non_empty())
             tokens.erase(tokens.begin() + i);
     }
+
+    std::cout << "After deletion: " << tokens.size() << std::endl;
 
     std::cout << "PARSING PROGRAM.\n";
     Parser::Parser Parser(tokens);

@@ -13,6 +13,7 @@ Parser::Parser::Parser(const std::vector<Lexer::Token> &tok) {
 }
 
 bool Parser::Parser::parse() {
+    std::cout << "Current Token: " << CURRENTTOKEN << "\n";
     if (tokens[cursor].non_empty()) {
         START_PARSE();
         return true;
@@ -23,6 +24,11 @@ bool Parser::Parser::parse() {
 
 void Parser::Parser::nextToken() {
     cursor++;
+    //why isn't the deletion in the main function of empty tokens working ffs
+    while (CURRENTTOKEN == "0") {
+        cursor++;
+    }
+    std::cout << "Current Token: " << CURRENTTOKEN << "\n";
 }
 
 bool Parser::Parser::match(const std::string &lexeme, const std::string &toMatch) {
