@@ -75,7 +75,7 @@ namespace Lexer {
                 toks.push_back(findToken(this->getCurrent()));
             }
             catch (const char *msg) {
-                std::cerr << "Exiting code due to follwing error";
+                std::cerr << "Exiting code due to the following error: ";
                 std::cerr << msg;
                 exit(-1);
             }

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <algorithm>
 #include "Lexer.h"
+#include "Parser.h"
 
 std::string dir_path;
 
@@ -15,7 +16,7 @@ std::string getSourceCode() {
     std::string path;
     std::cin >> path;
 
-    dir_path = path.substr(0, path.find_last_of("\\"));
+    dir_path = path.substr(0, path.find_last_of('\\'));
     std::ifstream file(path);
     if (file.is_open()) {
         std::string sourceCode((std::istreambuf_iterator<char>(file)),
@@ -51,9 +52,13 @@ void exportTokens(const std::vector<Lexer::Token> &tokens) {
 // 3. Get tokens from the lexer object
 // 4. Print those token and write them to the file
 int main() {
+
     std::string sourceCode = getSourceCode();
     Lexer::Lexer Lexer(sourceCode);
-    auto tokens = Lexer.generateTokens();
+
+    std::cout << "GENERATING TOKENS.\n";
+    std::vector<Lexer::Token> tokens = Lexer.generateTokens();
+    std::cout << "GENERATED TOKENS.\n";
 
     Lexer::init_mapping();
     for (const auto &tok: tokens) {
@@ -61,8 +66,15 @@ int main() {
             std::cout << tok << std::endl;
     }
 
+    std::cout << "PARSING PROGRAM.\n";
+    Parser::Parser Parser(tokens);
+    auto parseResult = Parser.parse();
+    std::cout << "Parsing result: " << parseResult << std::endl;
+    std::cout << "PARSED PROGRAM.\n";
+
     std::cout << "\nEXPORTING TOKENS.\n";
     exportTokens(tokens);
     std::cout << "\nEXPORTED TOKENS.\n";
+
     return 0;
 }

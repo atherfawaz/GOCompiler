@@ -5,12 +5,48 @@
 #ifndef MAIN_CPP_PARSER_H
 #define MAIN_CPP_PARSER_H
 
+#include "Token.h"
+#include <utility>
+#include <vector>
 
-class Parser {
+namespace Parser {
 
-    void PROGRAM_START();
+    class Parser {
+    private:
+        int cursor = 0;
+        std::vector<Lexer::Token> tokens;
 
-};
+    public:
+        Parser();
 
+        explicit Parser(const std::vector<Lexer::Token> &tok);
+
+        static bool match(const std::string &lexeme, const std::string &toMatch);
+
+        bool parse();
+
+        void PROGRAM_START();
+
+        void START_PARSE();
+
+        void FUNC_HEADER();
+
+        void RETURN_TYPE();
+
+        void IDENTIFIER();
+
+        void PARAMETERS();
+
+        void STATEMENT();
+
+        void PROG_S();
+
+        void ALPHABET();
+
+        void ALPHANUMERIC();
+
+    };
+
+}
 
 #endif //MAIN_CPP_PARSER_H

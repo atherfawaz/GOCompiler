@@ -1,5 +1,5 @@
-func Integer: numPrint (Integer: num, Integer: length) {
-	Integer: i, j, first, temp;
+func integer: numPrint (integer: num, integer: length) {
+	integer: i, j, first, temp;
 	char : a;
 	a := 'x';
 	print ("enter number");
