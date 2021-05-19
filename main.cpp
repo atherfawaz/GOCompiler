@@ -61,9 +61,10 @@ int main() {
     std::cout << "GENERATED TOKENS.\n";
 
     Lexer::init_mapping();
-    for (const auto &tok: tokens) {
-        if (tok.non_empty())
-            std::cout << tok << std::endl;
+
+    for (int i = 0; i < tokens.size(); i++) {
+        if (!tokens[i].non_empty())
+            tokens.erase(tokens.begin() + i);
     }
 
     std::cout << "PARSING PROGRAM.\n";

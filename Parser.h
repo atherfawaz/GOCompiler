@@ -25,6 +25,8 @@ namespace Parser {
 
         bool parse();
 
+        void nextToken();
+
         void PROGRAM_START();
 
         void START_PARSE();
@@ -44,6 +46,10 @@ namespace Parser {
         void ALPHABET();
 
         void ALPHANUMERIC();
+
+        void ADDITIONAL_PARAMETERS();
+
+        void DATATYPE();
 
     };
 
