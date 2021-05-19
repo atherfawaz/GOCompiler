@@ -24,10 +24,6 @@ bool Parser::Parser::parse() {
 
 void Parser::Parser::nextToken() {
     cursor++;
-    //why isn't the deletion in the main function of empty tokens working ffs
-    while (CURRENTTOKEN == "0") {
-        cursor++;
-    }
     std::cout << "Current Token: " << CURRENTTOKEN << "\n";
 }
 
