@@ -51,6 +51,14 @@ namespace Parser {
 
         void DATATYPE();
 
+        void INT_DECLARATION();
+
+        void ADD_INT_DEC();
+
+        void CHAR_DECLARATION();
+
+        void ADD_CHAR_DEC();
+
     };
 
 }

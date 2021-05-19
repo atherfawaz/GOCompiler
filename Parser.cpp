@@ -144,7 +144,11 @@ void Parser::Parser::PARAMETERS() {
 }
 
 void Parser::Parser::STATEMENT() {
-
+    if (match(CURRENTTOKEN, "integer")) {
+        INT_DECLARATION();
+    } else if (match(CURRENTTOKEN, "char")) {
+        CHAR_DECLARATION();
+    }
 }
 
 void Parser::Parser::ADDITIONAL_PARAMETERS() {
@@ -161,4 +165,70 @@ void Parser::Parser::DATATYPE() {
         exit(1);
     }
 
+}
+
+void Parser::Parser::INT_DECLARATION() {
+    if (match(CURRENTTOKEN, "integer")) {
+        nextToken();
+        if (match(CURRENTTOKEN, ":")) {
+            nextToken();
+            IDENTIFIER();
+            nextToken();
+            ADD_INT_DEC();
+            if (!match(CURRENTTOKEN, ";")) {
+                std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+                exit(1);
+            }
+            nextToken();
+            STATEMENT();
+        } else {
+            std::cerr << "Expected :, but found " << CURRENTTOKEN << " instead." << std::endl;
+            exit(1);
+        }
+    } else {
+        std::cerr << "Expected INTEGER, but found " << CURRENTTOKEN << " instead." << std::endl;
+        exit(1);
+    }
+}
+
+void Parser::Parser::ADD_INT_DEC() {
+    if (match(CURRENTTOKEN, ",")) {
+        nextToken();
+        IDENTIFIER();
+        nextToken();
+        ADD_INT_DEC();
+    }
+}
+
+void Parser::Parser::CHAR_DECLARATION() {
+    if (match(CURRENTTOKEN, "char")) {
+        nextToken();
+        if (match(CURRENTTOKEN, ":")) {
+            nextToken();
+            IDENTIFIER();
+            nextToken();
+            ADD_CHAR_DEC();
+            if (!match(CURRENTTOKEN, ";")) {
+                std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+                exit(1);
+            }
+            nextToken();
+            STATEMENT();
+        } else {
+            std::cerr << "Expected :, but found " << CURRENTTOKEN << " instead." << std::endl;
+            exit(1);
+        }
+    } else {
+        std::cerr << "Expected CHAR, but found " << CURRENTTOKEN << " instead." << std::endl;
+        exit(1);
+    }
+}
+
+void Parser::Parser::ADD_CHAR_DEC() {
+    if (match(CURRENTTOKEN, ",")) {
+        nextToken();
+        IDENTIFIER();
+        nextToken();
+        ADD_CHAR_DEC();
+    }
 }
