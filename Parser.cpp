@@ -96,7 +96,11 @@ void Parser::Parser::FUNC_HEADER() {
 }
 
 void Parser::Parser::PROG_S() {
-
+    if (match(CURRENTTOKEN, "func")) {
+        FUNC_HEADER();
+    } else {
+        STATEMENT();
+    }
 }
 
 void Parser::Parser::RETURN_TYPE() {
@@ -148,6 +152,12 @@ void Parser::Parser::STATEMENT() {
         INT_DECLARATION();
     } else if (match(CURRENTTOKEN, "char")) {
         CHAR_DECLARATION();
+    } else if (match(CURRENTTOKEN, "while")) {
+        LOOP();
+    } else if (match(CURRENTTOKEN, "if")) {
+        IF();
+    } else if (match(CURRENTTOKEN, "print") || match(CURRENTTOKEN, "println")) {
+        PRINTS();
     }
 }
 
@@ -164,7 +174,6 @@ void Parser::Parser::DATATYPE() {
         std::cerr << "Expected INTEGER or CHAR, but found " << CURRENTTOKEN << " instead." << std::endl;
         exit(1);
     }
-
 }
 
 void Parser::Parser::INT_DECLARATION() {
@@ -175,12 +184,13 @@ void Parser::Parser::INT_DECLARATION() {
             IDENTIFIER();
             nextToken();
             ADD_INT_DEC();
-            if (!match(CURRENTTOKEN, ";")) {
+            if (match(CURRENTTOKEN, ";")) {
+                nextToken();
+                STATEMENT();
+            } else {
                 std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
                 exit(1);
             }
-            nextToken();
-            STATEMENT();
         } else {
             std::cerr << "Expected :, but found " << CURRENTTOKEN << " instead." << std::endl;
             exit(1);
@@ -208,12 +218,13 @@ void Parser::Parser::CHAR_DECLARATION() {
             IDENTIFIER();
             nextToken();
             ADD_CHAR_DEC();
-            if (!match(CURRENTTOKEN, ";")) {
+            if (match(CURRENTTOKEN, ";")) {
+                nextToken();
+                STATEMENT();
+            } else {
                 std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
                 exit(1);
             }
-            nextToken();
-            STATEMENT();
         } else {
             std::cerr << "Expected :, but found " << CURRENTTOKEN << " instead." << std::endl;
             exit(1);
@@ -230,5 +241,103 @@ void Parser::Parser::ADD_CHAR_DEC() {
         IDENTIFIER();
         nextToken();
         ADD_CHAR_DEC();
+    }
+}
+
+void Parser::Parser::ASSIGNMENT() {
+    IDENTIFIER();
+    nextToken();
+    if (match(CURRENTTOKEN, ":=")) {
+        TO_ASSIGN();
+        nextToken();
+        if (match(CURRENTTOKEN, ";")) {
+            //add code here
+        }
+    } else {
+        std::cerr << "Expected :=, but found " << CURRENTTOKEN << " instead." << std::endl;
+        exit(1);
+    }
+}
+
+void Parser::Parser::LOOP() {
+    if (match(CURRENTTOKEN, "while")) {
+        nextToken();
+        COMPARISON();
+        if (match(CURRENTTOKEN, ":")) {
+            nextToken();
+            if (match(CURRENTTOKEN, "{")) {
+                nextToken();
+                STATEMENT();
+                if (match(CURRENTTOKEN, "}")) {
+                    nextToken();
+                    STATEMENT();
+                } else {
+                    std::cerr << "Expected }, but found " << CURRENTTOKEN << " instead." << std::endl;
+                    exit(1);
+                }
+            } else {
+                std::cerr << "Expected {, but found " << CURRENTTOKEN << " instead." << std::endl;
+                exit(1);
+            }
+        } else {
+            std::cerr << "Expected :, but found " << CURRENTTOKEN << " instead." << std::endl;
+            exit(1);
+        }
+    } else {
+        std::cout << "Ye tou garbar hai";
+    }
+}
+
+void Parser::Parser::COMPARISON() {
+
+}
+
+void Parser::Parser::IF() {
+
+}
+
+void Parser::Parser::PRINTS() {
+
+}
+
+void Parser::Parser::INPUT() {
+
+}
+
+void Parser::Parser::CHAR_DEC_ASS() {
+
+}
+
+void Parser::Parser::INT_DEC_ASS() {
+
+}
+
+void Parser::Parser::TO_ASSIGN() {
+    if (CURRENTTOKEN[0] == '\'') {
+        LIT_CONST();
+    } else if (CURRENTTOKEN[0] >= '0' && CURRENTTOKEN[0] <= '9') {
+        NUMBER();
+    }
+}
+
+void Parser::Parser::LIT_CONST() {
+    if (CURRENTTOKEN.size() != 3) {
+        std::cerr << "Illegal literal constant.";
+        exit(1);
+    }
+    if (CURRENTTOKEN[0] == '\'' && CURRENTTOKEN[2] == '\'') {
+        return;
+    } else {
+        std::cerr << "Expected ', but found " << CURRENTTOKEN << " instead." << std::endl;
+        exit(1);
+    }
+}
+
+void Parser::Parser::NUMBER() {
+    for (int i = 0; CURRENTTOKEN[i] != '\0'; i++) {
+        if (!isdigit(CURRENTTOKEN[i])) {
+            std::cerr << "Illegal number.";
+            exit(1);
+        }
     }
 }

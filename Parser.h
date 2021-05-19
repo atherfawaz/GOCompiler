@@ -59,6 +59,28 @@ namespace Parser {
 
         void ADD_CHAR_DEC();
 
+        void ASSIGNMENT();
+
+        void LOOP();
+
+        void COMPARISON();
+
+        void IF();
+
+        void PRINTS();
+
+        void INPUT();
+
+        void CHAR_DEC_ASS();
+
+        void INT_DEC_ASS();
+
+        void TO_ASSIGN();
+
+        void NUMBER();
+
+        void LIT_CONST();
+
     };
 
 }
