@@ -62,13 +62,13 @@ int main() {
 
     Lexer::init_mapping();
 
-    for (int i = 0; i < tokens.size(); i++) {
-        auto test = tokens[i].getToken();
-        if (!tokens[i].non_empty()) {
-            tokens.erase(tokens.begin() + i - 1);
-            i--;
-        }
-    }
+//    for (int i = 0; i < tokens.size(); i++) {
+//        auto test = tokens[i].getToken();
+//        if (!tokens[i].non_empty()) {
+//            tokens.erase(tokens.begin() + i);
+//            i--;
+//        }
+//    }
 
     //std::cout << "PARSING PROGRAM.\n";
     Parser::Parser Parser(tokens);
