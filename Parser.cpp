@@ -610,7 +610,7 @@ void Parser::Parser::ADDITIONAL_COMP() {
     functionHeader(__func__);
 
     if (match(CURRENTTOKEN, "<") || match(CURRENTTOKEN, "<=") || match(CURRENTTOKEN, ">") ||
-        match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "=") || match(CURRENTTOKEN, "")) {
+        match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "=") || match(CURRENTTOKEN, "/=")) {
         nextToken();
         CONDITIONAL();
         nextToken();
