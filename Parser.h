@@ -14,6 +14,7 @@ namespace Parser {
     class Parser {
     private:
         int cursor = 0;
+        int tabs = 0;
         std::vector<Lexer::Token> tokens;
 
     public:
@@ -85,6 +86,10 @@ namespace Parser {
 
         void STRING();
 
+        void goIn();
+        void getOut();
+
+        void print_func_header(std::string func_name);
     };
 
 }

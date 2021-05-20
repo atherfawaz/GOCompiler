@@ -3,7 +3,7 @@ func integer: numPrint (integer: num, integer: length) {
 	char : a;
 	a := 'x';
 	print ("enter number");
-	In >> i;
+	in >> i;
 	println (i);
 	i := length;
 	while i > 0 :

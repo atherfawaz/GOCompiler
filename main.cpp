@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "Lexer.h"
 #include "Parser.h"
+#include "global_path.h"
 
 std::string dir_path;
 
@@ -15,6 +16,10 @@ std::string getSourceCode() {
     std::cout << "Enter the path of the source file: ";
     std::string path;
     std::cin >> path;
+
+    if (path == "0"){
+        path = global_path;
+    }
 
     dir_path = path.substr(0, path.find_last_of('\\'));
     std::ifstream file(path);
@@ -38,9 +43,9 @@ void exportTokens(const std::vector<Lexer::Token> &tokens) {
     std::ofstream file(path);
     if (file.is_open()) {
         for (const auto &tok: tokens) {
-            if (tok.non_empty()) {
+            //if (tok.non_empty()) {
                 file << tok << std::endl;
-            }
+            //}
         }
         file.close();
     } else std::cout << "ERROR: FILE WRITING ERROR.";
@@ -62,13 +67,13 @@ int main() {
 
     Lexer::init_mapping();
 
-//    for (int i = 0; i < tokens.size(); i++) {
-//        auto test = tokens[i].getToken();
-//        if (!tokens[i].non_empty()) {
-//            tokens.erase(tokens.begin() + i);
-//            i--;
-//        }
-//    }
+    for (int i = 0; i < tokens.size(); i++) {
+        auto test = tokens[i].getToken();
+        if (!tokens[i].non_empty()) {
+            tokens.erase(tokens.begin() + i);
+            i--;
+        }
+    }
 
     //std::cout << "PARSING PROGRAM.\n";
     Parser::Parser Parser(tokens);
