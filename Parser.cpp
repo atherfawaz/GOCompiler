@@ -15,9 +15,9 @@ Parser::Parser::Parser(const std::vector<Lexer::Token> &tok) {
 }
 
 void Parser::Parser::functionHeader(const std::string &func_name) const {
-//    std::cout << "|-";
-//    for (int i = 0; i < this->tabs; i++)
-//        std::cout << "----";
+    std::cout << "|-";
+    for (int i = 0; i < this->tabs; i++)
+        std::cout << "----";
     std::cout << func_name << std::endl;
 
 }
@@ -31,7 +31,7 @@ void Parser::Parser::getOut() {
 }
 
 bool Parser::Parser::parse() {
-    std::cout << "Current Token: " << CURRENTTOKEN << "\n";
+    //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
     if (tokens[cursor].non_empty()) {
         START_PARSE();
         return true;
@@ -50,7 +50,7 @@ void Parser::Parser::nextToken() {
         std::cout << "Finished parsing.";
         exit(0);
     }
-    std::cout << "Current Token: " << CURRENTTOKEN << "\n";
+    //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
 }
 
 bool Parser::Parser::match(const std::string &lexeme, const std::string &toMatch) {
@@ -61,9 +61,9 @@ bool Parser::Parser::match(const std::string &lexeme, const std::string &toMatch
 void Parser::Parser::START_PARSE() {
     functionHeader(__func__);
 
-    goIn();
+    //goIn();
     PROGRAM_START();
-    getOut();
+    //getOut();
 }
 
 void Parser::Parser::PROGRAM_START() {
@@ -221,26 +221,32 @@ void Parser::Parser::STATEMENT() {
     goIn();
     if (match(CURRENTTOKEN, "integer")) {
         INT_DECLARATION();
+        getOut();
         nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "char")) {
         CHAR_DECLARATION();
+        getOut();
         nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "while")) {
         LOOP();
+        getOut();
         nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "if")) {
         IF();
+        getOut();
         nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "print") || match(CURRENTTOKEN, "println")) {
         PRINTS();
+        getOut();
         nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "in")) {
         INPUT();
+        getOut();
         nextToken();
         STATEMENT();
     } else if (isalpha(CURRENTTOKEN[0])) {
@@ -249,14 +255,17 @@ void Parser::Parser::STATEMENT() {
         if (match(CURRENTTOKEN, "<") || match(CURRENTTOKEN, "<=") || match(CURRENTTOKEN, ">") ||
             match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "=") || match(CURRENTTOKEN, "/=")) {
             COMPARISON();
+            getOut();
             nextToken();
             STATEMENT();
         } else if (match(CURRENTTOKEN, ":=")) {
             ASSIGNMENT();
+            getOut();
             nextToken();
             STATEMENT();
         } else if (match(CURRENTTOKEN, "(")) {
             FUNCTION_CALL();
+            getOut();
             nextToken();
             STATEMENT();
         } else {
@@ -302,9 +311,11 @@ void Parser::Parser::INT_DECLARATION() {
             nextToken();
             getOut();
             ADD_INT_DEC();
+
             //nextToken();
             if (match(CURRENTTOKEN, ";")) {
-                getOut();
+                int a = 0;
+                //getOut();
                 //nextToken();
                 //STATEMENT();
             } else {
@@ -330,10 +341,10 @@ void Parser::Parser::ADD_INT_DEC() {
         nextToken();
         IDENTIFIER();
         nextToken();
-        //getOut();
+        getOut();
         ADD_INT_DEC();
     }
-    getOut();
+    //getOut();
 }
 
 void Parser::Parser::CHAR_DECLARATION() {
@@ -379,7 +390,7 @@ void Parser::Parser::ADD_CHAR_DEC() {
         ADD_CHAR_DEC();
 
     }
-    getOut();
+    //getOut();
 }
 
 void Parser::Parser::ASSIGNMENT() {
@@ -390,9 +401,9 @@ void Parser::Parser::ASSIGNMENT() {
         nextToken();
         TO_ASSIGN();
         nextToken();
-        getOut();
+        //getOut();
         if (match(CURRENTTOKEN, ";")) {
-            getOut();
+            //getOut();
             //nextToken();
             //STATEMENT();
         }
@@ -412,7 +423,7 @@ void Parser::Parser::LOOP() {
         COMPARISON();
         if (match(CURRENTTOKEN, ":")) {
             nextToken();
-            getOut();
+            //getOut();
             if (match(CURRENTTOKEN, "{")) {
                 nextToken();
                 STATEMENT();
@@ -434,11 +445,12 @@ void Parser::Parser::LOOP() {
     } else {
         std::cout << "Ye tou garbar hai";
     }
+    getOut();
 }
 
 void Parser::Parser::COMPARISON() {
     functionHeader(__func__);
-
+    goIn();
     CONDITIONAL();
     nextToken();
     RELATIONAL_OP();
@@ -446,6 +458,7 @@ void Parser::Parser::COMPARISON() {
     CONDITIONAL();
     nextToken();
     ADDITIONAL_COMP();
+    getOut();
 }
 
 void Parser::Parser::PRINTS() {
@@ -460,7 +473,7 @@ void Parser::Parser::PRINTS() {
             nextToken();
             if (match(CURRENTTOKEN, ")")) {
                 nextToken();
-                getOut();
+
                 if (match(CURRENTTOKEN, ";")) {
                     //nextToken();
                     //STATEMENT();
@@ -477,6 +490,7 @@ void Parser::Parser::PRINTS() {
             exit(1);
         }
     }
+    getOut();
 }
 
 void Parser::Parser::INPUT() {
@@ -583,7 +597,7 @@ void Parser::Parser::STRING() {
 
 void Parser::Parser::CONDITIONAL() {
     functionHeader(__func__);
-
+    goIn();
     if (isdigit(CURRENTTOKEN[0]))
         NUMBER();
     else if (isalpha(CURRENTTOKEN[0]))
@@ -592,6 +606,7 @@ void Parser::Parser::CONDITIONAL() {
         std::cerr << "Expected NUMBER or IDENTIFIER, but found " << CURRENTTOKEN << " instead." << std::endl;
         exit(1);
     }
+    getOut();
 }
 
 void Parser::Parser::RELATIONAL_OP() {
