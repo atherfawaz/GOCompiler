@@ -24,9 +24,15 @@ namespace Parser {
 
         static bool match(const std::string &lexeme, const std::string &toMatch);
 
+        void functionHeader(const std::string &func_name) const;
+
         bool parse();
 
         void nextToken();
+
+        void goIn();
+
+        void getOut();
 
         void PROGRAM_START();
 
@@ -86,10 +92,22 @@ namespace Parser {
 
         void STRING();
 
-        void goIn();
-        void getOut();
+        void CONDITIONAL();
 
-        void print_func_header(std::string func_name);
+        void RELATIONAL_OP();
+
+        void ADDITIONAL_COMP();
+
+        void ELIF();
+
+        void ELSE();
+
+        void FUNCTION_CALL();
+
+        void ARGUMENTS();
+
+        void MORE_ARGS();
+
     };
 
 }

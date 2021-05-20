@@ -5,7 +5,6 @@
 #ifndef MAIN_CPP_GLOBAL_PATH_H
 #define MAIN_CPP_GLOBAL_PATH_H
 
-std::string global_path = "C:\\Users\\Mujtaba\\CLionProjects\\GOCompiler\\code.go";
-
+std::string global_path = R"(E:\Development\GO-Compiler\code.go)";
 
 #endif //MAIN_CPP_GLOBAL_PATH_H
