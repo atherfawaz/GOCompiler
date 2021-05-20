@@ -52,6 +52,55 @@ void Parser::Parser::nextToken() {
     }
     //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
 }
+bool Parser::Parser::peekExpression(){
+    nextToken();
+    if ((CURRENTTOKEN[0] == '\''))  {
+        cursor --;
+        return false;
+    }
+    if (isalpha(CURRENTTOKEN[0]) || (isdigit(CURRENTTOKEN[0])))
+        if (isalpha(CURRENTTOKEN[0]))
+            IDENTIFIER();
+        else if (isdigit(CURRENTTOKEN[0])){
+            NUMBER();
+        }
+        else {
+            std::cerr << "Identifier name for must start with an alpha character"<< std::endl << __func__ ;
+
+            exit(-1);
+         }
+    else {
+        std::cerr << "Statment error neither Expression or assignment " << std::endl << __func__ ;
+    }
+    nextToken();
+    if (match(CURRENTTOKEN, "+") || match(CURRENTTOKEN, "-") || match(CURRENTTOKEN, "*") || match(CURRENTTOKEN, "/")) {
+        cursor --;
+        //std::swap(tokens[cursor], tokens[cursor + 1]);
+        cursor --;
+
+        return true;
+    }
+    else {
+        cursor --;
+        cursor --;
+        return false;
+    }
+
+}
+
+bool Parser::Parser::peek(const std::string &toMatch) {
+    nextToken();
+    if (match(CURRENTTOKEN, toMatch)) {
+        cursor --;
+
+        return true;
+    }
+    else {
+
+    }
+    cursor --;
+    return false;
+}
 
 bool Parser::Parser::match(const std::string &lexeme, const std::string &toMatch) {
     if (lexeme == toMatch) return true;
@@ -253,14 +302,27 @@ void Parser::Parser::STATEMENT() {
         IDENTIFIER();
         nextToken();
         if (match(CURRENTTOKEN, "<") || match(CURRENTTOKEN, "<=") || match(CURRENTTOKEN, ">") ||
-            match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "=") || match(CURRENTTOKEN, "/=")) {
+            match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "==") || match(CURRENTTOKEN, "/=")) {
             COMPARISON();
             getOut();
             nextToken();
             STATEMENT();
         } else if (match(CURRENTTOKEN, ":=")) {
-            ASSIGNMENT();
-            getOut();
+            if (peekExpression()){
+                EXPRESSION();
+                getOut();
+                if (match(CURRENTTOKEN, ";")){
+
+                }
+                else {
+                    std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+                    exit(1);
+                }
+            }
+            else {
+                ASSIGNMENT();
+                getOut();
+            }
             nextToken();
             STATEMENT();
         } else if (match(CURRENTTOKEN, "(")) {
@@ -314,7 +376,7 @@ void Parser::Parser::INT_DECLARATION() {
 
             //nextToken();
             if (match(CURRENTTOKEN, ";")) {
-                int a = 0;
+
                 //getOut();
                 //nextToken();
                 //STATEMENT();
@@ -393,6 +455,107 @@ void Parser::Parser::ADD_CHAR_DEC() {
     //getOut();
 }
 
+void Parser::Parser::EXPRESSION() {
+    functionHeader(__func__);
+
+    goIn();
+    if (match(CURRENTTOKEN, ":=")) {
+        nextToken();
+        MUL_DIV();
+        ADD_SUB();
+    }
+    getOut();
+
+}
+
+void Parser::Parser::MUL_DIV() {
+    functionHeader(__func__);
+
+    goIn();
+
+    FINAL();
+    MUL_DIV_();
+
+    getOut();
+
+}
+
+void Parser::Parser::ADD_SUB() {
+    functionHeader(__func__);
+
+    goIn();
+
+    if (match(CURRENTTOKEN, "+")){
+        nextToken();
+        MUL_DIV();
+        ADD_SUB();
+    }
+
+
+    if (match(CURRENTTOKEN, "-")){
+        nextToken();
+        MUL_DIV();
+        ADD_SUB();
+    }
+
+
+    getOut();
+}
+
+void Parser::Parser::MUL_DIV_() {
+    functionHeader(__func__);
+
+    goIn();
+
+
+    if (match(CURRENTTOKEN, "*")){
+        nextToken();
+        FINAL();
+        MUL_DIV_();
+
+    }
+
+
+
+
+    if (match(CURRENTTOKEN, "/")){
+        nextToken();
+        FINAL();
+        MUL_DIV_();
+    }
+
+    getOut();
+}
+
+void Parser::Parser::FINAL() {
+    functionHeader(__func__);
+
+    goIn();
+
+    if (isalpha(CURRENTTOKEN[0])) {
+        IDENTIFIER();
+        nextToken();
+    } else if (isdigit(CURRENTTOKEN[0])){
+        NUMBER();
+        nextToken();
+    }
+
+    if (match(CURRENTTOKEN, "(")){
+        nextToken();
+        EXPRESSION();
+        nextToken();
+        if (match(CURRENTTOKEN, ")")){
+            nextToken();
+        } else{
+            std::cerr << "Expected (, but found " << CURRENTTOKEN << " instead." << std::endl;
+            exit(1);
+        }
+
+    }
+    getOut();
+
+}
+
 void Parser::Parser::ASSIGNMENT() {
     functionHeader(__func__);
 
@@ -412,6 +575,20 @@ void Parser::Parser::ASSIGNMENT() {
         exit(1);
     }
     getOut();
+}
+
+void Parser::Parser::TO_ASSIGN() {
+    functionHeader(__func__);
+    if (CURRENTTOKEN[0] == '\'') {
+        LIT_CONST();
+    } else if (isdigit(CURRENTTOKEN[0])) {
+        NUMBER();
+    } else if (isalpha(CURRENTTOKEN[0])) {
+        IDENTIFIER();
+    } else {
+        std::cerr << "Expected an assignment of some sort, but found " << CURRENTTOKEN << " instead." << std::endl;
+        exit(1);
+    }
 }
 
 void Parser::Parser::LOOP() {
@@ -528,19 +705,7 @@ void Parser::Parser::INT_DEC_ASS() {
 
 }
 
-void Parser::Parser::TO_ASSIGN() {
-    functionHeader(__func__);
-    if (CURRENTTOKEN[0] == '\'') {
-        LIT_CONST();
-    } else if (isdigit(CURRENTTOKEN[0])) {
-        NUMBER();
-    } else if (isalpha(CURRENTTOKEN[0])) {
-        IDENTIFIER();
-    } else {
-        std::cerr << "Expected an assignment of some sort, but found " << CURRENTTOKEN << " instead." << std::endl;
-        exit(1);
-    }
-}
+
 
 void Parser::Parser::LIT_CONST() {
     functionHeader(__func__);
@@ -613,7 +778,7 @@ void Parser::Parser::RELATIONAL_OP() {
     functionHeader(__func__);
 
     if (match(CURRENTTOKEN, "<") || match(CURRENTTOKEN, "<=") || match(CURRENTTOKEN, ">") ||
-        match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "=") || match(CURRENTTOKEN, "/=")) {
+        match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "==") || match(CURRENTTOKEN, "/=")) {
         return;
     } else {
         std::cerr << "Expected a RELATIONAL_OP, but found " << CURRENTTOKEN << " instead." << std::endl;

@@ -24,7 +24,11 @@ namespace Parser {
 
         static bool match(const std::string &lexeme, const std::string &toMatch);
 
+        bool peek(const std::string &toMatch);
+
         void functionHeader(const std::string &func_name) const;
+
+        bool peekExpression();
 
         bool parse();
 
@@ -49,6 +53,14 @@ namespace Parser {
         void STATEMENT();
 
         void PROG_S();
+
+
+        void EXPRESSION();
+
+        void MUL_DIV();
+        void ADD_SUB();
+        void MUL_DIV_();
+        void FINAL();
 
         void ALPHABET();
 
