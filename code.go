@@ -31,7 +31,7 @@ func integer: numPrint (integer: num, integer: length) {
 		Multiline
 		Comment*/
 	}
-	print ("temp is");
+	print("temp is");
 	println(temp);
 	ret i;
 }

@@ -15,9 +15,9 @@ Parser::Parser::Parser(const std::vector<Lexer::Token> &tok) {
 }
 
 void Parser::Parser::functionHeader(const std::string &func_name) const {
-    std::cout << "|-";
-    for (int i = 0; i < this->tabs; i++)
-        std::cout << "----";
+    //std::cout << "|-";
+    //for (int i = 0; i < this->tabs; i++)
+    //    std::cout << "----";
     std::cout << func_name << std::endl;
 
 }
@@ -50,39 +50,38 @@ void Parser::Parser::nextToken() {
         std::cout << "Finished parsing.";
         exit(0);
     }
-    //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
+    std::cout << "Current Token: " << CURRENTTOKEN << "\n";
 }
-bool Parser::Parser::peekExpression(){
+
+bool Parser::Parser::peekExpression() {
     nextToken();
-    if ((CURRENTTOKEN[0] == '\''))  {
-        cursor --;
+    if (CURRENTTOKEN[0] == '\'') {
+        cursor--;
         return false;
     }
     if (isalpha(CURRENTTOKEN[0]) || (isdigit(CURRENTTOKEN[0])))
         if (isalpha(CURRENTTOKEN[0]))
             IDENTIFIER();
-        else if (isdigit(CURRENTTOKEN[0])){
+        else if (isdigit(CURRENTTOKEN[0])) {
             NUMBER();
-        }
-        else {
-            std::cerr << "Identifier name for must start with an alpha character"<< std::endl << __func__ ;
+        } else {
+            std::cerr << "Identifier name for must start with an alpha character" << std::endl << __func__;
 
             exit(-1);
-         }
+        }
     else {
-        std::cerr << "Statment error neither Expression or assignment " << std::endl << __func__ ;
+        std::cerr << "Statment error neither Expression or assignment " << std::endl << __func__;
     }
     nextToken();
     if (match(CURRENTTOKEN, "+") || match(CURRENTTOKEN, "-") || match(CURRENTTOKEN, "*") || match(CURRENTTOKEN, "/")) {
-        cursor --;
+        cursor--;
         //std::swap(tokens[cursor], tokens[cursor + 1]);
-        cursor --;
+        cursor--;
 
         return true;
-    }
-    else {
-        cursor --;
-        cursor --;
+    } else {
+        cursor--;
+        cursor--;
         return false;
     }
 
@@ -91,14 +90,13 @@ bool Parser::Parser::peekExpression(){
 bool Parser::Parser::peek(const std::string &toMatch) {
     nextToken();
     if (match(CURRENTTOKEN, toMatch)) {
-        cursor --;
+        cursor--;
 
         return true;
-    }
-    else {
+    } else {
 
     }
-    cursor --;
+    cursor--;
     return false;
 }
 
@@ -308,18 +306,16 @@ void Parser::Parser::STATEMENT() {
             nextToken();
             STATEMENT();
         } else if (match(CURRENTTOKEN, ":=")) {
-            if (peekExpression()){
+            if (peekExpression()) {
                 EXPRESSION();
                 getOut();
-                if (match(CURRENTTOKEN, ";")){
+                if (match(CURRENTTOKEN, ";")) {
 
-                }
-                else {
+                } else {
                     std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
                     exit(1);
                 }
-            }
-            else {
+            } else {
                 ASSIGNMENT();
                 getOut();
             }
@@ -485,14 +481,14 @@ void Parser::Parser::ADD_SUB() {
 
     goIn();
 
-    if (match(CURRENTTOKEN, "+")){
+    if (match(CURRENTTOKEN, "+")) {
         nextToken();
         MUL_DIV();
         ADD_SUB();
     }
 
 
-    if (match(CURRENTTOKEN, "-")){
+    if (match(CURRENTTOKEN, "-")) {
         nextToken();
         MUL_DIV();
         ADD_SUB();
@@ -508,7 +504,7 @@ void Parser::Parser::MUL_DIV_() {
     goIn();
 
 
-    if (match(CURRENTTOKEN, "*")){
+    if (match(CURRENTTOKEN, "*")) {
         nextToken();
         FINAL();
         MUL_DIV_();
@@ -516,9 +512,7 @@ void Parser::Parser::MUL_DIV_() {
     }
 
 
-
-
-    if (match(CURRENTTOKEN, "/")){
+    if (match(CURRENTTOKEN, "/")) {
         nextToken();
         FINAL();
         MUL_DIV_();
@@ -535,18 +529,18 @@ void Parser::Parser::FINAL() {
     if (isalpha(CURRENTTOKEN[0])) {
         IDENTIFIER();
         nextToken();
-    } else if (isdigit(CURRENTTOKEN[0])){
+    } else if (isdigit(CURRENTTOKEN[0])) {
         NUMBER();
         nextToken();
     }
 
-    if (match(CURRENTTOKEN, "(")){
+    if (match(CURRENTTOKEN, "(")) {
         nextToken();
         EXPRESSION();
         nextToken();
-        if (match(CURRENTTOKEN, ")")){
+        if (match(CURRENTTOKEN, ")")) {
             nextToken();
-        } else{
+        } else {
             std::cerr << "Expected (, but found " << CURRENTTOKEN << " instead." << std::endl;
             exit(1);
         }
@@ -706,7 +700,6 @@ void Parser::Parser::INT_DEC_ASS() {
 }
 
 
-
 void Parser::Parser::LIT_CONST() {
     functionHeader(__func__);
 
@@ -804,17 +797,19 @@ void Parser::Parser::IF() {
     if (match(CURRENTTOKEN, "if")) {
         nextToken();
         COMPARISON();
-        nextToken();
+        //nextToken();
         if (match(CURRENTTOKEN, ":")) {
             nextToken();
             if (match(CURRENTTOKEN, "{")) {
                 nextToken();
                 STATEMENT();
+                //nextToken();
                 if (match(CURRENTTOKEN, "}")) {
                     nextToken();
                     ELIF();
                     nextToken();
                     ELSE();
+                    //nextToken();
                 } else {
                     std::cerr << "Expected a }, but found " << CURRENTTOKEN << " instead." << std::endl;
                     exit(1);
@@ -840,13 +835,13 @@ void Parser::Parser::ELIF() {
     if (match(CURRENTTOKEN, "elif")) {
         nextToken();
         COMPARISON();
-        nextToken();
+        //nextToken();
         if (match(CURRENTTOKEN, ":")) {
             nextToken();
             if (match(CURRENTTOKEN, "{")) {
                 nextToken();
                 STATEMENT();
-                nextToken();
+                //nextToken(); //hmmm, im not sure about this
                 if (match(CURRENTTOKEN, "}")) {
                     nextToken();
                     ELIF();

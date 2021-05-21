@@ -58,8 +58,11 @@ namespace Parser {
         void EXPRESSION();
 
         void MUL_DIV();
+
         void ADD_SUB();
+
         void MUL_DIV_();
+
         void FINAL();
 
         void ALPHABET();
