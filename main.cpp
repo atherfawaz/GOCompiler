@@ -59,6 +59,7 @@ void exportTokens(const std::vector<Lexer::Token> &tokens) {
 int main() {
 
     std::string sourceCode = getSourceCode();
+
     Lexer::Lexer Lexer(sourceCode);
 
     //std::cout << "GENERATING TOKENS.\n";

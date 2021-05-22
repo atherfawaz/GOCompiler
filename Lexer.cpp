@@ -81,6 +81,7 @@ namespace Lexer {
             }
             this->next();
         }
+        toks.push_back(findToken(this->getCurrent()));
         return toks;
     }
 

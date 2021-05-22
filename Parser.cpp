@@ -15,9 +15,9 @@ Parser::Parser::Parser(const std::vector<Lexer::Token> &tok) {
 }
 
 void Parser::Parser::functionHeader(const std::string &func_name) const {
-    std::cout << "|-";
-    for (int i = 0; i < this->tabs; i++)
-        std::cout << "----";
+//    std::cout << "|-";
+//    for (int i = 0; i < this->tabs; i++)
+//        std::cout << "----";
     std::cout << func_name << std::endl;
 }
 
@@ -30,7 +30,7 @@ void Parser::Parser::getOut() {
 }
 
 bool Parser::Parser::parse() {
-    //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
+    std::cout << "Current Token: " << CURRENTTOKEN << "\n";
     if (tokens[cursor].non_empty()) {
         START_PARSE();
         return true;
@@ -45,7 +45,7 @@ void Parser::Parser::nextToken() {
         std::cout << "Finished parsing.";
         exit(0);
     }
-    //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
+    std::cout << "Current Token: " << CURRENTTOKEN << "\n";
 }
 
 bool Parser::Parser::peekExpression() {
@@ -102,14 +102,36 @@ void Parser::Parser::PROGRAM_START() {
         getIn();
         FUNC_HEADER();
         getOut();
+        nextToken();
         PROG_S();
     } else {
         getIn();
         STATEMENT();
         getOut();
+        nextToken();
         PROG_S();
     }
 }
+
+void Parser::Parser::PROG_S() {
+    functionHeader(__func__);
+
+    if (match(CURRENTTOKEN, "func")) {
+        getIn();
+        FUNC_HEADER();
+        getOut();
+        nextToken();
+        PROG_S();
+    } else {
+        getIn();
+        STATEMENT();
+        getOut();
+        nextToken();
+        PROG_S();
+    }
+
+}
+
 
 void Parser::Parser::FUNC_HEADER() {
     functionHeader(__func__);
@@ -132,7 +154,7 @@ void Parser::Parser::FUNC_HEADER() {
                     if (match(CURRENTTOKEN, "{")) {
                         nextToken();
                         STATEMENT();
-                        nextToken();
+                        //nextToken();
                         if (match(CURRENTTOKEN, "}")) {
                             //nextToken();
                             //FUNC_HEADER();
@@ -163,24 +185,6 @@ void Parser::Parser::FUNC_HEADER() {
     getOut();
 }
 
-void Parser::Parser::PROG_S() {
-    functionHeader(__func__);
-
-    if (match(CURRENTTOKEN, "func")) {
-        getIn();
-        FUNC_HEADER();
-        getOut();
-        nextToken();
-        PROG_S();
-    } else {
-        getIn();
-        STATEMENT();
-        getOut();
-        nextToken();
-        PROG_S();
-    }
-
-}
 
 void Parser::Parser::RETURN_TYPE() {
     functionHeader(__func__);
@@ -246,43 +250,52 @@ void Parser::Parser::PARAMETERS() {
 
 void Parser::Parser::STATEMENT() {
     functionHeader(__func__);
-
+    bool to_get_out = false;
     getIn();
+
     if (match(CURRENTTOKEN, "integer")) {
+        to_get_out = true;
         INT_DECLARATION();
         getOut();
         nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "char")) {
+        to_get_out = true;
         CHAR_DECLARATION();
         getOut();
         nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "while")) {
+        to_get_out = true;
         LOOP();
         getOut();
         nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "if")) {
+        to_get_out = true;
         IF();
         getOut();
         //nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "print") || match(CURRENTTOKEN, "println")) {
+        to_get_out = true;
         PRINTS();
         getOut();
         nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "in")) {
+        to_get_out = true;
         INPUT();
         getOut();
         nextToken();
         STATEMENT();
     } else if (match(CURRENTTOKEN, "ret")) {
+        to_get_out = true;
         RETURN_VALUE();
         getOut();
         nextToken();
         if (match(CURRENTTOKEN, ";")) {
+            to_get_out = true;
             nextToken();
             STATEMENT();
         } else {
@@ -290,6 +303,7 @@ void Parser::Parser::STATEMENT() {
             exit(1);
         }
     } else if (isalpha(CURRENTTOKEN[0])) {
+        to_get_out = true;
         IDENTIFIER();
         nextToken();
         if (match(CURRENTTOKEN, "<") || match(CURRENTTOKEN, "<=") || match(CURRENTTOKEN, ">") ||
@@ -314,6 +328,7 @@ void Parser::Parser::STATEMENT() {
             nextToken();
             STATEMENT();
         } else if (match(CURRENTTOKEN, "(")) {
+            to_get_out = true;
             FUNCTION_CALL();
             getOut();
             nextToken();
@@ -323,7 +338,8 @@ void Parser::Parser::STATEMENT() {
             exit(1);
         }
     }
-    getOut();
+    if (to_get_out)
+        getOut();
 }
 
 void Parser::Parser::ADDITIONAL_PARAMETERS() {
@@ -797,10 +813,14 @@ void Parser::Parser::IF() {
                 //nextToken();
                 if (match(CURRENTTOKEN, "}")) {
                     nextToken();
-                    ELIF();
-                    //nextToken();
-                    ELSE();
-                    nextToken();
+                    if (match(CURRENTTOKEN, "elif")){
+                        ELIF();
+                        //nextToken();
+                    }
+                    if (match(CURRENTTOKEN, "else")) {
+                        ELSE();
+                        nextToken();
+                    }
                 } else {
                     std::cerr << "Expected a }, but found " << CURRENTTOKEN << " instead." << std::endl;
                     exit(1);

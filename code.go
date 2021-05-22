@@ -15,11 +15,18 @@ func integer: numPrint (integer: num, integer: length) {
 		write( j);
 			j := j + 1;
 	}
+	if a == 3: {
+	    print("a");
+	}
 	if j == 1:{
 		print("one");
+
 	}
 	elif j==2:{
 		print("two");
+	}
+	elif a ==3:{
+	    print("balalalal");
 	}
 	else
 	{
@@ -35,3 +42,4 @@ func integer: numPrint (integer: num, integer: length) {
 	println(temp);
 	ret i;
 }
+
