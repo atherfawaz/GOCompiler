@@ -8,6 +8,9 @@
 #include "Token.h"
 #include <utility>
 #include <vector>
+#include <map>
+#include <fstream>
+#include <tuple>
 
 namespace Parser {
 
@@ -16,16 +19,22 @@ namespace Parser {
         int cursor = 0;
         int tabs = 0;
         std::vector<Lexer::Token> tokens;
+        std::ofstream parsing_tree;
+        std::ofstream symbol_table;
+        std::map<std::string , std::string> parser_symboltable;
+//        std::vector<std::tuple<std::string, std::string  ,int>> parsing_tree;
 
     public:
         Parser();
 
-        explicit Parser(const std::vector<Lexer::Token> &tok);
+
+        explicit Parser(const std::vector<Lexer::Token> &tok, std::string tree, std::string table);
 
         static bool match(const std::string &lexeme, const std::string &toMatch);
 
-        void functionHeader(const std::string &func_name) const;
+        void functionHeader(const std::string &func_name);
 
+        void save();
         bool peekExpression();
 
         bool parse();

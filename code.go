@@ -21,12 +21,14 @@ func integer: numPrint (integer: num, integer: length) {
 	if j == 1:{
 		print("one");
 
+
 	}
 	elif j==2:{
 		print("two");
 	}
 	elif a ==3:{
 	    print("balalalal");
+
 	}
 	else
 	{

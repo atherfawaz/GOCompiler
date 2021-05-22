@@ -5,6 +5,7 @@
 #include "Parser.h"
 #include "Lexer.h"
 
+
 #define CURRENTTOKEN tokens[cursor].getLexeme()
 #define ROW tokens[cursor].getRow()
 #define COLUMN tokens[cursor].getCol()
@@ -15,16 +16,20 @@
 
 Parser::Parser::Parser() = default;
 
-Parser::Parser::Parser(const std::vector<Lexer::Token> &tok) {
+Parser::Parser::Parser(const std::vector<Lexer::Token> &tok, std::string tree, std::string table) {
     this->cursor = 0;
     this->tokens = tok;
+    this->parsing_tree.open(tree);
+    this->symbol_table.open(table);
+
 }
 
-void Parser::Parser::functionHeader(const std::string &func_name) const {
-    std::cout << "|-";
+void Parser::Parser::functionHeader(const std::string &func_name){
+    this->parsing_tree << "|-";
     for (int i = 0; i < this->tabs; i++)
-        std::cout << "----";
-    std::cout << func_name << std::endl;
+        this->parsing_tree << "----";
+    this->parsing_tree << func_name << "     " << CURRENTTOKEN <<std::endl;
+    //this->parsing_tree.push_back(std::tuple<std::string, std::string  ,int>(func_name, CURRENTTOKEN, this->tabs));
 }
 
 void Parser::Parser::getIn() {
@@ -51,9 +56,29 @@ void Parser::Parser::nextToken() {
     cursor++;
     if (cursor >= tokens.size()) {
         std::cout << "\nFinished parsing.\n";
+        save();
         exit(0);
     }
     //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
+}
+
+void Parser::Parser::save() {
+
+
+    std::map<std::string, std::string>::iterator it;
+
+    for (it = this->parser_symboltable.begin(); it != this->parser_symboltable.end(); it++)
+    {
+        this->symbol_table << it->second    // string (key)
+                  << ':'
+                  << it->first   // string's value
+                  << std::endl;
+    }
+
+    this->symbol_table.close();
+    this->parsing_tree.close();
+
+
 }
 
 bool Parser::Parser::peekExpression() {
@@ -110,7 +135,7 @@ void Parser::Parser::PROGRAM_START() {
     if (match(CURRENTTOKEN, "func")) {
         getIn();
         FUNC_HEADER();
-        getOut();
+        this->tabs = 0;
         nextToken();
         PROG_S();
     } else {
@@ -128,7 +153,7 @@ void Parser::Parser::PROG_S() {
     if (match(CURRENTTOKEN, "func")) {
         getIn();
         FUNC_HEADER();
-        getOut();
+        this->tabs = 0;
         nextToken();
         PROG_S();
     } else {
@@ -284,7 +309,9 @@ void Parser::Parser::STATEMENT() {
         STATEMENT();
     } else if (match(CURRENTTOKEN, "while")) {
         to_get_out = true;
+        int prev_tabs = this->tabs;
         LOOP();
+        this->tabs = prev_tabs;
         getOut();
         nextToken();
         STATEMENT();
@@ -391,6 +418,7 @@ void Parser::Parser::INT_DECLARATION() {
         if (match(CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
+            this->parser_symboltable[CURRENTTOKEN] = "integer";
             nextToken();
             getOut();
             ADD_INT_DEC();
@@ -424,6 +452,7 @@ void Parser::Parser::ADD_INT_DEC() {
     if (match(CURRENTTOKEN, ",")) {
         nextToken();
         IDENTIFIER();
+        this->parser_symboltable[CURRENTTOKEN] = "integer";
         nextToken();
         getOut();
         ADD_INT_DEC();
@@ -440,6 +469,7 @@ void Parser::Parser::CHAR_DECLARATION() {
         if (match(CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
+            this->parser_symboltable[CURRENTTOKEN] = "char";
             nextToken();
             getOut();
             ADD_CHAR_DEC();
@@ -472,6 +502,7 @@ void Parser::Parser::ADD_CHAR_DEC() {
     if (match(CURRENTTOKEN, ",")) {
         nextToken();
         IDENTIFIER();
+        this->parser_symboltable[CURRENTTOKEN] = "char";
         nextToken();
         getOut();
         ADD_CHAR_DEC();
@@ -822,6 +853,7 @@ void Parser::Parser::IF() {
                     nextToken();
                     if (match(CURRENTTOKEN, "elif")) {
                         ELIF();
+                        getOut();
                         //nextToken();
                     }
                     if (match(CURRENTTOKEN, "else")) {
@@ -855,8 +887,10 @@ void Parser::Parser::IF() {
 void Parser::Parser::ELIF() {
     functionHeader(__func__);
 
+    bool get_out = false;
     getIn();
     if (match(CURRENTTOKEN, "elif")) {
+
         nextToken();
         COMPARISON();
         //nextToken();
@@ -867,6 +901,7 @@ void Parser::Parser::ELIF() {
                 STATEMENT();
                 //nextToken(); //hmmm, im not sure about this
                 if (match(CURRENTTOKEN, "}")) {
+                    get_out = true;
                     nextToken();
                     ELIF();
                 } else {
@@ -885,7 +920,8 @@ void Parser::Parser::ELIF() {
             exit(1);
         }
     }
-    getOut();
+    if (get_out)
+        getOut();
 }
 
 void Parser::Parser::ELSE() {

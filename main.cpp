@@ -18,7 +18,7 @@ std::string getSourceCode() {
     std::cin >> path;
 
     if (path == "0"){
-        path = global_path;
+        path = global_path + "code.go";
     }
 
     dir_path = path.substr(0, path.find_last_of('\\'));
@@ -77,7 +77,7 @@ int main() {
     }
 
     //std::cout << "PARSING PROGRAM.\n";
-    Parser::Parser Parser(tokens);
+    Parser::Parser Parser(tokens, global_path + "parsetree.txt", global_path + "parser_symboltable.txt");
     auto parseResult = Parser.parse();
     //std::cout << "Parsing result: " << parseResult << std::endl;
     //std::cout << "PARSED PROGRAM.\n";
