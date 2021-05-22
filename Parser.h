@@ -24,8 +24,6 @@ namespace Parser {
 
         static bool match(const std::string &lexeme, const std::string &toMatch);
 
-        bool peek(const std::string &toMatch);
-
         void functionHeader(const std::string &func_name) const;
 
         bool peekExpression();
@@ -34,7 +32,7 @@ namespace Parser {
 
         void nextToken();
 
-        void goIn();
+        void getIn();
 
         void getOut();
 
