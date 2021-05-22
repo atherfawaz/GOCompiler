@@ -123,6 +123,8 @@ namespace Parser {
 
         void MORE_ARGS();
 
+        void RETURN_VALUE();
+
     };
 
 }

@@ -296,6 +296,16 @@ void Parser::Parser::STATEMENT() {
         getOut();
         nextToken();
         STATEMENT();
+    } else if (match(CURRENTTOKEN, "ret")) {
+        RETURN_VALUE();
+        nextToken();
+        if (match(CURRENTTOKEN, ";")) {
+            nextToken();
+            STATEMENT();
+        } else {
+            std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+            exit(1);
+        }
     } else if (isalpha(CURRENTTOKEN[0])) {
         IDENTIFIER();
         nextToken();
@@ -309,8 +319,7 @@ void Parser::Parser::STATEMENT() {
             if (peekExpression()) {
                 EXPRESSION();
                 getOut();
-                if (match(CURRENTTOKEN, ";")) {
-
+                if (match(CURRENTTOKEN, ";")) { ;
                 } else {
                     std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
                     exit(1);
@@ -327,8 +336,6 @@ void Parser::Parser::STATEMENT() {
             nextToken();
             STATEMENT();
         } else {
-            // the error was coming because i of In operator in code.go was capital hence the code would go into
-            // identifier checker which would fail due to << signs
             std::cerr << "Terrible terrible mistakes" << std::endl;
             exit(1);
         }
@@ -807,9 +814,9 @@ void Parser::Parser::IF() {
                 if (match(CURRENTTOKEN, "}")) {
                     nextToken();
                     ELIF();
-                    nextToken();
-                    ELSE();
                     //nextToken();
+                    ELSE();
+                    nextToken();
                 } else {
                     std::cerr << "Expected a }, but found " << CURRENTTOKEN << " instead." << std::endl;
                     exit(1);
@@ -934,6 +941,18 @@ void Parser::Parser::MORE_ARGS() {
     if (match(CURRENTTOKEN, ",")) {
         nextToken();
         ARGUMENTS();
+    }
+}
+
+void Parser::Parser::RETURN_VALUE() {
+    functionHeader(__func__);
+
+    if (match(CURRENTTOKEN, "ret")) {
+        nextToken();
+        IDENTIFIER();
+    } else {
+        std::cerr << "Expected ret, but found " << CURRENTTOKEN << " instead." << std::endl;
+        exit(1);
     }
 }
 
