@@ -53,7 +53,11 @@ namespace Lexer {
 
         TOKEN getToken();
 
-        bool non_empty() const;
+        [[nodiscard]] int getRow() const;
+
+        [[nodiscard]] int getCol() const;
+
+        [[nodiscard]] bool non_empty() const;
 
         friend std::ostream &operator<<(std::ostream &out, const Lexer::Token &tok);
 

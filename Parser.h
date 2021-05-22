@@ -52,7 +52,6 @@ namespace Parser {
 
         void PROG_S();
 
-
         void EXPRESSION();
 
         void MUL_DIV();
@@ -90,10 +89,6 @@ namespace Parser {
         void PRINTS();
 
         void INPUT();
-
-        void CHAR_DEC_ASS();
-
-        void INT_DEC_ASS();
 
         void TO_ASSIGN();
 

@@ -6,6 +6,12 @@
 #include "Lexer.h"
 
 #define CURRENTTOKEN tokens[cursor].getLexeme()
+#define ROW tokens[cursor].getRow()
+#define COLUMN tokens[cursor].getCol()
+#define ARITHMETIC_OPERATOR  match(CURRENTTOKEN, "+") || match(CURRENTTOKEN, "-") || match(CURRENTTOKEN, "*") || match(CURRENTTOKEN, "/")
+#define ICV match(CURRENTTOKEN, "integer") || match(CURRENTTOKEN, "char") || match(CURRENTTOKEN, "void")
+#define RELATIONALOPERATOR match(CURRENTTOKEN, "<") || match(CURRENTTOKEN, "<=") || match(CURRENTTOKEN, ">") || match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "==") || match(CURRENTTOKEN, "/=")
+#define TOKEN_METADATA "[" << ROW << ":" << COLUMN << "] "
 
 Parser::Parser::Parser() = default;
 
@@ -15,9 +21,9 @@ Parser::Parser::Parser(const std::vector<Lexer::Token> &tok) {
 }
 
 void Parser::Parser::functionHeader(const std::string &func_name) const {
-//    std::cout << "|-";
-//    for (int i = 0; i < this->tabs; i++)
-//        std::cout << "----";
+    std::cout << "|-";
+    for (int i = 0; i < this->tabs; i++)
+        std::cout << "----";
     std::cout << func_name << std::endl;
 }
 
@@ -30,8 +36,10 @@ void Parser::Parser::getOut() {
 }
 
 bool Parser::Parser::parse() {
-    std::cout << "Current Token: " << CURRENTTOKEN << "\n";
+    //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
+    std::cout << std::endl;
     if (tokens[cursor].non_empty()) {
+        std::cout << "Started parsing.\n\n";
         START_PARSE();
         return true;
     }
@@ -42,10 +50,10 @@ bool Parser::Parser::parse() {
 void Parser::Parser::nextToken() {
     cursor++;
     if (cursor >= tokens.size()) {
-        std::cout << "Finished parsing.";
+        std::cout << "\nFinished parsing.\n";
         exit(0);
     }
-    std::cout << "Current Token: " << CURRENTTOKEN << "\n";
+    //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
 }
 
 bool Parser::Parser::peekExpression() {
@@ -60,19 +68,20 @@ bool Parser::Parser::peekExpression() {
         else if (isdigit(CURRENTTOKEN[0])) {
             NUMBER();
         } else {
-            std::cerr << "Identifier name for must start with an alpha character" << std::endl << __func__;
+            std::cerr << TOKEN_METADATA << "Identifier name for must start with an alpha character"
+                      << std::endl << __func__;
 
             exit(-1);
         }
     else {
-        std::cerr << "Statement error neither Expression or assignment " << std::endl << __func__;
+        std::cerr << TOKEN_METADATA << "Statement error neither Expression or assignment "
+                  << std::endl << __func__;
     }
     nextToken();
-    if (match(CURRENTTOKEN, "+") || match(CURRENTTOKEN, "-") || match(CURRENTTOKEN, "*") || match(CURRENTTOKEN, "/")) {
+    if (ARITHMETIC_OPERATOR) {
         cursor--;
         //std::swap(tokens[cursor], tokens[cursor + 1]);
         cursor--;
-
         return true;
     } else {
         cursor--;
@@ -161,23 +170,28 @@ void Parser::Parser::FUNC_HEADER() {
                             //nextToken();
                             //STATEMENT();
                         } else {
-                            std::cerr << "Expected }, but found " << CURRENTTOKEN << " instead." << std::endl;
+                            std::cerr << TOKEN_METADATA << "Expected }, but found " << CURRENTTOKEN
+                                      << " instead." << std::endl;
                             exit(1);
                         }
                     } else {
-                        std::cerr << "Expected {, but found " << CURRENTTOKEN << " instead." << std::endl;
+                        std::cerr << TOKEN_METADATA << "Expected {, but found " << CURRENTTOKEN
+                                  << " instead." << std::endl;
                         exit(1);
                     }
                 } else {
-                    std::cerr << "Expected ), but found " << CURRENTTOKEN << " instead." << std::endl;
+                    std::cerr << TOKEN_METADATA << "Expected ), but found " << CURRENTTOKEN
+                              << " instead." << std::endl;
                     exit(1);
                 }
             } else {
-                std::cerr << "Expected (, but found " << CURRENTTOKEN << " instead." << std::endl;
+                std::cerr << TOKEN_METADATA << "Expected (, but found " << CURRENTTOKEN
+                          << " instead." << std::endl;
                 exit(1);
             }
         } else {
-            std::cerr << "Expected :, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected :, but found " << CURRENTTOKEN << " instead."
+                      << std::endl;
             exit(1);
         }
         //IDENTIFIER();
@@ -189,9 +203,10 @@ void Parser::Parser::FUNC_HEADER() {
 void Parser::Parser::RETURN_TYPE() {
     functionHeader(__func__);
 
-    if (match(CURRENTTOKEN, "integer") || match(CURRENTTOKEN, "char") || match(CURRENTTOKEN, "void")) return;
+    if (ICV) return;
     else {
-        std::cerr << "Expected INTEGER, CHAR, or VOID but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected INTEGER, CHAR, or VOID but found " << CURRENTTOKEN
+                  << " instead." << std::endl;
         exit(1);
     }
 
@@ -213,7 +228,8 @@ void Parser::Parser::ALPHABET() {
 
     if (isalpha(CURRENTTOKEN[0])) return;
     else {
-        std::cerr << "Expected IDENTIFIER, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected IDENTIFIER, but found " << CURRENTTOKEN
+                  << " instead." << std::endl;
         exit(1);
     }
 
@@ -225,7 +241,8 @@ void Parser::Parser::ALPHANUMERIC() {
     std::string str = CURRENTTOKEN;
     for (int i = 1; str[i] != '\0'; i++) {
         if (!isalnum(str[i])) {
-            std::cerr << "Expected IDENTIFIER, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected IDENTIFIER, but found " << CURRENTTOKEN
+                      << " instead." << std::endl;
             exit(1);
         }
     }
@@ -299,15 +316,15 @@ void Parser::Parser::STATEMENT() {
             nextToken();
             STATEMENT();
         } else {
-            std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected ;, but found " << CURRENTTOKEN << " instead."
+                      << std::endl;
             exit(1);
         }
     } else if (isalpha(CURRENTTOKEN[0])) {
         to_get_out = true;
         IDENTIFIER();
         nextToken();
-        if (match(CURRENTTOKEN, "<") || match(CURRENTTOKEN, "<=") || match(CURRENTTOKEN, ">") ||
-            match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "==") || match(CURRENTTOKEN, "/=")) {
+        if (RELATIONALOPERATOR) {
             COMPARISON();
             getOut();
             nextToken();
@@ -318,7 +335,8 @@ void Parser::Parser::STATEMENT() {
                 getOut();
                 if (match(CURRENTTOKEN, ";")) { ;
                 } else {
-                    std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+                    std::cerr << TOKEN_METADATA << "Expected ;, but found " << CURRENTTOKEN
+                              << " instead." << std::endl;
                     exit(1);
                 }
             } else {
@@ -334,7 +352,7 @@ void Parser::Parser::STATEMENT() {
             nextToken();
             STATEMENT();
         } else {
-            std::cerr << "Terrible terrible mistakes" << std::endl;
+            std::cerr << TOKEN_METADATA << "Terrible terrible mistakes" << std::endl;
             exit(1);
         }
     }
@@ -357,7 +375,8 @@ void Parser::Parser::DATATYPE() {
 
     if (match(CURRENTTOKEN, "integer") || match(CURRENTTOKEN, "char")) { ;
     } else {
-        std::cerr << "Expected INTEGER or CHAR, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected INTEGER or CHAR, but found " << CURRENTTOKEN
+                  << " instead." << std::endl;
         exit(1);
     }
 
@@ -375,23 +394,24 @@ void Parser::Parser::INT_DECLARATION() {
             nextToken();
             getOut();
             ADD_INT_DEC();
-
             //nextToken();
             if (match(CURRENTTOKEN, ";")) {
-
                 //getOut();
                 //nextToken();
                 //STATEMENT();
             } else {
-                std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+                std::cerr << TOKEN_METADATA << "Expected ;, but found " << CURRENTTOKEN
+                          << " instead." << std::endl;
                 exit(1);
             }
         } else {
-            std::cerr << "Expected :, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected :, but found " << CURRENTTOKEN << " instead."
+                      << std::endl;
             exit(1);
         }
     } else {
-        std::cerr << "Expected INTEGER, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected INTEGER, but found " << CURRENTTOKEN
+                  << " instead." << std::endl;
         exit(1);
     }
     getOut();
@@ -428,15 +448,18 @@ void Parser::Parser::CHAR_DECLARATION() {
                 //nextToken();
                 //STATEMENT();
             } else {
-                std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+                std::cerr << TOKEN_METADATA << "Expected ;, but found " << CURRENTTOKEN
+                          << " instead." << std::endl;
                 exit(1);
             }
         } else {
-            std::cerr << "Expected :, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected :, but found " << CURRENTTOKEN << " instead."
+                      << std::endl;
             exit(1);
         }
     } else {
-        std::cerr << "Expected CHAR, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected CHAR, but found " << CURRENTTOKEN << " instead."
+                  << std::endl;
         exit(1);
     }
     getOut();
@@ -452,7 +475,6 @@ void Parser::Parser::ADD_CHAR_DEC() {
         nextToken();
         getOut();
         ADD_CHAR_DEC();
-
     }
     //getOut();
 }
@@ -467,17 +489,14 @@ void Parser::Parser::EXPRESSION() {
         ADD_SUB();
     }
     getOut();
-
 }
 
 void Parser::Parser::MUL_DIV() {
     functionHeader(__func__);
 
     getIn();
-
     FINAL();
     MUL_DIV_();
-
     getOut();
 
 }
@@ -486,21 +505,16 @@ void Parser::Parser::ADD_SUB() {
     functionHeader(__func__);
 
     getIn();
-
     if (match(CURRENTTOKEN, "+")) {
         nextToken();
         MUL_DIV();
         ADD_SUB();
     }
-
-
     if (match(CURRENTTOKEN, "-")) {
         nextToken();
         MUL_DIV();
         ADD_SUB();
     }
-
-
     getOut();
 }
 
@@ -508,22 +522,17 @@ void Parser::Parser::MUL_DIV_() {
     functionHeader(__func__);
 
     getIn();
-
-
     if (match(CURRENTTOKEN, "*")) {
         nextToken();
         FINAL();
         MUL_DIV_();
 
     }
-
-
     if (match(CURRENTTOKEN, "/")) {
         nextToken();
         FINAL();
         MUL_DIV_();
     }
-
     getOut();
 }
 
@@ -531,7 +540,6 @@ void Parser::Parser::FINAL() {
     functionHeader(__func__);
 
     getIn();
-
     if (isalpha(CURRENTTOKEN[0])) {
         IDENTIFIER();
         nextToken();
@@ -539,7 +547,6 @@ void Parser::Parser::FINAL() {
         NUMBER();
         nextToken();
     }
-
     if (match(CURRENTTOKEN, "(")) {
         nextToken();
         EXPRESSION();
@@ -547,13 +554,12 @@ void Parser::Parser::FINAL() {
         if (match(CURRENTTOKEN, ")")) {
             nextToken();
         } else {
-            std::cerr << "Expected (, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected (, but found " << CURRENTTOKEN << " instead."
+                      << std::endl;
             exit(1);
         }
-
     }
     getOut();
-
 }
 
 void Parser::Parser::ASSIGNMENT() {
@@ -571,7 +577,8 @@ void Parser::Parser::ASSIGNMENT() {
             //STATEMENT();
         }
     } else {
-        std::cerr << "Expected :=, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected :=, but found " << CURRENTTOKEN << " instead."
+                  << std::endl;
         exit(1);
     }
     getOut();
@@ -586,7 +593,8 @@ void Parser::Parser::TO_ASSIGN() {
     } else if (isalpha(CURRENTTOKEN[0])) {
         IDENTIFIER();
     } else {
-        std::cerr << "Expected an assignment of some sort, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected an assignment of some sort, but found "
+                  << CURRENTTOKEN << " instead." << std::endl;
         exit(1);
     }
 }
@@ -608,15 +616,18 @@ void Parser::Parser::LOOP() {
                     //nextToken();
                     //STATEMENT();
                 } else {
-                    std::cerr << "Expected }, but found " << CURRENTTOKEN << " instead." << std::endl;
+                    std::cerr << TOKEN_METADATA << "Expected }, but found " << CURRENTTOKEN
+                              << " instead." << std::endl;
                     exit(1);
                 }
             } else {
-                std::cerr << "Expected {, but found " << CURRENTTOKEN << " instead." << std::endl;
+                std::cerr << TOKEN_METADATA << "Expected {, but found " << CURRENTTOKEN
+                          << " instead." << std::endl;
                 exit(1);
             }
         } else {
-            std::cerr << "Expected :, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected :, but found " << CURRENTTOKEN << " instead."
+                      << std::endl;
             exit(1);
         }
     } else {
@@ -654,15 +665,18 @@ void Parser::Parser::PRINTS() {
                     //nextToken();
                     //STATEMENT();
                 } else {
-                    std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+                    std::cerr << TOKEN_METADATA << "Expected ;, but found " << CURRENTTOKEN
+                              << " instead." << std::endl;
                     exit(1);
                 }
             } else {
-                std::cerr << "Expected ), but found " << CURRENTTOKEN << " instead." << std::endl;
+                std::cerr << TOKEN_METADATA << "Expected ), but found " << CURRENTTOKEN
+                          << " instead." << std::endl;
                 exit(1);
             }
         } else {
-            std::cerr << "Expected (, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected (, but found " << CURRENTTOKEN << " instead."
+                      << std::endl;
             exit(1);
         }
     }
@@ -684,24 +698,16 @@ void Parser::Parser::INPUT() {
                 //nextToken();
                 //STATEMENT();
             } else {
-                std::cerr << "Expected ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+                std::cerr << TOKEN_METADATA << "Expected ;, but found " << CURRENTTOKEN
+                          << " instead." << std::endl;
                 exit(1);
             }
         } else {
-            std::cerr << "Expected >>, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected >>, but found " << CURRENTTOKEN << " instead."
+                      << std::endl;
             exit(1);
         }
     }
-}
-
-void Parser::Parser::CHAR_DEC_ASS() {
-    functionHeader(__func__);
-
-}
-
-void Parser::Parser::INT_DEC_ASS() {
-    functionHeader(__func__);
-
 }
 
 
@@ -709,12 +715,13 @@ void Parser::Parser::LIT_CONST() {
     functionHeader(__func__);
 
     if (CURRENTTOKEN.size() != 3) {
-        std::cerr << "Illegal literal constant.";
+        std::cerr << TOKEN_METADATA << "Illegal literal constant.";
         exit(1);
     }
     if (CURRENTTOKEN[0] == '\'' && CURRENTTOKEN[2] == '\'') { ;
     } else {
-        std::cerr << "Expected ', but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected ', but found " << CURRENTTOKEN << " instead."
+                  << std::endl;
         exit(1);
     }
 }
@@ -724,7 +731,7 @@ void Parser::Parser::NUMBER() {
 
     for (int i = 0; CURRENTTOKEN[i] != '\0'; i++) {
         if (!isdigit(CURRENTTOKEN[i])) {
-            std::cerr << "Illegal number.";
+            std::cerr << TOKEN_METADATA << "Illegal number.";
             exit(1);
         }
     }
@@ -742,7 +749,7 @@ void Parser::Parser::TO_PRINT() {
     } else if (isalpha(CURRENTTOKEN[0])) {
         IDENTIFIER();
     } else {
-        std::cerr << "Illegal print statement.";
+        std::cerr << TOKEN_METADATA << "Illegal print statement.";
         exit(1);
     }
     getOut();
@@ -753,7 +760,7 @@ void Parser::Parser::STRING() {
 
     if (CURRENTTOKEN[0] == '\"' && CURRENTTOKEN.back() == '\"') { ;
     } else {
-        std::cerr << "Illegal print string.";
+        std::cerr << TOKEN_METADATA << "Illegal print string.";
         exit(1);
     }
 }
@@ -766,7 +773,8 @@ void Parser::Parser::CONDITIONAL() {
     else if (isalpha(CURRENTTOKEN[0]))
         IDENTIFIER();
     else {
-        std::cerr << "Expected NUMBER or IDENTIFIER, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected NUMBER or IDENTIFIER, but found " << CURRENTTOKEN
+                  << " instead." << std::endl;
         exit(1);
     }
     getOut();
@@ -775,11 +783,11 @@ void Parser::Parser::CONDITIONAL() {
 void Parser::Parser::RELATIONAL_OP() {
     functionHeader(__func__);
 
-    if (match(CURRENTTOKEN, "<") || match(CURRENTTOKEN, "<=") || match(CURRENTTOKEN, ">") ||
-        match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "==") || match(CURRENTTOKEN, "/=")) {
+    if (RELATIONALOPERATOR) {
         return;
     } else {
-        std::cerr << "Expected a RELATIONAL_OP, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected a RELATIONAL_OP, but found " << CURRENTTOKEN
+                  << " instead." << std::endl;
         exit(1);
     }
 }
@@ -787,8 +795,7 @@ void Parser::Parser::RELATIONAL_OP() {
 void Parser::Parser::ADDITIONAL_COMP() {
     functionHeader(__func__);
 
-    if (match(CURRENTTOKEN, "<") || match(CURRENTTOKEN, "<=") || match(CURRENTTOKEN, ">") ||
-        match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "=") || match(CURRENTTOKEN, "/=")) {
+    if (RELATIONALOPERATOR) {
         nextToken();
         CONDITIONAL();
         nextToken();
@@ -813,7 +820,7 @@ void Parser::Parser::IF() {
                 //nextToken();
                 if (match(CURRENTTOKEN, "}")) {
                     nextToken();
-                    if (match(CURRENTTOKEN, "elif")){
+                    if (match(CURRENTTOKEN, "elif")) {
                         ELIF();
                         //nextToken();
                     }
@@ -822,19 +829,23 @@ void Parser::Parser::IF() {
                         nextToken();
                     }
                 } else {
-                    std::cerr << "Expected a }, but found " << CURRENTTOKEN << " instead." << std::endl;
+                    std::cerr << TOKEN_METADATA << "Expected a }, but found " << CURRENTTOKEN
+                              << " instead." << std::endl;
                     exit(1);
                 }
             } else {
-                std::cerr << "Expected a {, but found " << CURRENTTOKEN << " instead." << std::endl;
+                std::cerr << TOKEN_METADATA << "Expected a {, but found " << CURRENTTOKEN
+                          << " instead." << std::endl;
                 exit(1);
             }
         } else {
-            std::cerr << "Expected an :, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected an :, but found " << CURRENTTOKEN
+                      << " instead." << std::endl;
             exit(1);
         }
     } else {
-        std::cerr << "Expected a if, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected a if, but found " << CURRENTTOKEN << " instead."
+                  << std::endl;
         exit(1);
     }
     getOut();
@@ -859,15 +870,18 @@ void Parser::Parser::ELIF() {
                     nextToken();
                     ELIF();
                 } else {
-                    std::cerr << "Expected a }, but found " << CURRENTTOKEN << " instead." << std::endl;
+                    std::cerr << TOKEN_METADATA << "Expected a }, but found " << CURRENTTOKEN
+                              << " instead." << std::endl;
                     exit(1);
                 }
             } else {
-                std::cerr << "Expected a {, but found " << CURRENTTOKEN << " instead." << std::endl;
+                std::cerr << TOKEN_METADATA << "Expected a {, but found " << CURRENTTOKEN
+                          << " instead." << std::endl;
                 exit(1);
             }
         } else {
-            std::cerr << "Expected a :, but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected a :, but found " << CURRENTTOKEN
+                      << " instead." << std::endl;
             exit(1);
         }
     }
@@ -886,13 +900,15 @@ void Parser::Parser::ELSE() {
             //nextToken();
             if (match(CURRENTTOKEN, "}")) { ;
             } else {
-                std::cerr << "Expected a }, but found " << CURRENTTOKEN << " instead." << std::endl;
+                std::cerr << TOKEN_METADATA << "Expected a }, but found " << CURRENTTOKEN
+                          << " instead." << std::endl;
                 exit(1);
             }
         }
 
     } else {
-        std::cerr << "Expected a {, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected a {, but found " << CURRENTTOKEN << " instead."
+                  << std::endl;
         exit(1);
     }
     getOut();
@@ -910,15 +926,18 @@ void Parser::Parser::FUNCTION_CALL() {
             nextToken();
             if (match(CURRENTTOKEN, ";")) { ;
             } else {
-                std::cerr << "Expected a ;, but found " << CURRENTTOKEN << " instead." << std::endl;
+                std::cerr << TOKEN_METADATA << "Expected a ;, but found " << CURRENTTOKEN
+                          << " instead." << std::endl;
                 exit(1);
             }
         } else {
-            std::cerr << "Expected a ), but found " << CURRENTTOKEN << " instead." << std::endl;
+            std::cerr << TOKEN_METADATA << "Expected a ), but found " << CURRENTTOKEN
+                      << " instead." << std::endl;
             exit(1);
         }
     } else {
-        std::cerr << "Expected a (, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected a (, but found " << CURRENTTOKEN << " instead."
+                  << std::endl;
         exit(1);
     }
     getOut();
@@ -964,7 +983,8 @@ void Parser::Parser::RETURN_VALUE() {
         nextToken();
         IDENTIFIER();
     } else {
-        std::cerr << "Expected ret, but found " << CURRENTTOKEN << " instead." << std::endl;
+        std::cerr << TOKEN_METADATA << "Expected ret, but found " << CURRENTTOKEN << " instead."
+                  << std::endl;
         exit(1);
     }
     getOut();

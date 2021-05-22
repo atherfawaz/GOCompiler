@@ -51,3 +51,11 @@ std::ostream &Lexer::operator<<(std::ostream &out, const Lexer::Token &tok) {
 
     return out;
 }
+
+int Lexer::Token::getRow() const {
+    return this->row;
+}
+
+int Lexer::Token::getCol() const {
+    return this->col;
+}
