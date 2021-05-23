@@ -18,7 +18,7 @@ std::string getSourceCode() {
     std::cin >> path;
 
     if (path == "0"){
-        path = global_path + "code.go";
+        path = global_path + "test.go";
     }
 
     dir_path = path.substr(0, path.find_last_of('\\'));
