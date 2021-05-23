@@ -32,7 +32,7 @@ namespace Parser {
 
         static bool match(const std::string &lexeme, const std::string &toMatch);
 
-        void functionHeader(const std::string &func_name);
+        void functionHeader(const std::string &func_name,  std::string cur_tok);
 
         void save();
         bool peekExpression();

@@ -1,254 +1,254 @@
-|-START_PARSE     func
-|-PROGRAM_START     func
-|-----FUNC_HEADER     func
-|---------RETURN_TYPE     integer
-|---------IDENTIFIER     numPrint
-|-------------ALPHABET     numPrint
-|-------------ALPHANUMERIC     numPrint
-|---------PARAMETERS     integer
-|-------------DATATYPE     integer
-|-------------IDENTIFIER     num
-|-----------------ALPHABET     num
-|-----------------ALPHANUMERIC     num
-|---------ADDITIONAL_PARAMETERS     ,
-|---------PARAMETERS     integer
-|-------------DATATYPE     integer
-|-------------IDENTIFIER     length
-|-----------------ALPHABET     length
-|-----------------ALPHANUMERIC     length
-|---------ADDITIONAL_PARAMETERS     )
-|---------STATEMENT     integer
-|-------------INT_DECLARATION     integer
-|-----------------IDENTIFIER     i
-|---------------------ALPHABET     i
-|---------------------ALPHANUMERIC     i
-|-------------ADD_INT_DEC     ,
-|-----------------IDENTIFIER     j
-|---------------------ALPHABET     j
-|---------------------ALPHANUMERIC     j
-|-------------ADD_INT_DEC     ,
-|-----------------IDENTIFIER     first
-|---------------------ALPHABET     first
-|---------------------ALPHANUMERIC     first
-|-------------ADD_INT_DEC     ,
-|-----------------IDENTIFIER     temp
-|---------------------ALPHABET     temp
-|---------------------ALPHANUMERIC     temp
-|-------------ADD_INT_DEC     ;
-|---------STATEMENT     char
-|-------------CHAR_DECLARATION     char
-|-----------------IDENTIFIER     a
-|---------------------ALPHABET     a
-|---------------------ALPHANUMERIC     a
-|-------------ADD_CHAR_DEC     ;
-|---------STATEMENT     a
-|-------------IDENTIFIER     a
-|-----------------ALPHABET     a
-|-----------------ALPHANUMERIC     a
-|-------------ASSIGNMENT     :=
-|-----------------TO_ASSIGN     'x'
-|-----------------LIT_CONST     'x'
-|---------STATEMENT     print
-|-------------PRINTS     print
-|-----------------TO_PRINT     "enter number"
-|---------------------STRING     "enter number"
-|---------STATEMENT     in
-|-------------INPUT     in
-|-----------------IDENTIFIER     i
-|---------------------ALPHABET     i
-|---------------------ALPHANUMERIC     i
-|---------STATEMENT     println
-|-------------PRINTS     println
-|-----------------TO_PRINT     i
-|---------------------IDENTIFIER     i
-|-------------------------ALPHABET     i
-|-------------------------ALPHANUMERIC     i
-|---------STATEMENT     i
-|-------------IDENTIFIER     i
-|-----------------ALPHABET     i
-|-----------------ALPHANUMERIC     i
-|-------------IDENTIFIER     length
-|-----------------ALPHABET     length
-|-----------------ALPHANUMERIC     length
-|-------------ASSIGNMENT     :=
-|-----------------TO_ASSIGN     length
-|-----------------IDENTIFIER     length
-|---------------------ALPHABET     length
-|---------------------ALPHANUMERIC     length
-|---------STATEMENT     while
-|-------------LOOP     while
-|-----------------COMPARISON     i
-|---------------------CONDITIONAL     i
-|-------------------------IDENTIFIER     i
-|-----------------------------ALPHABET     i
-|-----------------------------ALPHANUMERIC     i
-|---------------------RELATIONAL_OP     >
-|---------------------CONDITIONAL     0
-|-------------------------NUMBER     0
-|---------------------ADDITIONAL_COMP     :
-|-----------------STATEMENT     first
-|---------------------IDENTIFIER     first
-|-------------------------ALPHABET     first
-|-------------------------ALPHANUMERIC     first
-|---------------------NUMBER     0
-|---------------------ASSIGNMENT     :=
-|-------------------------TO_ASSIGN     0
-|-------------------------NUMBER     0
-|-----------------STATEMENT     j
-|---------------------IDENTIFIER     j
-|-------------------------ALPHABET     j
-|-------------------------ALPHANUMERIC     j
-|---------------------NUMBER     1
-|---------------------ASSIGNMENT     :=
-|-------------------------TO_ASSIGN     1
-|-------------------------NUMBER     1
-|-----------------STATEMENT     while
-|---------------------LOOP     while
-|-------------------------COMPARISON     j
-|-----------------------------CONDITIONAL     j
-|---------------------------------IDENTIFIER     j
-|-------------------------------------ALPHABET     j
-|-------------------------------------ALPHANUMERIC     j
-|-----------------------------RELATIONAL_OP     <
-|-----------------------------CONDITIONAL     i
-|---------------------------------IDENTIFIER     i
-|-------------------------------------ALPHABET     i
-|-------------------------------------ALPHANUMERIC     i
-|-----------------------------ADDITIONAL_COMP     :
-|-------------------------STATEMENT     write
-|-----------------------------IDENTIFIER     write
-|---------------------------------ALPHABET     write
-|---------------------------------ALPHANUMERIC     write
-|-----------------------------FUNCTION_CALL     (
-|---------------------------------ARGUMENTS     j
-|---------------------------------IDENTIFIER     j
-|-------------------------------------ALPHABET     j
-|-------------------------------------ALPHANUMERIC     j
-|---------------------------------MORE_ARGS     )
-|-------------------------STATEMENT     j
-|-----------------------------IDENTIFIER     j
-|---------------------------------ALPHABET     j
-|---------------------------------ALPHANUMERIC     j
-|-----------------------------IDENTIFIER     j
-|---------------------------------ALPHABET     j
-|---------------------------------ALPHANUMERIC     j
-|-----------------------------EXPRESSION     :=
-|---------------------------------MUL_DIV     j
-|-------------------------------------FINAL     j
-|-----------------------------------------IDENTIFIER     j
-|---------------------------------------------ALPHABET     j
-|---------------------------------------------ALPHANUMERIC     j
-|-------------------------------------MUL_DIV_     +
-|---------------------------------ADD_SUB     +
-|-------------------------------------MUL_DIV     1
-|-----------------------------------------FINAL     1
-|---------------------------------------------NUMBER     1
-|-----------------------------------------MUL_DIV_     ;
-|-------------------------------------ADD_SUB     ;
-|-------------------------STATEMENT     }
-|-----------------STATEMENT     if
-|---------------------IF     if
-|-------------------------COMPARISON     a
-|-----------------------------CONDITIONAL     a
-|---------------------------------IDENTIFIER     a
-|-------------------------------------ALPHABET     a
-|-------------------------------------ALPHANUMERIC     a
-|-----------------------------RELATIONAL_OP     ==
-|-----------------------------CONDITIONAL     3
-|---------------------------------NUMBER     3
-|-----------------------------ADDITIONAL_COMP     :
-|-------------------------STATEMENT     print
-|-----------------------------PRINTS     print
-|---------------------------------TO_PRINT     "a"
-|-------------------------------------STRING     "a"
-|-------------------------STATEMENT     }
-|-----------------STATEMENT     if
-|---------------------IF     if
-|-------------------------COMPARISON     j
-|-----------------------------CONDITIONAL     j
-|---------------------------------IDENTIFIER     j
-|-------------------------------------ALPHABET     j
-|-------------------------------------ALPHANUMERIC     j
-|-----------------------------RELATIONAL_OP     ==
-|-----------------------------CONDITIONAL     1
-|---------------------------------NUMBER     1
-|-----------------------------ADDITIONAL_COMP     :
-|-------------------------STATEMENT     print
-|-----------------------------PRINTS     print
-|---------------------------------TO_PRINT     "one"
-|-------------------------------------STRING     "one"
-|-------------------------STATEMENT     }
-|-------------------------ELIF     elif
-|-----------------------------COMPARISON     j
-|---------------------------------CONDITIONAL     j
-|-------------------------------------IDENTIFIER     j
-|-----------------------------------------ALPHABET     j
-|-----------------------------------------ALPHANUMERIC     j
-|---------------------------------RELATIONAL_OP     ==
-|---------------------------------CONDITIONAL     2
-|-------------------------------------NUMBER     2
-|---------------------------------ADDITIONAL_COMP     :
-|-----------------------------STATEMENT     print
-|---------------------------------PRINTS     print
-|-------------------------------------TO_PRINT     "two"
-|-----------------------------------------STRING     "two"
-|-----------------------------STATEMENT     }
-|-----------------------------ELIF     elif
-|---------------------------------COMPARISON     a
-|-------------------------------------CONDITIONAL     a
-|-----------------------------------------IDENTIFIER     a
-|---------------------------------------------ALPHABET     a
-|---------------------------------------------ALPHANUMERIC     a
-|-------------------------------------RELATIONAL_OP     ==
-|-------------------------------------CONDITIONAL     3
-|-----------------------------------------NUMBER     3
-|-------------------------------------ADDITIONAL_COMP     :
-|---------------------------------STATEMENT     print
-|-------------------------------------PRINTS     print
-|-----------------------------------------TO_PRINT     "balalalal"
-|---------------------------------------------STRING     "balalalal"
-|---------------------------------STATEMENT     }
-|---------------------------------ELIF     else
-|-------------------------ELSE     else
-|-----------------------------STATEMENT     print
-|---------------------------------PRINTS     print
-|-------------------------------------TO_PRINT     "others"
-|-----------------------------------------STRING     "others"
-|-----------------------------STATEMENT     }
-|-----------------STATEMENT     i
-|---------------------IDENTIFIER     i
-|-------------------------ALPHABET     i
-|-------------------------ALPHANUMERIC     i
-|---------------------IDENTIFIER     i
-|-------------------------ALPHABET     i
-|-------------------------ALPHANUMERIC     i
-|---------------------EXPRESSION     :=
-|-------------------------MUL_DIV     i
-|-----------------------------FINAL     i
-|---------------------------------IDENTIFIER     i
-|-------------------------------------ALPHABET     i
-|-------------------------------------ALPHANUMERIC     i
-|-----------------------------MUL_DIV_     -
-|-------------------------ADD_SUB     -
-|-----------------------------MUL_DIV     1
-|---------------------------------FINAL     1
-|-------------------------------------NUMBER     1
-|---------------------------------MUL_DIV_     ;
-|-----------------------------ADD_SUB     ;
-|-----------------STATEMENT     }
-|---------STATEMENT     print
-|-------------PRINTS     print
-|-----------------TO_PRINT     "temp is"
-|---------------------STRING     "temp is"
-|---------STATEMENT     println
-|-------------PRINTS     println
-|-----------------TO_PRINT     temp
-|---------------------IDENTIFIER     temp
-|-------------------------ALPHABET     temp
-|-------------------------ALPHANUMERIC     temp
-|---------STATEMENT     ret
-|-------------RETURN_VALUE     ret
-|-----------------IDENTIFIER     i
-|---------------------ALPHABET     i
-|---------------------ALPHANUMERIC     i
-|---------STATEMENT     }
+START_PARSE     
+PROGRAM_START     
+|---FUNC_HEADER     func
+|   |---RETURN_TYPE     integer
+|   |---IDENTIFIER     numPrint
+|   |   |---ALPHABET     
+|   |   |---ALPHANUMERIC     
+|   |---PARAMETERS     
+|   |   |---DATATYPE     integer
+|   |   |---IDENTIFIER     num
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |---ADDITIONAL_PARAMETERS     ,
+|   |---PARAMETERS     
+|   |   |---DATATYPE     integer
+|   |   |---IDENTIFIER     length
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |---ADDITIONAL_PARAMETERS     )
+|   |---STATEMENT     
+|   |   |---INT_DECLARATION     integer
+|   |   |   |---IDENTIFIER     i
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
+|   |   |---ADD_INT_DEC     ,
+|   |   |   |---IDENTIFIER     j
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
+|   |   |---ADD_INT_DEC     ,
+|   |   |   |---IDENTIFIER     first
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
+|   |   |---ADD_INT_DEC     ,
+|   |   |   |---IDENTIFIER     temp
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
+|   |   |---ADD_INT_DEC     ;
+|   |---STATEMENT     
+|   |   |---CHAR_DECLARATION     char
+|   |   |   |---IDENTIFIER     a
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
+|   |   |---ADD_CHAR_DEC     ;
+|   |---STATEMENT     
+|   |   |---IDENTIFIER     a
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---ASSIGNMENT     :=
+|   |   |   |---TO_ASSIGN     
+|   |   |   |---LIT_CONST     'x'
+|   |---STATEMENT     
+|   |   |---PRINTS     print
+|   |   |   |---TO_PRINT     
+|   |   |   |   |---STRING     "enter number"
+|   |---STATEMENT     
+|   |   |---INPUT     in
+|   |   |   |---IDENTIFIER     i
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
+|   |---STATEMENT     
+|   |   |---PRINTS     println
+|   |   |   |---TO_PRINT     
+|   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |---ALPHANUMERIC     
+|   |---STATEMENT     
+|   |   |---IDENTIFIER     i
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---IDENTIFIER     length
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---ASSIGNMENT     :=
+|   |   |   |---TO_ASSIGN     
+|   |   |   |---IDENTIFIER     length
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
+|   |---STATEMENT     
+|   |   |---LOOP     while
+|   |   |   |---COMPARISON     
+|   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---RELATIONAL_OP     >
+|   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |---NUMBER     0
+|   |   |   |   |---ADDITIONAL_COMP     :
+|   |   |   |---STATEMENT     
+|   |   |   |   |---IDENTIFIER     first
+|   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---NUMBER     0
+|   |   |   |   |---ASSIGNMENT     :=
+|   |   |   |   |   |---TO_ASSIGN     
+|   |   |   |   |   |---NUMBER     0
+|   |   |   |---STATEMENT     
+|   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---NUMBER     1
+|   |   |   |   |---ASSIGNMENT     :=
+|   |   |   |   |   |---TO_ASSIGN     
+|   |   |   |   |   |---NUMBER     1
+|   |   |   |---STATEMENT     
+|   |   |   |   |---LOOP     while
+|   |   |   |   |   |---COMPARISON     
+|   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---RELATIONAL_OP     <
+|   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---ADDITIONAL_COMP     :
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |---IDENTIFIER     write
+|   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---FUNCTION_CALL     (
+|   |   |   |   |   |   |   |---ARGUMENTS     
+|   |   |   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |   |---MORE_ARGS     )
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---EXPRESSION     :=
+|   |   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |   |   |---MUL_DIV_     +
+|   |   |   |   |   |   |   |---ADD_SUB     +
+|   |   |   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |   |   |---NUMBER     1
+|   |   |   |   |   |   |   |   |   |---MUL_DIV_     ;
+|   |   |   |   |   |   |   |   |---ADD_SUB     ;
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |---STATEMENT     
+|   |   |   |   |---IF     if
+|   |   |   |   |   |---COMPARISON     
+|   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |---IDENTIFIER     a
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---RELATIONAL_OP     ==
+|   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |---NUMBER     3
+|   |   |   |   |   |   |---ADDITIONAL_COMP     :
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |---PRINTS     print
+|   |   |   |   |   |   |   |---TO_PRINT     
+|   |   |   |   |   |   |   |   |---STRING     "a"
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |---STATEMENT     
+|   |   |   |   |---IF     if
+|   |   |   |   |   |---COMPARISON     
+|   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---RELATIONAL_OP     ==
+|   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |---NUMBER     1
+|   |   |   |   |   |   |---ADDITIONAL_COMP     :
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |---PRINTS     print
+|   |   |   |   |   |   |   |---TO_PRINT     
+|   |   |   |   |   |   |   |   |---STRING     "one"
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |---ELIF     elif
+|   |   |   |   |   |   |---COMPARISON     
+|   |   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |   |---RELATIONAL_OP     ==
+|   |   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |   |---NUMBER     2
+|   |   |   |   |   |   |   |---ADDITIONAL_COMP     :
+|   |   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |   |---PRINTS     print
+|   |   |   |   |   |   |   |   |---TO_PRINT     
+|   |   |   |   |   |   |   |   |   |---STRING     "two"
+|   |   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |---ELIF     elif
+|   |   |   |   |   |   |   |---COMPARISON     
+|   |   |   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |   |   |---IDENTIFIER     a
+|   |   |   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |   |   |---RELATIONAL_OP     ==
+|   |   |   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |   |   |---NUMBER     3
+|   |   |   |   |   |   |   |   |---ADDITIONAL_COMP     :
+|   |   |   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |   |   |---PRINTS     print
+|   |   |   |   |   |   |   |   |   |---TO_PRINT     
+|   |   |   |   |   |   |   |   |   |   |---STRING     "balalalal"
+|   |   |   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |   |---ELIF     else
+|   |   |   |   |   |---ELSE     else
+|   |   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |   |---PRINTS     print
+|   |   |   |   |   |   |   |   |---TO_PRINT     
+|   |   |   |   |   |   |   |   |   |---STRING     "others"
+|   |   |   |   |   |   |---STATEMENT     
+|   |   |   |---STATEMENT     
+|   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---EXPRESSION     :=
+|   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---MUL_DIV_     -
+|   |   |   |   |   |---ADD_SUB     -
+|   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |---NUMBER     1
+|   |   |   |   |   |   |   |---MUL_DIV_     ;
+|   |   |   |   |   |   |---ADD_SUB     ;
+|   |   |   |---STATEMENT     
+|   |---STATEMENT     
+|   |   |---PRINTS     print
+|   |   |   |---TO_PRINT     
+|   |   |   |   |---STRING     "temp is"
+|   |---STATEMENT     
+|   |   |---PRINTS     println
+|   |   |   |---TO_PRINT     
+|   |   |   |   |---IDENTIFIER     temp
+|   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |---ALPHANUMERIC     
+|   |---STATEMENT     
+|   |   |---RETURN_VALUE     ret
+|   |   |   |---IDENTIFIER     i
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
+|   |---STATEMENT     

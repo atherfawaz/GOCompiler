@@ -24,11 +24,16 @@ Parser::Parser::Parser(const std::vector<Lexer::Token> &tok, std::string tree, s
 
 }
 
-void Parser::Parser::functionHeader(const std::string &func_name){
-    this->parsing_tree << "|-";
+void Parser::Parser::functionHeader(const std::string &func_name, std::string cur_tok){
+
+    //this->parsing_tree << "|-";
     for (int i = 0; i < this->tabs; i++)
-        this->parsing_tree << "----";
-    this->parsing_tree << func_name << "     " << CURRENTTOKEN <<std::endl;
+
+        if (i == this->tabs - 1)
+            this->parsing_tree << "|---";
+        else
+            this->parsing_tree << "|   ";
+    this->parsing_tree << func_name << "     " << cur_tok <<std::endl;
     //this->parsing_tree.push_back(std::tuple<std::string, std::string  ,int>(func_name, CURRENTTOKEN, this->tabs));
 }
 
@@ -122,7 +127,7 @@ bool Parser::Parser::match(const std::string &lexeme, const std::string &toMatch
 }
 
 void Parser::Parser::START_PARSE() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
 
     //getIn();
     PROGRAM_START();
@@ -130,7 +135,7 @@ void Parser::Parser::START_PARSE() {
 }
 
 void Parser::Parser::PROGRAM_START() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
 
     if (match(CURRENTTOKEN, "func")) {
         getIn();
@@ -148,7 +153,7 @@ void Parser::Parser::PROGRAM_START() {
 }
 
 void Parser::Parser::PROG_S() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
 
     if (match(CURRENTTOKEN, "func")) {
         getIn();
@@ -168,7 +173,7 @@ void Parser::Parser::PROG_S() {
 
 
 void Parser::Parser::FUNC_HEADER() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "func")) {
@@ -226,7 +231,7 @@ void Parser::Parser::FUNC_HEADER() {
 
 
 void Parser::Parser::RETURN_TYPE() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     if (ICV) return;
     else {
@@ -238,7 +243,7 @@ void Parser::Parser::RETURN_TYPE() {
 }
 
 void Parser::Parser::IDENTIFIER() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (isalpha(CURRENTTOKEN[0])) {
@@ -249,7 +254,7 @@ void Parser::Parser::IDENTIFIER() {
 }
 
 void Parser::Parser::ALPHABET() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
 
     if (isalpha(CURRENTTOKEN[0])) return;
     else {
@@ -261,7 +266,7 @@ void Parser::Parser::ALPHABET() {
 }
 
 void Parser::Parser::ALPHANUMERIC() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
 
     std::string str = CURRENTTOKEN;
     for (int i = 1; str[i] != '\0'; i++) {
@@ -275,7 +280,7 @@ void Parser::Parser::ALPHANUMERIC() {
 }
 
 void Parser::Parser::PARAMETERS() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
 
     getIn();
     DATATYPE();
@@ -291,7 +296,7 @@ void Parser::Parser::PARAMETERS() {
 }
 
 void Parser::Parser::STATEMENT() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
     bool to_get_out = false;
     getIn();
 
@@ -388,7 +393,7 @@ void Parser::Parser::STATEMENT() {
 }
 
 void Parser::Parser::ADDITIONAL_PARAMETERS() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     if (match(CURRENTTOKEN, ",")) {
         nextToken();
@@ -398,7 +403,7 @@ void Parser::Parser::ADDITIONAL_PARAMETERS() {
 }
 
 void Parser::Parser::DATATYPE() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     if (match(CURRENTTOKEN, "integer") || match(CURRENTTOKEN, "char")) { ;
     } else {
@@ -410,7 +415,7 @@ void Parser::Parser::DATATYPE() {
 }
 
 void Parser::Parser::INT_DECLARATION() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "integer")) {
@@ -446,7 +451,7 @@ void Parser::Parser::INT_DECLARATION() {
 }
 
 void Parser::Parser::ADD_INT_DEC() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, ",")) {
@@ -461,7 +466,7 @@ void Parser::Parser::ADD_INT_DEC() {
 }
 
 void Parser::Parser::CHAR_DECLARATION() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "char")) {
@@ -496,7 +501,7 @@ void Parser::Parser::CHAR_DECLARATION() {
 }
 
 void Parser::Parser::ADD_CHAR_DEC() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, ",")) {
@@ -511,7 +516,7 @@ void Parser::Parser::ADD_CHAR_DEC() {
 }
 
 void Parser::Parser::EXPRESSION() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, ":=")) {
@@ -523,7 +528,7 @@ void Parser::Parser::EXPRESSION() {
 }
 
 void Parser::Parser::MUL_DIV() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
 
     getIn();
     FINAL();
@@ -533,7 +538,7 @@ void Parser::Parser::MUL_DIV() {
 }
 
 void Parser::Parser::ADD_SUB() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "+")) {
@@ -550,7 +555,7 @@ void Parser::Parser::ADD_SUB() {
 }
 
 void Parser::Parser::MUL_DIV_() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "*")) {
@@ -568,7 +573,7 @@ void Parser::Parser::MUL_DIV_() {
 }
 
 void Parser::Parser::FINAL() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
 
     getIn();
     if (isalpha(CURRENTTOKEN[0])) {
@@ -594,7 +599,7 @@ void Parser::Parser::FINAL() {
 }
 
 void Parser::Parser::ASSIGNMENT() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, ":=")) {
@@ -616,7 +621,7 @@ void Parser::Parser::ASSIGNMENT() {
 }
 
 void Parser::Parser::TO_ASSIGN() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
     if (CURRENTTOKEN[0] == '\'') {
         LIT_CONST();
     } else if (isdigit(CURRENTTOKEN[0])) {
@@ -631,7 +636,7 @@ void Parser::Parser::TO_ASSIGN() {
 }
 
 void Parser::Parser::LOOP() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "while")) {
@@ -668,7 +673,7 @@ void Parser::Parser::LOOP() {
 }
 
 void Parser::Parser::COMPARISON() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
     getIn();
     CONDITIONAL();
     nextToken();
@@ -681,7 +686,7 @@ void Parser::Parser::COMPARISON() {
 }
 
 void Parser::Parser::PRINTS() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "println") || match(CURRENTTOKEN, "print")) {
@@ -715,7 +720,7 @@ void Parser::Parser::PRINTS() {
 }
 
 void Parser::Parser::INPUT() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "in")) {
@@ -743,7 +748,7 @@ void Parser::Parser::INPUT() {
 
 
 void Parser::Parser::LIT_CONST() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     if (CURRENTTOKEN.size() != 3) {
         std::cerr << TOKEN_METADATA << "Illegal literal constant.";
@@ -758,7 +763,7 @@ void Parser::Parser::LIT_CONST() {
 }
 
 void Parser::Parser::NUMBER() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     for (int i = 0; CURRENTTOKEN[i] != '\0'; i++) {
         if (!isdigit(CURRENTTOKEN[i])) {
@@ -769,7 +774,7 @@ void Parser::Parser::NUMBER() {
 }
 
 void Parser::Parser::TO_PRINT() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
     getIn();
     if (CURRENTTOKEN[0] == '\'') {
         LIT_CONST();
@@ -787,7 +792,7 @@ void Parser::Parser::TO_PRINT() {
 }
 
 void Parser::Parser::STRING() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     if (CURRENTTOKEN[0] == '\"' && CURRENTTOKEN.back() == '\"') { ;
     } else {
@@ -797,7 +802,7 @@ void Parser::Parser::STRING() {
 }
 
 void Parser::Parser::CONDITIONAL() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
     getIn();
     if (isdigit(CURRENTTOKEN[0]))
         NUMBER();
@@ -812,7 +817,7 @@ void Parser::Parser::CONDITIONAL() {
 }
 
 void Parser::Parser::RELATIONAL_OP() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     if (RELATIONALOPERATOR) {
         return;
@@ -824,7 +829,7 @@ void Parser::Parser::RELATIONAL_OP() {
 }
 
 void Parser::Parser::ADDITIONAL_COMP() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     if (RELATIONALOPERATOR) {
         nextToken();
@@ -836,7 +841,7 @@ void Parser::Parser::ADDITIONAL_COMP() {
 
 
 void Parser::Parser::IF() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "if")) {
@@ -885,7 +890,7 @@ void Parser::Parser::IF() {
 
 
 void Parser::Parser::ELIF() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     bool get_out = false;
     getIn();
@@ -925,7 +930,7 @@ void Parser::Parser::ELIF() {
 }
 
 void Parser::Parser::ELSE() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "else")) {
@@ -952,7 +957,7 @@ void Parser::Parser::ELSE() {
 
 
 void Parser::Parser::FUNCTION_CALL() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "(")) {
@@ -980,7 +985,7 @@ void Parser::Parser::FUNCTION_CALL() {
 }
 
 void Parser::Parser::ARGUMENTS() {
-    functionHeader(__func__);
+    functionHeader(__func__, "");
 
     if (isdigit(CURRENTTOKEN[0])) {
         NUMBER();
@@ -1003,7 +1008,7 @@ void Parser::Parser::ARGUMENTS() {
 }
 
 void Parser::Parser::MORE_ARGS() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     if (match(CURRENTTOKEN, ",")) {
         nextToken();
@@ -1012,7 +1017,7 @@ void Parser::Parser::MORE_ARGS() {
 }
 
 void Parser::Parser::RETURN_VALUE() {
-    functionHeader(__func__);
+    functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
     if (match(CURRENTTOKEN, "ret")) {
