@@ -30,7 +30,9 @@ namespace Parser {
 
         explicit Parser(const std::vector<Lexer::Token> &tok, std::string tree, std::string table);
 
-        static bool match(const std::string &lexeme, const std::string &toMatch);
+        bool match(const std::string &func_name, const std::string &lexeme, const std::string &toMatch);
+
+        static bool define_match(const std::string &lexeme, const std::string &toMatch);
 
         void functionHeader(const std::string &func_name,  std::string cur_tok);
 

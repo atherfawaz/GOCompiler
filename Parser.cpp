@@ -9,9 +9,9 @@
 #define CURRENTTOKEN tokens[cursor].getLexeme()
 #define ROW tokens[cursor].getRow()
 #define COLUMN tokens[cursor].getCol()
-#define ARITHMETIC_OPERATOR  match(CURRENTTOKEN, "+") || match(CURRENTTOKEN, "-") || match(CURRENTTOKEN, "*") || match(CURRENTTOKEN, "/")
-#define ICV match(CURRENTTOKEN, "integer") || match(CURRENTTOKEN, "char") || match(CURRENTTOKEN, "void")
-#define RELATIONALOPERATOR match(CURRENTTOKEN, "<") || match(CURRENTTOKEN, "<=") || match(CURRENTTOKEN, ">") || match(CURRENTTOKEN, ">=") || match(CURRENTTOKEN, "==") || match(CURRENTTOKEN, "/=")
+#define ARITHMETIC_OPERATOR  define_match(CURRENTTOKEN, "+") || define_match(CURRENTTOKEN, "-") || define_match(CURRENTTOKEN, "*") || define_match(CURRENTTOKEN, "/")
+#define ICV define_match(CURRENTTOKEN, "integer") || define_match(CURRENTTOKEN, "char") || define_match(CURRENTTOKEN, "void")
+#define RELATIONALOPERATOR define_match(CURRENTTOKEN, "<") || define_match(CURRENTTOKEN, "<=") || define_match(CURRENTTOKEN, ">") || define_match(CURRENTTOKEN, ">=") || define_match(CURRENTTOKEN, "==") || define_match( CURRENTTOKEN, "/=")
 #define TOKEN_METADATA "[" << ROW << ":" << COLUMN << "] "
 
 Parser::Parser::Parser() = default;
@@ -120,12 +120,21 @@ bool Parser::Parser::peekExpression() {
     }
 
 }
-// TODO: add function header parameter to this function and modify all function calls
-// TODO: remove function header call from every where else and just call from here
 
-bool Parser::Parser::match(const std::string &lexeme, const std::string &toMatch) {
+bool Parser::Parser::match(const std::string &func_name, const std::string &lexeme, const std::string &toMatch) {
+    if (lexeme == toMatch) {
+        functionHeader(func_name, toMatch);
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+bool Parser::Parser::define_match(const std::string &lexeme, const std::string &toMatch) {
     if (lexeme == toMatch) return true;
     return false;
+
 }
 
 void Parser::Parser::START_PARSE() {
@@ -139,7 +148,7 @@ void Parser::Parser::START_PARSE() {
 void Parser::Parser::PROGRAM_START() {
     functionHeader(__func__, "");
 
-    if (match(CURRENTTOKEN, "func")) {
+    if (match(__func__, CURRENTTOKEN, "func")) {
         getIn();
         FUNC_HEADER();
         this->tabs = 0;
@@ -157,7 +166,7 @@ void Parser::Parser::PROGRAM_START() {
 void Parser::Parser::PROG_S() {
     functionHeader(__func__, "");
 
-    if (match(CURRENTTOKEN, "func")) {
+    if (match(__func__, CURRENTTOKEN, "func")) {
         getIn();
         FUNC_HEADER();
         this->tabs = 0;
@@ -178,25 +187,25 @@ void Parser::Parser::FUNC_HEADER() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "func")) {
+    if (match(__func__, CURRENTTOKEN, "func")) {
         nextToken();
         RETURN_TYPE();
         nextToken();
-        if (match(CURRENTTOKEN, ":")) {
+        if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
             nextToken();
-            if (match(CURRENTTOKEN, "(")) {
+            if (match(__func__, CURRENTTOKEN, "(")) {
                 nextToken();
                 PARAMETERS();
                 //nextToken();
-                if (match(CURRENTTOKEN, ")")) {
+                if (match(__func__, CURRENTTOKEN, ")")) {
                     nextToken();
-                    if (match(CURRENTTOKEN, "{")) {
+                    if (match(__func__, CURRENTTOKEN, "{")) {
                         nextToken();
                         STATEMENT();
                         //nextToken();
-                        if (match(CURRENTTOKEN, "}")) {
+                        if (match(__func__, CURRENTTOKEN, "}")) {
                             //nextToken();
                             //FUNC_HEADER();
                             //nextToken();
@@ -287,7 +296,7 @@ void Parser::Parser::PARAMETERS() {
     getIn();
     DATATYPE();
     nextToken();
-    if (match(CURRENTTOKEN, ":")) {
+    if (match(__func__, CURRENTTOKEN, ":")) {
         nextToken();
         IDENTIFIER();
         nextToken();
@@ -302,19 +311,19 @@ void Parser::Parser::STATEMENT() {
     bool to_get_out = false;
     getIn();
 
-    if (match(CURRENTTOKEN, "integer")) {
+    if (define_match(CURRENTTOKEN, "integer")) {
         to_get_out = true;
         INT_DECLARATION();
         getOut();
         nextToken();
         STATEMENT();
-    } else if (match(CURRENTTOKEN, "char")) {
+    } else if (define_match(CURRENTTOKEN, "char")) {
         to_get_out = true;
         CHAR_DECLARATION();
         getOut();
         nextToken();
         STATEMENT();
-    } else if (match(CURRENTTOKEN, "while")) {
+    } else if (define_match(CURRENTTOKEN, "while")) {
         to_get_out = true;
         int prev_tabs = this->tabs;
         LOOP();
@@ -322,30 +331,30 @@ void Parser::Parser::STATEMENT() {
         getOut();
         nextToken();
         STATEMENT();
-    } else if (match(CURRENTTOKEN, "if")) {
+    } else if (define_match(CURRENTTOKEN, "if")) {
         to_get_out = true;
         IF();
         getOut();
         //nextToken();
         STATEMENT();
-    } else if (match(CURRENTTOKEN, "print") || match(CURRENTTOKEN, "println")) {
+    } else if (define_match(CURRENTTOKEN, "print") || define_match(CURRENTTOKEN, "println")) {
         to_get_out = true;
         PRINTS();
         getOut();
         nextToken();
         STATEMENT();
-    } else if (match(CURRENTTOKEN, "in")) {
+    } else if (define_match(CURRENTTOKEN, "in")) {
         to_get_out = true;
         INPUT();
         getOut();
         nextToken();
         STATEMENT();
-    } else if (match(CURRENTTOKEN, "ret")) {
+    } else if (define_match(CURRENTTOKEN, "ret")) {
         to_get_out = true;
         RETURN_VALUE();
         getOut();
         nextToken();
-        if (match(CURRENTTOKEN, ";")) {
+        if (define_match(CURRENTTOKEN, ";")) {
             to_get_out = true;
             nextToken();
             STATEMENT();
@@ -363,12 +372,12 @@ void Parser::Parser::STATEMENT() {
             getOut();
             nextToken();
             STATEMENT();
-        } else if (match(CURRENTTOKEN, ":=")) {
+        } else if (define_match(CURRENTTOKEN, ":=")) {
             if (peekExpression()) {
                 nextToken();
                 EXPRESSION();
                 getOut();
-                if (match(CURRENTTOKEN, ";")) { ;
+                if (define_match(CURRENTTOKEN, ";")) { ;
                 } else {
                     std::cerr << TOKEN_METADATA << "Expected ;, but found " << CURRENTTOKEN
                               << " instead." << std::endl;
@@ -380,7 +389,7 @@ void Parser::Parser::STATEMENT() {
             }
             nextToken();
             STATEMENT();
-        } else if (match(CURRENTTOKEN, "(")) {
+        } else if (define_match(CURRENTTOKEN, "(")) {
             to_get_out = true;
             FUNCTION_CALL();
             getOut();
@@ -398,7 +407,7 @@ void Parser::Parser::STATEMENT() {
 void Parser::Parser::ADDITIONAL_PARAMETERS() {
     functionHeader(__func__, CURRENTTOKEN);
 
-    if (match(CURRENTTOKEN, ",")) {
+    if (match(__func__, CURRENTTOKEN, ",")) {
         nextToken();
         PARAMETERS();
     }
@@ -408,7 +417,7 @@ void Parser::Parser::ADDITIONAL_PARAMETERS() {
 void Parser::Parser::DATATYPE() {
     functionHeader(__func__, CURRENTTOKEN);
 
-    if (match(CURRENTTOKEN, "integer") || match(CURRENTTOKEN, "char")) { ;
+    if (match(__func__, CURRENTTOKEN, "integer") || match(__func__, CURRENTTOKEN, "char")) { ;
     } else {
         std::cerr << TOKEN_METADATA << "Expected INTEGER or CHAR, but found " << CURRENTTOKEN
                   << " instead." << std::endl;
@@ -421,9 +430,9 @@ void Parser::Parser::INT_DECLARATION() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "integer")) {
+    if (match(__func__, CURRENTTOKEN, "integer")) {
         nextToken();
-        if (match(CURRENTTOKEN, ":")) {
+        if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
             this->parser_symboltable[CURRENTTOKEN] = "integer";
@@ -431,7 +440,7 @@ void Parser::Parser::INT_DECLARATION() {
             getOut();
             ADD_INT_DEC();
             //nextToken();
-            if (match(CURRENTTOKEN, ";")) {
+            if (match(__func__, CURRENTTOKEN, ";")) {
                 //getOut();
                 //nextToken();
                 //STATEMENT();
@@ -457,7 +466,7 @@ void Parser::Parser::ADD_INT_DEC() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, ",")) {
+    if (match(__func__, CURRENTTOKEN, ",")) {
         nextToken();
         IDENTIFIER();
         this->parser_symboltable[CURRENTTOKEN] = "integer";
@@ -472,9 +481,9 @@ void Parser::Parser::CHAR_DECLARATION() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "char")) {
+    if (match(__func__, CURRENTTOKEN, "char")) {
         nextToken();
-        if (match(CURRENTTOKEN, ":")) {
+        if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
             this->parser_symboltable[CURRENTTOKEN] = "char";
@@ -482,7 +491,7 @@ void Parser::Parser::CHAR_DECLARATION() {
             getOut();
             ADD_CHAR_DEC();
             //nextToken();
-            if (match(CURRENTTOKEN, ";")) {
+            if (match(__func__, CURRENTTOKEN, ";")) {
                 //nextToken();
                 //STATEMENT();
             } else {
@@ -507,7 +516,7 @@ void Parser::Parser::ADD_CHAR_DEC() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, ",")) {
+    if (match(__func__, CURRENTTOKEN, ",")) {
         nextToken();
         IDENTIFIER();
         this->parser_symboltable[CURRENTTOKEN] = "char";
@@ -543,12 +552,12 @@ void Parser::Parser::ADD_SUB() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "+")) {
+    if (match(__func__, CURRENTTOKEN, "+")) {
         nextToken();
         MUL_DIV();
         ADD_SUB();
     }
-    if (match(CURRENTTOKEN, "-")) {
+    if (match(__func__, CURRENTTOKEN, "-")) {
         nextToken();
         MUL_DIV();
         ADD_SUB();
@@ -560,13 +569,13 @@ void Parser::Parser::MUL_DIV_() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "*")) {
+    if (match(__func__, CURRENTTOKEN, "*")) {
         nextToken();
         FINAL();
         MUL_DIV_();
 
     }
-    if (match(CURRENTTOKEN, "/")) {
+    if (match(__func__, CURRENTTOKEN, "/")) {
         nextToken();
         FINAL();
         MUL_DIV_();
@@ -585,11 +594,11 @@ void Parser::Parser::FINAL() {
         NUMBER();
         nextToken();
     }
-    if (match(CURRENTTOKEN, "(")) {
+    if (match(__func__, CURRENTTOKEN, "(")) {
         nextToken();
         EXPRESSION();
         //nextToken();
-        if (match(CURRENTTOKEN, ")")) {
+        if (match(__func__, CURRENTTOKEN, ")")) {
             nextToken();
         } else {
             std::cerr << TOKEN_METADATA << "Expected (, but found " << CURRENTTOKEN << " instead."
@@ -604,12 +613,12 @@ void Parser::Parser::ASSIGNMENT() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, ":=")) {
+    if (match(__func__, CURRENTTOKEN, ":=")) {
         nextToken();
         TO_ASSIGN();
         nextToken();
         //getOut();
-        if (match(CURRENTTOKEN, ";")) {
+        if (match(__func__, CURRENTTOKEN, ";")) {
             //getOut();
             //nextToken();
             //STATEMENT();
@@ -641,16 +650,16 @@ void Parser::Parser::LOOP() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "while")) {
+    if (match(__func__, CURRENTTOKEN, "while")) {
         nextToken();
         COMPARISON();
-        if (match(CURRENTTOKEN, ":")) {
+        if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
             //getOut();
-            if (match(CURRENTTOKEN, "{")) {
+            if (match(__func__, CURRENTTOKEN, "{")) {
                 nextToken();
                 STATEMENT();
-                if (match(CURRENTTOKEN, "}")) {
+                if (match(__func__, CURRENTTOKEN, "}")) {
                     //nextToken();
                     //STATEMENT();
                 } else {
@@ -691,15 +700,15 @@ void Parser::Parser::PRINTS() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "println") || match(CURRENTTOKEN, "print")) {
+    if (match(__func__, CURRENTTOKEN, "println") || match(__func__, CURRENTTOKEN, "print")) {
         nextToken();
-        if (match(CURRENTTOKEN, "(")) {
+        if (match(__func__, CURRENTTOKEN, "(")) {
             nextToken();
             TO_PRINT();
             nextToken();
-            if (match(CURRENTTOKEN, ")")) {
+            if (match(__func__, CURRENTTOKEN, ")")) {
                 nextToken();
-                if (match(CURRENTTOKEN, ";")) {
+                if (match(__func__, CURRENTTOKEN, ";")) {
                     //nextToken();
                     //STATEMENT();
                 } else {
@@ -725,14 +734,14 @@ void Parser::Parser::INPUT() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "in")) {
+    if (match(__func__, CURRENTTOKEN, "in")) {
         nextToken();
-        if (match(CURRENTTOKEN, ">>")) {
+        if (match(__func__, CURRENTTOKEN, ">>")) {
             nextToken();
             IDENTIFIER();
             nextToken();
             getOut();
-            if (match(CURRENTTOKEN, ";")) {
+            if (match(__func__, CURRENTTOKEN, ";")) {
                 //nextToken();
                 //STATEMENT();
             } else {
@@ -846,24 +855,24 @@ void Parser::Parser::IF() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "if")) {
+    if (match(__func__, CURRENTTOKEN, "if")) {
         nextToken();
         COMPARISON();
         //nextToken();
-        if (match(CURRENTTOKEN, ":")) {
+        if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
-            if (match(CURRENTTOKEN, "{")) {
+            if (match(__func__, CURRENTTOKEN, "{")) {
                 nextToken();
                 STATEMENT();
                 //nextToken();
-                if (match(CURRENTTOKEN, "}")) {
+                if (match(__func__, CURRENTTOKEN, "}")) {
                     nextToken();
-                    if (match(CURRENTTOKEN, "elif")) {
+                    if (match(__func__, CURRENTTOKEN, "elif")) {
                         ELIF();
                         getOut();
                         //nextToken();
                     }
-                    if (match(CURRENTTOKEN, "else")) {
+                    if (match(__func__, CURRENTTOKEN, "else")) {
                         ELSE();
                         nextToken();
                     }
@@ -896,18 +905,18 @@ void Parser::Parser::ELIF() {
 
     bool get_out = false;
     getIn();
-    if (match(CURRENTTOKEN, "elif")) {
+    if (match(__func__, CURRENTTOKEN, "elif")) {
 
         nextToken();
         COMPARISON();
         //nextToken();
-        if (match(CURRENTTOKEN, ":")) {
+        if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
-            if (match(CURRENTTOKEN, "{")) {
+            if (match(__func__, CURRENTTOKEN, "{")) {
                 nextToken();
                 STATEMENT();
                 //nextToken(); //hmmm, im not sure about this
-                if (match(CURRENTTOKEN, "}")) {
+                if (match(__func__, CURRENTTOKEN, "}")) {
                     get_out = true;
                     nextToken();
                     ELIF();
@@ -935,13 +944,13 @@ void Parser::Parser::ELSE() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "else")) {
+    if (match(__func__, CURRENTTOKEN, "else")) {
         nextToken();
-        if (match(CURRENTTOKEN, "{")) {
+        if (match(__func__, CURRENTTOKEN, "{")) {
             nextToken();
             STATEMENT();
             //nextToken();
-            if (match(CURRENTTOKEN, "}")) { ;
+            if (match(__func__, CURRENTTOKEN, "}")) { ;
             } else {
                 std::cerr << TOKEN_METADATA << "Expected a }, but found " << CURRENTTOKEN
                           << " instead." << std::endl;
@@ -962,12 +971,12 @@ void Parser::Parser::FUNCTION_CALL() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "(")) {
+    if (match(__func__, CURRENTTOKEN, "(")) {
         nextToken();
         ARGUMENTS();
-        if (match(CURRENTTOKEN, ")")) {
+        if (match(__func__, CURRENTTOKEN, ")")) {
             nextToken();
-            if (match(CURRENTTOKEN, ";")) { ;
+            if (match(__func__, CURRENTTOKEN, ";")) { ;
             } else {
                 std::cerr << TOKEN_METADATA << "Expected a ;, but found " << CURRENTTOKEN
                           << " instead." << std::endl;
@@ -1012,7 +1021,7 @@ void Parser::Parser::ARGUMENTS() {
 void Parser::Parser::MORE_ARGS() {
     functionHeader(__func__, CURRENTTOKEN);
 
-    if (match(CURRENTTOKEN, ",")) {
+    if (match(__func__, CURRENTTOKEN, ",")) {
         nextToken();
         ARGUMENTS();
     }
@@ -1022,7 +1031,7 @@ void Parser::Parser::RETURN_VALUE() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, "ret")) {
+    if (match(__func__, CURRENTTOKEN, "ret")) {
         nextToken();
         IDENTIFIER();
     } else {
