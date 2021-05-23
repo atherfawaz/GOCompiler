@@ -120,6 +120,8 @@ bool Parser::Parser::peekExpression() {
     }
 
 }
+// TODO: add function header parameter to this function and modify all function calls
+// TODO: remove function header call from every where else and just call from here
 
 bool Parser::Parser::match(const std::string &lexeme, const std::string &toMatch) {
     if (lexeme == toMatch) return true;
