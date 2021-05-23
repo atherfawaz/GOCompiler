@@ -72,11 +72,14 @@ namespace Lexer {
         std::vector<Token> toks;
         while (this->peakNext()) {
             try {
+                auto test = this->getCurrent();
                 toks.push_back(findToken(this->getCurrent()));
             }
             catch (const char *msg) {
+
                 std::cerr << "Exiting code due to the following error: ";
                 std::cerr << msg;
+                std::cerr << "Position: row :" << toks.back().row + 1 << " cols :" << toks.back().col;
                 exit(-1);
             }
             this->next();

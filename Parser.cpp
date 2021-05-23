@@ -363,6 +363,7 @@ void Parser::Parser::STATEMENT() {
             STATEMENT();
         } else if (match(CURRENTTOKEN, ":=")) {
             if (peekExpression()) {
+                nextToken();
                 EXPRESSION();
                 getOut();
                 if (match(CURRENTTOKEN, ";")) { ;
@@ -519,11 +520,10 @@ void Parser::Parser::EXPRESSION() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-    if (match(CURRENTTOKEN, ":=")) {
-        nextToken();
-        MUL_DIV();
-        ADD_SUB();
-    }
+
+    MUL_DIV();
+    ADD_SUB();
+
     getOut();
 }
 
@@ -586,7 +586,7 @@ void Parser::Parser::FINAL() {
     if (match(CURRENTTOKEN, "(")) {
         nextToken();
         EXPRESSION();
-        nextToken();
+        //nextToken();
         if (match(CURRENTTOKEN, ")")) {
             nextToken();
         } else {

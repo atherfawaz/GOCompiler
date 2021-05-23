@@ -40,6 +40,7 @@ func integer: numPrint (integer: num, integer: length) {
 		Multiline
 		Comment*/
 	}
+	z := 3 * 5 + 24 - 3 / a + 20 + ( 3 / 4 -2);
 	print("temp is");
 	println(temp);
 	ret i;

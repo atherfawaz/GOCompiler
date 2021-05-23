@@ -132,7 +132,7 @@ PROGRAM_START
 |   |   |   |   |   |   |---IDENTIFIER     j
 |   |   |   |   |   |   |   |---ALPHABET     
 |   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |   |---EXPRESSION     :=
+|   |   |   |   |   |   |---EXPRESSION     j
 |   |   |   |   |   |   |   |---MUL_DIV     
 |   |   |   |   |   |   |   |   |---FINAL     
 |   |   |   |   |   |   |   |   |   |---IDENTIFIER     j
@@ -222,7 +222,7 @@ PROGRAM_START
 |   |   |   |   |---IDENTIFIER     i
 |   |   |   |   |   |---ALPHABET     
 |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |---EXPRESSION     :=
+|   |   |   |   |---EXPRESSION     i
 |   |   |   |   |   |---MUL_DIV     
 |   |   |   |   |   |   |---FINAL     
 |   |   |   |   |   |   |   |---IDENTIFIER     i
@@ -236,6 +236,58 @@ PROGRAM_START
 |   |   |   |   |   |   |   |---MUL_DIV_     ;
 |   |   |   |   |   |   |---ADD_SUB     ;
 |   |   |   |---STATEMENT     
+|   |---STATEMENT     
+|   |   |---IDENTIFIER     z
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---NUMBER     3
+|   |   |---EXPRESSION     3
+|   |   |   |---MUL_DIV     
+|   |   |   |   |---FINAL     
+|   |   |   |   |   |---NUMBER     3
+|   |   |   |   |---MUL_DIV_     *
+|   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |---NUMBER     5
+|   |   |   |   |   |---MUL_DIV_     +
+|   |   |   |---ADD_SUB     +
+|   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |---NUMBER     24
+|   |   |   |   |   |---MUL_DIV_     -
+|   |   |   |   |---ADD_SUB     -
+|   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |---NUMBER     3
+|   |   |   |   |   |   |---MUL_DIV_     /
+|   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |---IDENTIFIER     a
+|   |   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |   |---MUL_DIV_     +
+|   |   |   |   |   |---ADD_SUB     +
+|   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |---NUMBER     20
+|   |   |   |   |   |   |   |---MUL_DIV_     +
+|   |   |   |   |   |   |---ADD_SUB     +
+|   |   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |   |---EXPRESSION     3
+|   |   |   |   |   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |   |   |   |   |---NUMBER     3
+|   |   |   |   |   |   |   |   |   |   |   |---MUL_DIV_     /
+|   |   |   |   |   |   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |   |   |   |   |   |---NUMBER     4
+|   |   |   |   |   |   |   |   |   |   |   |   |---MUL_DIV_     -
+|   |   |   |   |   |   |   |   |   |   |---ADD_SUB     -
+|   |   |   |   |   |   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |   |   |   |   |   |---NUMBER     2
+|   |   |   |   |   |   |   |   |   |   |   |   |---MUL_DIV_     )
+|   |   |   |   |   |   |   |   |   |   |   |---ADD_SUB     )
+|   |   |   |   |   |   |   |   |---MUL_DIV_     ;
+|   |   |   |   |   |   |   |---ADD_SUB     ;
 |   |---STATEMENT     
 |   |   |---PRINTS     print
 |   |   |   |---TO_PRINT     
