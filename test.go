@@ -1,4 +1,5 @@
 func integer: numPrint (integer: num, integer: length) {
+    j := j + 3 * 5 - 2;
 	integer: i, j, first, temp;
 	char : a;
 	a := 'x';

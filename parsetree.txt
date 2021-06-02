@@ -29,6 +29,37 @@ PROGRAM_START     func
 |   |---FUNC_HEADER     )
 |   |---FUNC_HEADER     {
 |   |---STATEMENT     
+|   |   |---IDENTIFIER     j
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---IDENTIFIER     j
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---EXPRESSION     j
+|   |   |   |---MUL_DIV     
+|   |   |   |   |---FINAL     
+|   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---MUL_DIV_     +
+|   |   |   |---ADD_SUB     +
+|   |   |   |   |---ADD_SUB     +
+|   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |---NUMBER     3
+|   |   |   |   |   |---MUL_DIV_     *
+|   |   |   |   |   |   |---MUL_DIV_     *
+|   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |---NUMBER     5
+|   |   |   |   |   |   |---MUL_DIV_     -
+|   |   |   |   |---ADD_SUB     -
+|   |   |   |   |   |---ADD_SUB     -
+|   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |---NUMBER     2
+|   |   |   |   |   |   |---MUL_DIV_     ;
+|   |   |   |   |   |---ADD_SUB     ;
+|   |---STATEMENT     
 |   |   |---INT_DECLARATION     integer
 |   |   |   |---INT_DECLARATION     integer
 |   |   |   |---INT_DECLARATION     :

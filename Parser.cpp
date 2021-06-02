@@ -37,6 +37,12 @@ void Parser::Parser::functionHeader(const std::string &func_name, std::string cu
     //this->parsing_tree.push_back(std::tuple<std::string, std::string  ,int>(func_name, CURRENTTOKEN, this->tabs));
 }
 
+void Parser::Parser::emit(std::string to_print){
+    std::cout << to_print;
+    this->line_num++;
+    // do something else for the future
+}
+
 void Parser::Parser::getIn() {
     this->tabs++;
 }
@@ -333,6 +339,7 @@ void Parser::Parser::STATEMENT() {
         STATEMENT();
     } else if (define_match(CURRENTTOKEN, "if")) {
         to_get_out = true;
+        std::cout << "if ";
         IF();
         getOut();
         //nextToken();
@@ -347,7 +354,9 @@ void Parser::Parser::STATEMENT() {
         to_get_out = true;
         INPUT();
         getOut();
+
         nextToken();
+
         STATEMENT();
     } else if (define_match(CURRENTTOKEN, "ret")) {
         to_get_out = true;
@@ -366,6 +375,7 @@ void Parser::Parser::STATEMENT() {
     } else if (isalpha(CURRENTTOKEN[0])) {
         to_get_out = true;
         IDENTIFIER();
+        std::string lft_var = CURRENTTOKEN;
         nextToken();
         if (RELATIONALOPERATOR) {
             COMPARISON();
@@ -376,6 +386,8 @@ void Parser::Parser::STATEMENT() {
             if (peekExpression()) {
                 nextToken();
                 EXPRESSION();
+                emit(lft_var + " = " + "temp" + std::to_string(this->exprTemp) + " \n");
+                this->exprTemp = 0;
                 getOut();
                 if (define_match(CURRENTTOKEN, ";")) { ;
                 } else {
@@ -553,6 +565,15 @@ void Parser::Parser::ADD_SUB() {
 
     getIn();
     if (match(__func__, CURRENTTOKEN, "+")) {
+        if (this->exprTemp != 0) {
+            std::cout << "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) + " " + CURRENTTOKEN + " ";
+            this->isRight = true;
+
+        }
+        else {
+            std::cout <<  CURRENTTOKEN + " ";
+            isRight = true;
+        }
         nextToken();
         MUL_DIV();
         ADD_SUB();
@@ -570,12 +591,30 @@ void Parser::Parser::MUL_DIV_() {
 
     getIn();
     if (match(__func__, CURRENTTOKEN, "*")) {
+        if (this->exprTemp != 0) {
+            std::cout << "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) + " " + CURRENTTOKEN + " ";
+            this->isRight = true;
+
+        }
+        else {
+            std::cout <<  CURRENTTOKEN + " ";
+            isRight = true;
+        }
         nextToken();
         FINAL();
         MUL_DIV_();
 
     }
     if (match(__func__, CURRENTTOKEN, "/")) {
+        if (this->exprTemp != 0) {
+            std::cout << "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) + " " + CURRENTTOKEN + " ";
+            this->isRight = true;
+
+        }
+        else {
+            std::cout <<  CURRENTTOKEN + " ";
+            isRight = true;
+        }
         nextToken();
         FINAL();
         MUL_DIV_();
@@ -588,10 +627,27 @@ void Parser::Parser::FINAL() {
 
     getIn();
     if (isalpha(CURRENTTOKEN[0])) {
+
         IDENTIFIER();
+        if (!isRight && this->exprTemp == 0){
+            std::cout << "temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN  + " ";
+        }
+        if (isRight){
+            std::cout << CURRENTTOKEN << std::endl;
+            this->exprTemp++;
+            this->isRight = false;
+        }
         nextToken();
     } else if (isdigit(CURRENTTOKEN[0])) {
         NUMBER();
+        if (!isRight && this->exprTemp == 0){
+            std::cout << "temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN +  " ";
+        }
+        if (isRight){
+            std::cout << CURRENTTOKEN << std::endl;
+            this->exprTemp ++;
+            this->isRight = false;
+        }
         nextToken();
     }
     if (match(__func__, CURRENTTOKEN, "(")) {
@@ -687,10 +743,13 @@ void Parser::Parser::COMPARISON() {
     functionHeader(__func__, "");
     getIn();
     CONDITIONAL();
+    std::cout << CURRENTTOKEN + " ";
     nextToken();
     RELATIONAL_OP();
+    std::cout << CURRENTTOKEN + " ";
     nextToken();
     CONDITIONAL();
+    std::cout << CURRENTTOKEN + " ";
     nextToken();
     ADDITIONAL_COMP();
     getOut();
@@ -755,6 +814,7 @@ void Parser::Parser::INPUT() {
             exit(1);
         }
     }
+    emit("in " + PREVIOUSTOKEN + "\n");
 }
 
 
@@ -814,6 +874,7 @@ void Parser::Parser::STRING() {
 
 void Parser::Parser::CONDITIONAL() {
     functionHeader(__func__, "");
+
     getIn();
     if (isdigit(CURRENTTOKEN[0]))
         NUMBER();
@@ -824,6 +885,7 @@ void Parser::Parser::CONDITIONAL() {
                   << " instead." << std::endl;
         exit(1);
     }
+    std::cout << CURRENTTOKEN + " ";
     getOut();
 }
 
@@ -843,6 +905,7 @@ void Parser::Parser::ADDITIONAL_COMP() {
     functionHeader(__func__, CURRENTTOKEN);
 
     if (RELATIONALOPERATOR) {
+        std::cout << CURRENTTOKEN + " ";
         nextToken();
         CONDITIONAL();
         nextToken();
@@ -856,8 +919,10 @@ void Parser::Parser::IF() {
 
     getIn();
     if (match(__func__, CURRENTTOKEN, "if")) {
+        std::cout << "if ";
         nextToken();
         COMPARISON();
+        std::cout << "goto ";
         //nextToken();
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
