@@ -18,6 +18,9 @@ namespace Parser {
     private:
         int cursor = 0;
         int tabs = 0;
+        int exprTemp = 0;
+        bool isRight = false;
+        int line_num = 1;
         std::vector<Lexer::Token> tokens;
         std::ofstream parsing_tree;
         std::ofstream symbol_table;
@@ -38,6 +41,8 @@ namespace Parser {
 
         void save();
         bool peekExpression();
+
+        void emit(std::string to_print);
 
         bool parse();
 

@@ -7,6 +7,7 @@
 
 
 #define CURRENTTOKEN tokens[cursor].getLexeme()
+#define PREVIOUSTOKEN tokens[cursor - 1].getLexeme()
 #define ROW tokens[cursor].getRow()
 #define COLUMN tokens[cursor].getCol()
 #define ARITHMETIC_OPERATOR  define_match(CURRENTTOKEN, "+") || define_match(CURRENTTOKEN, "-") || define_match(CURRENTTOKEN, "*") || define_match(CURRENTTOKEN, "/")
@@ -575,10 +576,20 @@ void Parser::Parser::ADD_SUB() {
             isRight = true;
         }
         nextToken();
+        //right side
         MUL_DIV();
         ADD_SUB();
     }
     if (match(__func__, CURRENTTOKEN, "-")) {
+        if (this->exprTemp != 0) {
+            std::cout << "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) + " " + CURRENTTOKEN + " ";
+            this->isRight = true;
+
+        }
+        else {
+            std::cout << CURRENTTOKEN + " ";
+            isRight = true;
+        }
         nextToken();
         MUL_DIV();
         ADD_SUB();
@@ -764,6 +775,7 @@ void Parser::Parser::PRINTS() {
         if (match(__func__, CURRENTTOKEN, "(")) {
             nextToken();
             TO_PRINT();
+            emit("out " + CURRENTTOKEN + "\n");
             nextToken();
             if (match(__func__, CURRENTTOKEN, ")")) {
                 nextToken();
