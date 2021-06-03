@@ -5,23 +5,29 @@ j = temp3
 out "enter number"
 in i
 out i
-i > 0 j < i temp0 = j + 1
+Wif i > 0 goto 10
+goto 31
+Wif j < i goto 12
+goto 15
+temp0 = j + 1
 j = temp1
-if j == 1 goto 12
-goto 14
+goto 10
+if j == 1 goto 17
+goto 19
 out "one"
+goto 28
+elif j == 2 goto 21
 goto 23
-elif j == 2 goto 16
-goto 18
 out "two"
-goto 23
-elif a == 3 goto 20
-goto 22
+goto 28
+elif a == 3 goto 25
+goto 27
 out "balalalal"
-goto 23
+goto 28
 out "others"
 temp0 = i - 1
 i = temp1
+goto 8
 temp0 = 3 * 5
 temp1 = temp0 + 24
 temp2 = temp1 - 3

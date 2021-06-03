@@ -750,20 +750,32 @@ void Parser::Parser::TO_ASSIGN() {
 
 void Parser::Parser::LOOP() {
     functionHeader(__func__, CURRENTTOKEN);
-
+    std::queue<COORD> goto_queue;
     getIn();
     if (match(__func__, CURRENTTOKEN, "while")) {
+        std::cout << "Wif ";
         nextToken();
         COMPARISON();
+        std::cout << "goto ";
+        goto_queue.push(getpos());
+        int loop_start = this->line_num;
+        emit("\n");
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
+            std::cout << "goto ";
+            goto_queue.push(getpos());
+            emit("\n");
+
             //getOut();
             if (match(__func__, CURRENTTOKEN, "{")) {
+                fillInTheHole(goto_queue.front());
+                goto_queue.pop();
                 nextToken();
                 STATEMENT();
                 if (match(__func__, CURRENTTOKEN, "}")) {
                     //nextToken();
                     //STATEMENT();
+                    emit("goto " + std::to_string(loop_start) + "\n");
                 } else {
                     std::cerr << TOKEN_METADATA << "Expected }, but found " << CURRENTTOKEN
                               << " instead." << std::endl;
@@ -782,6 +794,9 @@ void Parser::Parser::LOOP() {
     } else {
         std::cout << "Ye tou garbar hai";
     }
+    fillInTheHole(goto_queue.front());
+    goto_queue.pop();
+
     getOut();
 }
 
