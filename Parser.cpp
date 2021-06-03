@@ -114,13 +114,21 @@ void Parser::Parser::save() {
 
 
     std::map<std::string, std::string>::iterator it;
+    int address = 0;
 
     for (it = this->parser_symboltable.begin(); it != this->parser_symboltable.end(); it++)
     {
-        this->symbol_table << it->second    // string (key)
+        this->symbol_table << it->second    // data type
                   << ':'
-                  << it->first   // string's value
+                  << it->first   // identifier
+                  << ":"
+                  << address
                   << std::endl;
+        if (it->second == "char"){
+            address++;
+        } else {
+            address +=4;
+        }
     }
 
     this->symbol_table.close();
