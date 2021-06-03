@@ -11,6 +11,8 @@
 #include <map>
 #include <fstream>
 #include <tuple>
+#include <windows.h>
+#include <queue>
 
 namespace Parser {
 
@@ -22,9 +24,11 @@ namespace Parser {
         bool isRight = false;
         int line_num = 1;
         std::vector<Lexer::Token> tokens;
+
         std::ofstream parsing_tree;
         std::ofstream symbol_table;
         std::map<std::string , std::string> parser_symboltable;
+
 //        std::vector<std::tuple<std::string, std::string  ,int>> parsing_tree;
 
     public:
@@ -42,8 +46,10 @@ namespace Parser {
         void save();
         bool peekExpression();
 
+        void fillInTheHole(COORD pos);
         void emit(std::string to_print);
-
+        COORD getpos();
+        void setpos(COORD coords);
         bool parse();
 
         void nextToken();
@@ -122,7 +128,7 @@ namespace Parser {
 
         void ADDITIONAL_COMP();
 
-        void ELIF();
+        void ELIF(std::queue<COORD> & outer_queue);
 
         void ELSE();
 

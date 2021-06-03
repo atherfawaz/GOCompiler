@@ -16,9 +16,7 @@ func integer: numPrint (integer: num, integer: length) {
 		write( j);
 			j := j + 1;
 	}
-	if a == 3: {
-	    print("a");
-	}
+
 	if j == 1:{
 		print("one");
 

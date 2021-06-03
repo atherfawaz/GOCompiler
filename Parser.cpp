@@ -38,6 +38,42 @@ void Parser::Parser::functionHeader(const std::string &func_name, std::string cu
     //this->parsing_tree.push_back(std::tuple<std::string, std::string  ,int>(func_name, CURRENTTOKEN, this->tabs));
 }
 
+COORD Parser::Parser::getpos() {
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        COORD coord;
+
+        if(GetConsoleScreenBufferInfo (
+                GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
+        {
+            coord.X = csbi.dwCursorPosition.X;
+            coord.Y = csbi.dwCursorPosition.Y;
+            return coord;
+        }
+        else
+        {
+            coord.X = 0;
+            coord.Y = 0;
+            return coord;
+        }
+
+}
+
+void Parser::Parser::setpos(COORD coords) {
+    SetConsoleCursorPosition(
+            GetStdHandle(STD_OUTPUT_HANDLE),
+            coords
+    );
+
+}
+void Parser::Parser::fillInTheHole(COORD pos) {
+    auto curr_coords = getpos();
+
+    setpos(pos);
+    std::cout<< this->line_num;
+    setpos(curr_coords);
+
+}
+
 void Parser::Parser::emit(std::string to_print){
     std::cout << to_print;
     this->line_num++;
@@ -340,7 +376,6 @@ void Parser::Parser::STATEMENT() {
         STATEMENT();
     } else if (define_match(CURRENTTOKEN, "if")) {
         to_get_out = true;
-        std::cout << "if ";
         IF();
         getOut();
         //nextToken();
@@ -644,7 +679,7 @@ void Parser::Parser::FINAL() {
             std::cout << "temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN  + " ";
         }
         if (isRight){
-            std::cout << CURRENTTOKEN << std::endl;
+            emit(CURRENTTOKEN + "\n");
             this->exprTemp++;
             this->isRight = false;
         }
@@ -655,7 +690,7 @@ void Parser::Parser::FINAL() {
             std::cout << "temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN +  " ";
         }
         if (isRight){
-            std::cout << CURRENTTOKEN << std::endl;
+            emit(CURRENTTOKEN + "\n");
             this->exprTemp ++;
             this->isRight = false;
         }
@@ -750,21 +785,7 @@ void Parser::Parser::LOOP() {
     getOut();
 }
 
-void Parser::Parser::COMPARISON() {
-    functionHeader(__func__, "");
-    getIn();
-    CONDITIONAL();
-    std::cout << CURRENTTOKEN + " ";
-    nextToken();
-    RELATIONAL_OP();
-    std::cout << CURRENTTOKEN + " ";
-    nextToken();
-    CONDITIONAL();
-    std::cout << CURRENTTOKEN + " ";
-    nextToken();
-    ADDITIONAL_COMP();
-    getOut();
-}
+
 
 void Parser::Parser::PRINTS() {
     functionHeader(__func__, CURRENTTOKEN);
@@ -925,27 +946,56 @@ void Parser::Parser::ADDITIONAL_COMP() {
     }
 }
 
+void Parser::Parser::COMPARISON() {
+    functionHeader(__func__, "");
+    getIn();
+    CONDITIONAL();
+    //std::cout << CURRENTTOKEN + " ";
+    nextToken();
+    RELATIONAL_OP();
+    std::cout << CURRENTTOKEN + " ";
+    nextToken();
+    CONDITIONAL();
+    //std::cout << CURRENTTOKEN + " ";
+    nextToken();
+    ADDITIONAL_COMP();
+    getOut();
+}
 
 void Parser::Parser::IF() {
     functionHeader(__func__, CURRENTTOKEN);
-
+    std::queue<COORD> goto_queue;
     getIn();
     if (match(__func__, CURRENTTOKEN, "if")) {
         std::cout << "if ";
         nextToken();
         COMPARISON();
         std::cout << "goto ";
+        goto_queue.push(getpos());
+        emit("\n");
+
         //nextToken();
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
+            std::cout << "goto ";
+            goto_queue.push(getpos());
+            emit("\n");
             if (match(__func__, CURRENTTOKEN, "{")) {
+                fillInTheHole(goto_queue.front());
+                goto_queue.pop();
                 nextToken();
                 STATEMENT();
                 //nextToken();
                 if (match(__func__, CURRENTTOKEN, "}")) {
+
                     nextToken();
+                    std::cout << "goto ";
+                    goto_queue.push(getpos());
+                    emit("\n");
+                    fillInTheHole(goto_queue.front());
+                    goto_queue.pop();
                     if (match(__func__, CURRENTTOKEN, "elif")) {
-                        ELIF();
+                        ELIF(goto_queue);
                         getOut();
                         //nextToken();
                     }
@@ -973,30 +1023,57 @@ void Parser::Parser::IF() {
                   << std::endl;
         exit(1);
     }
+
+    //std::cout << goto_queue.size()<< std::endl;
+    while (!goto_queue.empty()) {
+        fillInTheHole(goto_queue.front());
+        std::cout <<"";
+        goto_queue.pop();
+    }
     getOut();
 }
 
 
-void Parser::Parser::ELIF() {
+void Parser::Parser::ELIF(std::queue<COORD> & outer_queue) {
     functionHeader(__func__, CURRENTTOKEN);
+
+    std::queue<COORD> goto_queue;
 
     bool get_out = false;
     getIn();
     if (match(__func__, CURRENTTOKEN, "elif")) {
 
+        std::cout << "elif ";
         nextToken();
         COMPARISON();
+        std::cout << "goto ";
+        goto_queue.push(getpos());
+        emit("\n");
         //nextToken();
         if (match(__func__, CURRENTTOKEN, ":")) {
+            std::cout << "goto ";
+            goto_queue.push(getpos());
+            emit("\n");
             nextToken();
             if (match(__func__, CURRENTTOKEN, "{")) {
+                fillInTheHole(goto_queue.front());
+                goto_queue.pop();
                 nextToken();
                 STATEMENT();
                 //nextToken(); //hmmm, im not sure about this
                 if (match(__func__, CURRENTTOKEN, "}")) {
                     get_out = true;
+
                     nextToken();
-                    ELIF();
+                    std::cout << "goto ";
+                    outer_queue.push(getpos());
+                    emit("\n");
+                    fillInTheHole(goto_queue.front());
+                    goto_queue.pop();
+                    if (match(__func__, CURRENTTOKEN, "elif")) {
+                        ELIF(outer_queue);
+
+                    }
                 } else {
                     std::cerr << TOKEN_METADATA << "Expected a }, but found " << CURRENTTOKEN
                               << " instead." << std::endl;

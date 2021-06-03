@@ -232,30 +232,6 @@ PROGRAM_START     func
 |   |   |   |   |   |---IF     if
 |   |   |   |   |   |---COMPARISON     
 |   |   |   |   |   |   |---CONDITIONAL     
-|   |   |   |   |   |   |   |---IDENTIFIER     a
-|   |   |   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |   |---RELATIONAL_OP     ==
-|   |   |   |   |   |   |---CONDITIONAL     
-|   |   |   |   |   |   |   |---NUMBER     3
-|   |   |   |   |   |   |---ADDITIONAL_COMP     :
-|   |   |   |   |   |---IF     :
-|   |   |   |   |   |---IF     {
-|   |   |   |   |   |---STATEMENT     
-|   |   |   |   |   |   |---PRINTS     print
-|   |   |   |   |   |   |   |---PRINTS     print
-|   |   |   |   |   |   |   |---PRINTS     (
-|   |   |   |   |   |   |   |---TO_PRINT     
-|   |   |   |   |   |   |   |   |---STRING     "a"
-|   |   |   |   |   |   |   |---PRINTS     )
-|   |   |   |   |   |   |   |---PRINTS     ;
-|   |   |   |   |   |---STATEMENT     
-|   |   |   |   |   |---IF     }
-|   |   |   |---STATEMENT     
-|   |   |   |   |---IF     if
-|   |   |   |   |   |---IF     if
-|   |   |   |   |   |---COMPARISON     
-|   |   |   |   |   |   |---CONDITIONAL     
 |   |   |   |   |   |   |   |---IDENTIFIER     j
 |   |   |   |   |   |   |   |   |---ALPHABET     
 |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
@@ -300,6 +276,7 @@ PROGRAM_START     func
 |   |   |   |   |   |   |---STATEMENT     
 |   |   |   |   |   |   |---ELIF     }
 |   |   |   |   |   |   |---ELIF     elif
+|   |   |   |   |   |   |---ELIF     elif
 |   |   |   |   |   |   |   |---ELIF     elif
 |   |   |   |   |   |   |   |---COMPARISON     
 |   |   |   |   |   |   |   |   |---CONDITIONAL     
@@ -322,43 +299,42 @@ PROGRAM_START     func
 |   |   |   |   |   |   |   |   |   |---PRINTS     ;
 |   |   |   |   |   |   |   |---STATEMENT     
 |   |   |   |   |   |   |   |---ELIF     }
-|   |   |   |   |   |   |   |---ELIF     else
-|   |   |   |   |   |---IF     else
+|   |   |   |   |---IF     else
+|   |   |   |   |---ELSE     else
 |   |   |   |   |   |---ELSE     else
-|   |   |   |   |   |   |---ELSE     else
-|   |   |   |   |   |   |---ELSE     {
-|   |   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |---ELSE     {
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |---PRINTS     print
 |   |   |   |   |   |   |   |---PRINTS     print
-|   |   |   |   |   |   |   |   |---PRINTS     print
-|   |   |   |   |   |   |   |   |---PRINTS     (
-|   |   |   |   |   |   |   |   |---TO_PRINT     
-|   |   |   |   |   |   |   |   |   |---STRING     "others"
-|   |   |   |   |   |   |   |   |---PRINTS     )
-|   |   |   |   |   |   |   |   |---PRINTS     ;
-|   |   |   |   |   |   |---STATEMENT     
-|   |   |   |   |   |   |---ELSE     }
-|   |   |   |---STATEMENT     
-|   |   |   |   |---IDENTIFIER     i
-|   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |---IDENTIFIER     i
-|   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |---EXPRESSION     i
+|   |   |   |   |   |   |   |---PRINTS     (
+|   |   |   |   |   |   |   |---TO_PRINT     
+|   |   |   |   |   |   |   |   |---STRING     "others"
+|   |   |   |   |   |   |   |---PRINTS     )
+|   |   |   |   |   |   |   |---PRINTS     ;
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |---ELSE     }
+|   |   |---STATEMENT     
+|   |   |   |---IDENTIFIER     i
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
+|   |   |   |---IDENTIFIER     i
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
+|   |   |   |---EXPRESSION     i
+|   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |---MUL_DIV_     -
+|   |   |   |   |---ADD_SUB     -
+|   |   |   |   |   |---ADD_SUB     -
 |   |   |   |   |   |---MUL_DIV     
 |   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |---IDENTIFIER     i
-|   |   |   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |   |---MUL_DIV_     -
-|   |   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |   |---NUMBER     1
-|   |   |   |   |   |   |   |---MUL_DIV_     ;
-|   |   |   |   |   |   |---ADD_SUB     ;
-|   |   |   |---STATEMENT     
+|   |   |   |   |   |   |   |---NUMBER     1
+|   |   |   |   |   |   |---MUL_DIV_     ;
+|   |   |   |   |   |---ADD_SUB     ;
+|   |   |---STATEMENT     
 LOOP     }
 |   |---STATEMENT     
 |   |   |---IDENTIFIER     z
