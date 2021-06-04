@@ -1,0 +1,41 @@
+temp0 = j + 3
+temp1 = temp0 * 5
+temp2 = temp1 - 2
+j = temp3 
+out "enter number"
+in i
+out i
+Wif i > 0 goto 10 
+goto 31 
+Wif j < i goto 12 
+goto 15 
+temp0 = j + 1
+j = temp1 
+goto 10
+if j == 1 goto 17 
+goto 19 
+out "one"
+goto 28 
+elif j == 2 goto 21 
+goto 23 
+out "two"
+goto 28 
+elif a == 3 goto 25 
+goto 27 
+out "balalalal"
+goto 28 
+out "others"
+temp0 = i - 1
+i = temp1 
+goto 8
+temp0 = 3 * 5
+temp1 = temp0 + 24
+temp2 = temp1 - 3
+temp3 = temp2 / a
+temp4 = temp3 + 20
+temp5 = temp4 + 3
+temp6 = temp5 / 4
+temp7 = temp6 - 2
+z = temp8 
+out "temp is"
+out temp

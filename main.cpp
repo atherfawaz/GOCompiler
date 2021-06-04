@@ -77,7 +77,7 @@ int main() {
     }
 
     //std::cout << "PARSING PROGRAM.\n";
-    Parser::Parser Parser(tokens, global_path + "parsetree.txt", global_path + "parser_symboltable.txt");
+    Parser::Parser Parser(tokens, global_path + "parsetree.txt", global_path + "parser_symboltable.txt", global_path + "tac.txt");
     auto parseResult = Parser.parse();
     //std::cout << "Parsing result: " << parseResult << std::endl;
     //std::cout << "PARSED PROGRAM.\n";

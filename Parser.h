@@ -23,10 +23,13 @@ namespace Parser {
         int exprTemp = 0;
         bool isRight = false;
         int line_num = 1;
+        int offset = 0;
+        std::string three_add_code = "";
         std::vector<Lexer::Token> tokens;
 
         std::ofstream parsing_tree;
         std::ofstream symbol_table;
+        std::ofstream tac;
         std::map<std::string , std::string> parser_symboltable;
 
 //        std::vector<std::tuple<std::string, std::string  ,int>> parsing_tree;
@@ -35,7 +38,7 @@ namespace Parser {
         Parser();
 
 
-        explicit Parser(const std::vector<Lexer::Token> &tok, std::string tree, std::string table);
+        explicit Parser(const std::vector<Lexer::Token> &tok, std::string tree, std::string table, std::string tac);
 
         bool match(const std::string &func_name, const std::string &lexeme, const std::string &toMatch);
 
@@ -45,11 +48,12 @@ namespace Parser {
 
         void save();
         bool peekExpression();
+        void write_three_adress_code(std::string new_statement);
 
-        void fillInTheHole(COORD pos);
+        void fillInTheHole(int pos);
         void emit(std::string to_print);
-        COORD getpos();
-        void setpos(COORD coords);
+        //COORD getpos();
+        //void setpos(COORD coords);
         bool parse();
 
         void nextToken();
@@ -128,7 +132,7 @@ namespace Parser {
 
         void ADDITIONAL_COMP();
 
-        void ELIF(std::queue<COORD> & outer_queue);
+        void ELIF(std::queue<int> & outer_queue);
 
         void ELSE();
 

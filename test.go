@@ -44,4 +44,3 @@ func integer: numPrint (integer: num, integer: length) {
 	println(temp);
 	ret i;
 }
-
