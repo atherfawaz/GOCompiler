@@ -74,7 +74,7 @@ bool Parser::Parser::parse() {
     //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
     std::cout << std::endl;
     if (tokens[cursor].non_empty()) {
-        std::cout << "Started parsing.\n\n";
+        std::cout << "Started parsing.\n";
         START_PARSE();
         return true;
     }
@@ -84,7 +84,8 @@ bool Parser::Parser::parse() {
 void Parser::Parser::nextToken() {
     cursor++;
     if (cursor >= tokens.size()) {
-        std::cout << "\nFinished parsing.\n";
+        std::cout << "Finished parsing.\n";
+        std::cout << "Generated three-address-code.\n";
         save();
         exit(0);
     }
@@ -203,14 +204,13 @@ void Parser::Parser::evaluatePostfix(const std::string &expr, const std::string 
             this->evalStack.pop();
             auto leftOperand = this->evalStack.top();
             this->evalStack.pop();
-            std::cout << "temp" << std::to_string(counter) << " = " << leftOperand << " " << ch << " " << rightOperand
-                      << std::endl;
+            writeTAC("temp" + std::to_string(counter) + " = " + leftOperand + " " + ch + " " + rightOperand + "\n");
             this->evalStack.push("temp" + std::to_string(counter));
             counter++;
         }
     }
     while (!this->evalStack.empty()) this->evalStack.pop();
-    std::cout << toAssign << " = " << "temp" << counter - 1 << std::endl;
+    writeTAC(toAssign + " = " + "temp" + std::to_string(counter - 1) + "\n");
 }
 
 void Parser::Parser::cleanStack() {
@@ -464,10 +464,10 @@ void Parser::Parser::STATEMENT() {
                 nextToken();
                 EXPRESSION();
                 cleanStack();
-                emit(leftVar + " = " + "temp" + std::to_string(this->exprTemp) + " \n");
+                //emit(leftVar + " = " + "temp" + std::to_string(this->exprTemp) + " \n");
                 storeExpression();
-                std::cout << "Converted postfix expression: " << this->expressionArray.back() << std::endl;
-                std::cout << "Evaluating expression...\n";
+                //std::cout << "Converted postfix expression: " << this->expressionArray.back() << std::endl;
+                //std::cout << "Evaluating expression...\n";
                 evaluatePostfix(this->expressionArray.back(), leftVar);
                 this->exprTemp = 0;
                 getOut();
@@ -646,13 +646,8 @@ void Parser::Parser::MUL_DIV_() {
     if (match(__func__, CURRENTTOKEN, "*")) {
         maintainStack("*");
         if (this->exprTemp != 0) {
-            writeTAC(
-                    "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
-                    " " + CURRENTTOKEN + " ");
             this->isRight = true;
-
         } else {
-            writeTAC(CURRENTTOKEN + " ");
             isRight = true;
         }
         nextToken();
@@ -662,13 +657,8 @@ void Parser::Parser::MUL_DIV_() {
     if (match(__func__, CURRENTTOKEN, "/")) {
         maintainStack("/");
         if (this->exprTemp != 0) {
-            writeTAC(
-                    "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
-                    " " + CURRENTTOKEN + " ");
             this->isRight = true;
-
         } else {
-            writeTAC(CURRENTTOKEN + " ");
             isRight = true;
         }
         nextToken();
@@ -687,11 +677,7 @@ void Parser::Parser::FINAL() {
         this->postfix += CURRENTTOKEN;
         this->postfix += " ";
         IDENTIFIER();
-        if (!isRight && this->exprTemp == 0) {
-            writeTAC("temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN + " ");
-        }
         if (isRight) {
-            emit(CURRENTTOKEN + "\n");
             this->exprTemp++;
             this->isRight = false;
         }
@@ -701,11 +687,7 @@ void Parser::Parser::FINAL() {
         this->postfix += CURRENTTOKEN;
         this->postfix += " ";
         NUMBER();
-        if (!isRight && this->exprTemp == 0) {
-            writeTAC("temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN + " ");
-        }
         if (isRight) {
-            emit(CURRENTTOKEN + "\n");
             this->exprTemp++;
             this->isRight = false;
         }
@@ -725,7 +707,6 @@ void Parser::Parser::FINAL() {
                     this->postfix += " ";
                     this->postfix += this->stack.top();
                     this->postfix += " ";
-
                     this->stack.pop();
                 }
             }
@@ -746,13 +727,8 @@ void Parser::Parser::ADD_SUB() {
     if (match(__func__, CURRENTTOKEN, "+")) {
         maintainStack("+");
         if (this->exprTemp != 0) {
-            writeTAC(
-                    "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
-                    " " + CURRENTTOKEN + " ");
             this->isRight = true;
-
         } else {
-            writeTAC(CURRENTTOKEN + " ");
             isRight = true;
         }
         nextToken();
@@ -763,13 +739,8 @@ void Parser::Parser::ADD_SUB() {
     if (match(__func__, CURRENTTOKEN, "-")) {
         maintainStack("-");
         if (this->exprTemp != 0) {
-            writeTAC(
-                    "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
-                    " " + CURRENTTOKEN + " ");
             this->isRight = true;
-
         } else {
-            writeTAC(CURRENTTOKEN + " ");
             isRight = true;
         }
         nextToken();
@@ -1110,7 +1081,7 @@ void Parser::Parser::IF() {
         exit(1);
     }
 
-    std::cout << goto_queue.size() << std::endl;
+    //std::cout << goto_queue.size() << std::endl;
 
     int counter = 1;
     while (!goto_queue.empty()) {
