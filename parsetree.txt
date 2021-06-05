@@ -29,6 +29,58 @@ PROGRAM_START     func
 |   |---FUNC_HEADER     )
 |   |---FUNC_HEADER     {
 |   |---STATEMENT     
+|   |   |---IDENTIFIER     a
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---IDENTIFIER     x
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---EXPRESSION     x
+|   |   |   |---MUL_DIV     
+|   |   |   |   |---FINAL     
+|   |   |   |   |   |---IDENTIFIER     x
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---MUL_DIV_     +
+|   |   |   |---ADD_SUB     +
+|   |   |   |   |---ADD_SUB     +
+|   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |---FINAL     (
+|   |   |   |   |   |   |---EXPRESSION     b
+|   |   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |   |---IDENTIFIER     b
+|   |   |   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |   |   |---MUL_DIV_     +
+|   |   |   |   |   |   |   |---ADD_SUB     +
+|   |   |   |   |   |   |   |   |---ADD_SUB     +
+|   |   |   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |   |   |---IDENTIFIER     d
+|   |   |   |   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |   |   |   |---MUL_DIV_     )
+|   |   |   |   |   |   |   |   |---ADD_SUB     )
+|   |   |   |   |   |   |---FINAL     )
+|   |   |   |   |   |---MUL_DIV_     *
+|   |   |   |   |   |   |---MUL_DIV_     *
+|   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |---IDENTIFIER     c
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---MUL_DIV_     -
+|   |   |   |   |---ADD_SUB     -
+|   |   |   |   |   |---ADD_SUB     -
+|   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |---IDENTIFIER     y
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---MUL_DIV_     ;
+|   |   |   |   |   |---ADD_SUB     ;
+|   |---STATEMENT     
 |   |   |---IDENTIFIER     z
 |   |   |   |---ALPHABET     
 |   |   |   |---ALPHANUMERIC     

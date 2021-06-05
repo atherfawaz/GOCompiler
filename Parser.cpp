@@ -2,6 +2,8 @@
 // Created by ather on 18-May-21.
 //
 
+#include <iterator>
+#include <sstream>
 #include "Parser.h"
 #include "Lexer.h"
 
@@ -94,7 +96,7 @@ void Parser::Parser::save() {
     std::map<std::string, std::string>::iterator it;
     int address = 0;
 
-    for (it = this->parserSymboltable.begin(); it != this->parserSymboltable.end(); it++) {
+    for (it = this->parserSymbolTable.begin(); it != this->parserSymbolTable.end(); it++) {
         this->symbolTable << it->second    // data type
                           << ':'
                           << it->first   // identifier
@@ -167,16 +169,48 @@ bool Parser::Parser::define_match(const std::string &lexeme, const std::string &
 
 void Parser::Parser::maintainStack(const std::string &op) {
     if (STACKEMPTY || HIGHERPRECEDENCE) {
+        this->postfix += " ";
         this->stack.push(op);
+        this->postfix += " ";
     } else {
         if (LOWEREQUALPRECEDENCE) {
             while (!STACKEMPTY && LOWEREQUALPRECEDENCE) {
+                this->postfix += " ";
                 this->postfix += this->stack.top();
+                this->postfix += " ";
                 this->stack.pop();
             }
+            this->postfix += " ";
             this->stack.push(op);
+            this->postfix += " ";
+
         }
     }
+}
+
+void Parser::Parser::evaluatePostfix(const std::string &expr, const std::string &toAssign) {
+    int counter = 0;
+    std::istringstream iss(expr);
+    std::vector<std::string> result{std::istream_iterator<std::string>(iss), {}
+    };
+    for (auto &ch: result) {
+        if (ch != "/" && ch != "*" && ch != "+" && ch != "-") {
+            //encountered number or identifier
+            this->evalStack.push(ch);
+        } else {
+            //encountered operator
+            auto rightOperand = this->evalStack.top();
+            this->evalStack.pop();
+            auto leftOperand = this->evalStack.top();
+            this->evalStack.pop();
+            std::cout << "temp" << std::to_string(counter) << " = " << leftOperand << " " << ch << " " << rightOperand
+                      << std::endl;
+            this->evalStack.push("temp" + std::to_string(counter));
+            counter++;
+        }
+    }
+    while (!this->evalStack.empty()) this->evalStack.pop();
+    std::cout << toAssign << " = " << "temp" << counter - 1 << std::endl;
 }
 
 void Parser::Parser::cleanStack() {
@@ -418,7 +452,7 @@ void Parser::Parser::STATEMENT() {
     } else if (isalpha(CURRENTTOKEN[0])) {
         to_get_out = true;
         IDENTIFIER();
-        std::string lft_var = CURRENTTOKEN;
+        std::string leftVar = CURRENTTOKEN;
         nextToken();
         if (RELATIONALOPERATOR) {
             COMPARISON();
@@ -430,9 +464,11 @@ void Parser::Parser::STATEMENT() {
                 nextToken();
                 EXPRESSION();
                 cleanStack();
-                emit(lft_var + " = " + "temp" + std::to_string(this->exprTemp) + " \n");
+                emit(leftVar + " = " + "temp" + std::to_string(this->exprTemp) + " \n");
                 storeExpression();
-                std::cout << "Converted postfix expression: " <<  this->expressionArray.back() << std::endl;
+                std::cout << "Converted postfix expression: " << this->expressionArray.back() << std::endl;
+                std::cout << "Evaluating expression...\n";
+                evaluatePostfix(this->expressionArray.back(), leftVar);
                 this->exprTemp = 0;
                 getOut();
                 if (define_match(CURRENTTOKEN, ";")) { ;
@@ -493,7 +529,7 @@ void Parser::Parser::INT_DECLARATION() {
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
-            this->parserSymboltable[CURRENTTOKEN] = "integer";
+            this->parserSymbolTable[CURRENTTOKEN] = "integer";
             nextToken();
             getOut();
             ADD_INT_DEC();
@@ -527,7 +563,7 @@ void Parser::Parser::ADD_INT_DEC() {
     if (match(__func__, CURRENTTOKEN, ",")) {
         nextToken();
         IDENTIFIER();
-        this->parserSymboltable[CURRENTTOKEN] = "integer";
+        this->parserSymbolTable[CURRENTTOKEN] = "integer";
         nextToken();
         getOut();
         ADD_INT_DEC();
@@ -544,7 +580,7 @@ void Parser::Parser::CHAR_DECLARATION() {
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
-            this->parserSymboltable[CURRENTTOKEN] = "char";
+            this->parserSymbolTable[CURRENTTOKEN] = "char";
             nextToken();
             getOut();
             ADD_CHAR_DEC();
@@ -577,7 +613,7 @@ void Parser::Parser::ADD_CHAR_DEC() {
     if (match(__func__, CURRENTTOKEN, ",")) {
         nextToken();
         IDENTIFIER();
-        this->parserSymboltable[CURRENTTOKEN] = "char";
+        this->parserSymbolTable[CURRENTTOKEN] = "char";
         nextToken();
         getOut();
         ADD_CHAR_DEC();
@@ -647,7 +683,9 @@ void Parser::Parser::FINAL() {
 
     getIn();
     if (isalpha(CURRENTTOKEN[0])) {
+        this->postfix += " ";
         this->postfix += CURRENTTOKEN;
+        this->postfix += " ";
         IDENTIFIER();
         if (!isRight && this->exprTemp == 0) {
             writeTAC("temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN + " ");
@@ -659,7 +697,9 @@ void Parser::Parser::FINAL() {
         }
         nextToken();
     } else if (isdigit(CURRENTTOKEN[0])) {
+        this->postfix += " ";
         this->postfix += CURRENTTOKEN;
+        this->postfix += " ";
         NUMBER();
         if (!isRight && this->exprTemp == 0) {
             writeTAC("temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN + " ");
@@ -682,7 +722,10 @@ void Parser::Parser::FINAL() {
                     this->stack.pop();
                     break;
                 } else {
+                    this->postfix += " ";
                     this->postfix += this->stack.top();
+                    this->postfix += " ";
+
                     this->stack.pop();
                 }
             }

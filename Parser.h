@@ -31,10 +31,11 @@ namespace Parser {
         std::ofstream parsingTree;
         std::ofstream symbolTable;
         std::ofstream tac;
-        std::map<std::string, std::string> parserSymboltable;
+        std::map<std::string, std::string> parserSymbolTable;
         std::stack<std::string> stack;
         std::map<std::string, int> operatorPrecedence;
         std::string postfix;
+        std::stack<std::string> evalStack;
         std::vector<std::string> expressionArray;
 
     public:
@@ -46,6 +47,8 @@ namespace Parser {
         bool match(const std::string &func_name, const std::string &lexeme, const std::string &toMatch);
 
         void maintainStack(const std::string &op);
+
+        void evaluatePostfix(const std::string &expr, const std::string &toAssign);
 
         void cleanStack();
 
