@@ -1,4 +1,5 @@
 func integer: numPrint (integer: num, integer: length) {
+    z := 3 * 5 + 24 - 3 / a + 20 + ( 3 / 4 -2);
     j := j + 3 * 5 - 2;
 	integer: i, j, first, temp;
 	char : a;

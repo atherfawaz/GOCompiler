@@ -5,7 +5,6 @@
 #include "Parser.h"
 #include "Lexer.h"
 
-
 #define CURRENTTOKEN tokens[cursor].getLexeme()
 #define PREVIOUSTOKEN tokens[cursor - 1].getLexeme()
 #define ROW tokens[cursor].getRow()
@@ -14,6 +13,9 @@
 #define ICV define_match(CURRENTTOKEN, "integer") || define_match(CURRENTTOKEN, "char") || define_match(CURRENTTOKEN, "void")
 #define RELATIONALOPERATOR define_match(CURRENTTOKEN, "<") || define_match(CURRENTTOKEN, "<=") || define_match(CURRENTTOKEN, ">") || define_match(CURRENTTOKEN, ">=") || define_match(CURRENTTOKEN, "==") || define_match( CURRENTTOKEN, "/=")
 #define TOKEN_METADATA "[" << ROW << ":" << COLUMN << "] "
+#define STACKEMPTY this->stack.empty()
+#define HIGHERPRECEDENCE this->operatorPrecedence[op] > this->operatorPrecedence[this->stack.top()]
+#define LOWEREQUALPRECEDENCE this->operatorPrecedence[op] <= this->operatorPrecedence[this->stack.top()]
 
 Parser::Parser::Parser() = default;
 
@@ -25,15 +27,13 @@ Parser::Parser::Parser(const std::vector<Lexer::Token> &tok, const std::string &
     this->symbolTable.open(table);
     this->tac.open(tac);
 
-    this->operatorPrecedence.insert(std::pair<char, int>('/', 1));
-    this->operatorPrecedence.insert(std::pair<char, int>('*', 2));
-    this->operatorPrecedence.insert(std::pair<char, int>('+', 3));
-    this->operatorPrecedence.insert(std::pair<char, int>('-', 4));
-
+    this->operatorPrecedence.insert(std::pair<std::string, int>("/", 4));
+    this->operatorPrecedence.insert(std::pair<std::string, int>("*", 4));
+    this->operatorPrecedence.insert(std::pair<std::string, int>("+", 2));
+    this->operatorPrecedence.insert(std::pair<std::string, int>("-", 2));
 }
 
 void Parser::Parser::functionHeader(const std::string &func_name, const std::string &cur_tok) {
-
     //this->parsingTree << "|-";
     for (int i = 0; i < this->tabs; i++)
 
@@ -50,10 +50,8 @@ void Parser::Parser::writeTAC(const std::string &new_statement) {
 }
 
 void Parser::Parser::fillInTheHole(int pos) {
-
     this->threeAddCode.insert(pos, std::to_string(this->lineNum));
     this->offset += std::to_string(this->lineNum).length();
-
 }
 
 void Parser::Parser::emit(const std::string &to_print) {
@@ -81,7 +79,6 @@ bool Parser::Parser::parse() {
     return false;
 }
 
-
 void Parser::Parser::nextToken() {
     cursor++;
     if (cursor >= tokens.size()) {
@@ -93,7 +90,6 @@ void Parser::Parser::nextToken() {
 }
 
 void Parser::Parser::save() {
-
 
     std::map<std::string, std::string>::iterator it;
     int address = 0;
@@ -167,7 +163,32 @@ bool Parser::Parser::match(const std::string &func_name, const std::string &lexe
 bool Parser::Parser::define_match(const std::string &lexeme, const std::string &toMatch) {
     if (lexeme == toMatch) return true;
     return false;
+}
 
+void Parser::Parser::maintainStack(const std::string &op) {
+    if (STACKEMPTY || HIGHERPRECEDENCE) {
+        this->stack.push(op);
+    } else {
+        if (LOWEREQUALPRECEDENCE) {
+            while (!STACKEMPTY && LOWEREQUALPRECEDENCE) {
+                this->postfix += this->stack.top();
+                this->stack.pop();
+            }
+            this->stack.push(op);
+        }
+    }
+}
+
+void Parser::Parser::cleanStack() {
+    while (!STACKEMPTY) {
+        this->postfix += this->stack.top();
+        this->stack.pop();
+    }
+}
+
+void Parser::Parser::storeExpression() {
+    this->expressionArray.emplace_back(this->postfix);
+    this->postfix.clear();
 }
 
 void Parser::Parser::START_PARSE() {
@@ -214,7 +235,6 @@ void Parser::Parser::PROG_S() {
     }
 
 }
-
 
 void Parser::Parser::FUNC_HEADER() {
     functionHeader(__func__, CURRENTTOKEN);
@@ -272,7 +292,6 @@ void Parser::Parser::FUNC_HEADER() {
     }
     getOut();
 }
-
 
 void Parser::Parser::RETURN_TYPE() {
     functionHeader(__func__, CURRENTTOKEN);
@@ -380,9 +399,7 @@ void Parser::Parser::STATEMENT() {
         to_get_out = true;
         INPUT();
         getOut();
-
         nextToken();
-
         STATEMENT();
     } else if (define_match(CURRENTTOKEN, "ret")) {
         to_get_out = true;
@@ -412,7 +429,10 @@ void Parser::Parser::STATEMENT() {
             if (peekExpression()) {
                 nextToken();
                 EXPRESSION();
+                cleanStack();
                 emit(lft_var + " = " + "temp" + std::to_string(this->exprTemp) + " \n");
+                storeExpression();
+                std::cout << "Converted postfix expression: " <<  this->expressionArray.back() << std::endl;
                 this->exprTemp = 0;
                 getOut();
                 if (define_match(CURRENTTOKEN, ";")) { ;
@@ -588,6 +608,7 @@ void Parser::Parser::MUL_DIV_() {
 
     getIn();
     if (match(__func__, CURRENTTOKEN, "*")) {
+        maintainStack("*");
         if (this->exprTemp != 0) {
             writeTAC(
                     "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
@@ -603,6 +624,7 @@ void Parser::Parser::MUL_DIV_() {
         MUL_DIV_();
     }
     if (match(__func__, CURRENTTOKEN, "/")) {
+        maintainStack("/");
         if (this->exprTemp != 0) {
             writeTAC(
                     "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
@@ -625,7 +647,7 @@ void Parser::Parser::FINAL() {
 
     getIn();
     if (isalpha(CURRENTTOKEN[0])) {
-
+        this->postfix += CURRENTTOKEN;
         IDENTIFIER();
         if (!isRight && this->exprTemp == 0) {
             writeTAC("temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN + " ");
@@ -637,6 +659,7 @@ void Parser::Parser::FINAL() {
         }
         nextToken();
     } else if (isdigit(CURRENTTOKEN[0])) {
+        this->postfix += CURRENTTOKEN;
         NUMBER();
         if (!isRight && this->exprTemp == 0) {
             writeTAC("temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN + " ");
@@ -649,10 +672,20 @@ void Parser::Parser::FINAL() {
         nextToken();
     }
     if (match(__func__, CURRENTTOKEN, "(")) {
+        this->stack.push("(");
         nextToken();
         EXPRESSION();
         //nextToken();
         if (match(__func__, CURRENTTOKEN, ")")) {
+            while (!this->stack.empty()) {
+                if (this->stack.top() == "(") {
+                    this->stack.pop();
+                    break;
+                } else {
+                    this->postfix += this->stack.top();
+                    this->stack.pop();
+                }
+            }
             nextToken();
         } else {
             std::cerr << TOKEN_METADATA << "Expected (, but found " << CURRENTTOKEN << " instead."
@@ -668,6 +701,7 @@ void Parser::Parser::ADD_SUB() {
 
     getIn();
     if (match(__func__, CURRENTTOKEN, "+")) {
+        maintainStack("+");
         if (this->exprTemp != 0) {
             writeTAC(
                     "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
@@ -684,6 +718,7 @@ void Parser::Parser::ADD_SUB() {
         ADD_SUB();
     }
     if (match(__func__, CURRENTTOKEN, "-")) {
+        maintainStack("-");
         if (this->exprTemp != 0) {
             writeTAC(
                     "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
@@ -695,6 +730,7 @@ void Parser::Parser::ADD_SUB() {
             isRight = true;
         }
         nextToken();
+        //right side
         MUL_DIV();
         ADD_SUB();
     }
@@ -792,7 +828,6 @@ void Parser::Parser::LOOP() {
     getOut();
 }
 
-
 void Parser::Parser::PRINTS() {
     functionHeader(__func__, CURRENTTOKEN);
 
@@ -855,7 +890,6 @@ void Parser::Parser::INPUT() {
     }
     emit("in " + PREVIOUSTOKEN + "\n");
 }
-
 
 void Parser::Parser::LIT_CONST() {
     functionHeader(__func__, CURRENTTOKEN);
@@ -1045,7 +1079,6 @@ void Parser::Parser::IF() {
     getOut();
 }
 
-
 void Parser::Parser::ELIF(std::queue<int> &outer_queue) {
     functionHeader(__func__, CURRENTTOKEN);
     int offset = 0;
@@ -1131,7 +1164,6 @@ void Parser::Parser::ELSE() {
     getOut();
 }
 
-
 void Parser::Parser::FUNCTION_CALL() {
     functionHeader(__func__, CURRENTTOKEN);
 
@@ -1205,5 +1237,4 @@ void Parser::Parser::RETURN_VALUE() {
     }
     getOut();
 }
-
 
