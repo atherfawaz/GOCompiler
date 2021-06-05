@@ -13,45 +13,51 @@
 #include <tuple>
 #include <windows.h>
 #include <queue>
+#include <stack>
 
 namespace Parser {
 
     class Parser {
+
     private:
         int cursor = 0;
         int tabs = 0;
         int exprTemp = 0;
         bool isRight = false;
-        int line_num = 1;
+        int lineNum = 1;
         int offset = 0;
-        std::string three_add_code = "";
+        std::string threeAddCode;
         std::vector<Lexer::Token> tokens;
-
-        std::ofstream parsing_tree;
-        std::ofstream symbol_table;
+        std::ofstream parsingTree;
+        std::ofstream symbolTable;
         std::ofstream tac;
-        std::map<std::string , std::string> parser_symboltable;
-
-//        std::vector<std::tuple<std::string, std::string  ,int>> parsing_tree;
+        std::map<std::string, std::string> parserSymboltable;
+        std::stack<char> stack;
+        std::map<char, int> operatorPrecedence;
+        std::string postfix;
 
     public:
         Parser();
 
-
-        explicit Parser(const std::vector<Lexer::Token> &tok, std::string tree, std::string table, std::string tac);
+        explicit Parser(const std::vector<Lexer::Token> &tok, const std::string &tree, const std::string &table,
+                        const std::string &tac);
 
         bool match(const std::string &func_name, const std::string &lexeme, const std::string &toMatch);
 
         static bool define_match(const std::string &lexeme, const std::string &toMatch);
 
-        void functionHeader(const std::string &func_name,  std::string cur_tok);
+        void functionHeader(const std::string &func_name, const std::string &cur_tok);
 
         void save();
+
         bool peekExpression();
-        void write_three_adress_code(std::string new_statement);
+
+        void writeTAC(const std::string &new_statement);
 
         void fillInTheHole(int pos);
-        void emit(std::string to_print);
+
+        void emit(const std::string &to_print);
+
         //COORD getpos();
         //void setpos(COORD coords);
         bool parse();
@@ -132,7 +138,7 @@ namespace Parser {
 
         void ADDITIONAL_COMP();
 
-        void ELIF(std::queue<int> & outer_queue);
+        void ELIF(std::queue<int> &outer_queue);
 
         void ELSE();
 

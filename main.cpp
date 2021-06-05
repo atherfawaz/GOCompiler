@@ -17,7 +17,7 @@ std::string getSourceCode() {
     std::string path;
     std::cin >> path;
 
-    if (path == "0"){
+    if (path == "0") {
         path = global_path + "test.go";
     }
 
@@ -44,7 +44,7 @@ void exportTokens(const std::vector<Lexer::Token> &tokens) {
     if (file.is_open()) {
         for (const auto &tok: tokens) {
             //if (tok.non_empty()) {
-                file << tok << std::endl;
+            file << tok << std::endl;
             //}
         }
         file.close();
@@ -76,15 +76,12 @@ int main() {
         }
     }
 
-    //std::cout << "PARSING PROGRAM.\n";
-    Parser::Parser Parser(tokens, global_path + "parsetree.txt", global_path + "parser_symboltable.txt", global_path + "tac.txt");
-    auto parseResult = Parser.parse();
-    //std::cout << "Parsing result: " << parseResult << std::endl;
-    //std::cout << "PARSED PROGRAM.\n";
-
-    //std::cout << "\nEXPORTING TOKENS.\n";
     exportTokens(tokens);
-    //std::cout << "\nEXPORTED TOKENS.\n";
+
+    //std::cout << "PARSING PROGRAM.\n";
+    Parser::Parser Parser(tokens, global_path + "parsetree.txt", global_path + "parserSymboltable.txt",
+                          global_path + "tac.txt");
+    auto parseResult = Parser.parse();
 
     return 0;
 }

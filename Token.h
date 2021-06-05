@@ -12,10 +12,10 @@
 namespace Lexer {
     // All possible token types that our program excepts
     enum TOKEN {
-        AR_OP,  // Arathematic Operations +, -, *, /
-        RO_OP,  // Relational Operators <, >, =, <=, >=, /=
-        IDENTIFIER, // Identifier(vairbale or function name) starts off from alpha value then it can have any alpha numaric input
-        NUMBER,     // Numaric input
+        AR_OP,      // Arithmetic Operations +, -, *, /
+        RO_OP,      // Relational Operators <, >, =, <=, >=, /=
+        IDENTIFIER, // Identifier(variable or function name) starts off from alpha value then it can have any alpha numeric input
+        NUMBER,     // Numeric input
         LIT_CONST,  // a character example 'c'
         STRING,     // String input example "Hello world"
         VAR_DEC,    // Variable declaration operator :, initializes the variable instantly
@@ -26,8 +26,8 @@ namespace Lexer {
         BRACES,     // Regular Braces { }
         SEMICOLON,  // ;
         COMMA,      // ,
-        KEYWORD,
-        DATATYPE,
+        KEYWORD,    // for, if, elif, else, etc.
+        DATATYPE,   //integer, char
         NONE,       // None of the above
     };
 

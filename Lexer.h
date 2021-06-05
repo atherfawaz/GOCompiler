@@ -22,8 +22,8 @@ namespace Lexer {
         std::unordered_map<std::string, std::string> keywords;
         std::unordered_map<std::string, std::string> datatypes;
     public:
-        int row_num;
-        int col_num;
+        int row_num{};
+        int col_num{};
         Lexer();
 
         // initializes start pointer and keyword + datatype dictionaries

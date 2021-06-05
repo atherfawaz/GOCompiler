@@ -17,41 +17,48 @@
 
 Parser::Parser::Parser() = default;
 
-Parser::Parser::Parser(const std::vector<Lexer::Token> &tok, std::string tree, std::string table, std::string tac) {
+Parser::Parser::Parser(const std::vector<Lexer::Token> &tok, const std::string &tree, const std::string &table,
+                       const std::string &tac) {
     this->cursor = 0;
     this->tokens = tok;
-    this->parsing_tree.open(tree);
-    this->symbol_table.open(table);
+    this->parsingTree.open(tree);
+    this->symbolTable.open(table);
     this->tac.open(tac);
+
+    this->operatorPrecedence.insert(std::pair<char, int>('/', 1));
+    this->operatorPrecedence.insert(std::pair<char, int>('*', 2));
+    this->operatorPrecedence.insert(std::pair<char, int>('+', 3));
+    this->operatorPrecedence.insert(std::pair<char, int>('-', 4));
 
 }
 
-void Parser::Parser::functionHeader(const std::string &func_name, std::string cur_tok){
+void Parser::Parser::functionHeader(const std::string &func_name, const std::string &cur_tok) {
 
-    //this->parsing_tree << "|-";
+    //this->parsingTree << "|-";
     for (int i = 0; i < this->tabs; i++)
 
         if (i == this->tabs - 1)
-            this->parsing_tree << "|---";
+            this->parsingTree << "|---";
         else
-            this->parsing_tree << "|   ";
-    this->parsing_tree << func_name << "     " << cur_tok <<std::endl;
-    //this->parsing_tree.push_back(std::tuple<std::string, std::string  ,int>(func_name, CURRENTTOKEN, this->tabs));
+            this->parsingTree << "|   ";
+    this->parsingTree << func_name << "     " << cur_tok << std::endl;
+    //this->parsingTree.push_back(std::tuple<std::string, std::string  ,int>(func_name, CURRENTTOKEN, this->tabs));
 }
 
-void Parser::Parser::write_three_adress_code(std::string new_statement) {
-    this->three_add_code += new_statement;
+void Parser::Parser::writeTAC(const std::string &new_statement) {
+    this->threeAddCode += new_statement;
 }
+
 void Parser::Parser::fillInTheHole(int pos) {
 
-    this->three_add_code.insert(pos , std::to_string(this->line_num));
-    this->offset += std::to_string(this->line_num).length();
+    this->threeAddCode.insert(pos, std::to_string(this->lineNum));
+    this->offset += std::to_string(this->lineNum).length();
 
 }
 
-void Parser::Parser::emit(std::string to_print){
-    write_three_adress_code(to_print);
-    this->line_num++;
+void Parser::Parser::emit(const std::string &to_print) {
+    writeTAC(to_print);
+    this->lineNum++;
     // do something else for the future
 }
 
@@ -91,25 +98,24 @@ void Parser::Parser::save() {
     std::map<std::string, std::string>::iterator it;
     int address = 0;
 
-    for (it = this->parser_symboltable.begin(); it != this->parser_symboltable.end(); it++)
-    {
-        this->symbol_table << it->second    // data type
-                  << ':'
-                  << it->first   // identifier
-                  << ":"
-                  << address
-                  << std::endl;
-        if (it->second == "char"){
+    for (it = this->parserSymboltable.begin(); it != this->parserSymboltable.end(); it++) {
+        this->symbolTable << it->second    // data type
+                          << ':'
+                          << it->first   // identifier
+                          << ":"
+                          << address
+                          << std::endl;
+        if (it->second == "char") {
             address++;
         } else {
-            address +=4;
+            address += 4;
         }
     }
-    tac << this->three_add_code;
+    tac << this->threeAddCode;
 
     this->tac.close();
-    this->symbol_table.close();
-    this->parsing_tree.close();
+    this->symbolTable.close();
+    this->parsingTree.close();
 
 
 }
@@ -153,8 +159,7 @@ bool Parser::Parser::match(const std::string &func_name, const std::string &lexe
     if (lexeme == toMatch) {
         functionHeader(func_name, toMatch);
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -468,7 +473,7 @@ void Parser::Parser::INT_DECLARATION() {
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
-            this->parser_symboltable[CURRENTTOKEN] = "integer";
+            this->parserSymboltable[CURRENTTOKEN] = "integer";
             nextToken();
             getOut();
             ADD_INT_DEC();
@@ -502,7 +507,7 @@ void Parser::Parser::ADD_INT_DEC() {
     if (match(__func__, CURRENTTOKEN, ",")) {
         nextToken();
         IDENTIFIER();
-        this->parser_symboltable[CURRENTTOKEN] = "integer";
+        this->parserSymboltable[CURRENTTOKEN] = "integer";
         nextToken();
         getOut();
         ADD_INT_DEC();
@@ -519,7 +524,7 @@ void Parser::Parser::CHAR_DECLARATION() {
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
-            this->parser_symboltable[CURRENTTOKEN] = "char";
+            this->parserSymboltable[CURRENTTOKEN] = "char";
             nextToken();
             getOut();
             ADD_CHAR_DEC();
@@ -552,7 +557,7 @@ void Parser::Parser::ADD_CHAR_DEC() {
     if (match(__func__, CURRENTTOKEN, ",")) {
         nextToken();
         IDENTIFIER();
-        this->parser_symboltable[CURRENTTOKEN] = "char";
+        this->parserSymboltable[CURRENTTOKEN] = "char";
         nextToken();
         getOut();
         ADD_CHAR_DEC();
@@ -564,10 +569,8 @@ void Parser::Parser::EXPRESSION() {
     functionHeader(__func__, CURRENTTOKEN);
 
     getIn();
-
     MUL_DIV();
     ADD_SUB();
-
     getOut();
 }
 
@@ -578,43 +581,6 @@ void Parser::Parser::MUL_DIV() {
     FINAL();
     MUL_DIV_();
     getOut();
-
-}
-
-void Parser::Parser::ADD_SUB() {
-    functionHeader(__func__, CURRENTTOKEN);
-
-    getIn();
-    if (match(__func__, CURRENTTOKEN, "+")) {
-        if (this->exprTemp != 0) {
-            write_three_adress_code("temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) + " " + CURRENTTOKEN + " ");
-            this->isRight = true;
-
-        }
-        else {
-            write_three_adress_code(CURRENTTOKEN + " ");
-            isRight = true;
-        }
-        nextToken();
-        //right side
-        MUL_DIV();
-        ADD_SUB();
-    }
-    if (match(__func__, CURRENTTOKEN, "-")) {
-        if (this->exprTemp != 0) {
-            write_three_adress_code( "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) + " " + CURRENTTOKEN + " ");
-            this->isRight = true;
-
-        }
-        else {
-            write_three_adress_code(CURRENTTOKEN + " ");
-            isRight = true;
-        }
-        nextToken();
-        MUL_DIV();
-        ADD_SUB();
-    }
-    getOut();
 }
 
 void Parser::Parser::MUL_DIV_() {
@@ -623,27 +589,28 @@ void Parser::Parser::MUL_DIV_() {
     getIn();
     if (match(__func__, CURRENTTOKEN, "*")) {
         if (this->exprTemp != 0) {
-            write_three_adress_code("temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) + " " + CURRENTTOKEN + " ");
+            writeTAC(
+                    "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
+                    " " + CURRENTTOKEN + " ");
             this->isRight = true;
 
-        }
-        else {
-            write_three_adress_code(CURRENTTOKEN + " ");
+        } else {
+            writeTAC(CURRENTTOKEN + " ");
             isRight = true;
         }
         nextToken();
         FINAL();
         MUL_DIV_();
-
     }
     if (match(__func__, CURRENTTOKEN, "/")) {
         if (this->exprTemp != 0) {
-            write_three_adress_code("temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) + " " + CURRENTTOKEN + " ");
+            writeTAC(
+                    "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
+                    " " + CURRENTTOKEN + " ");
             this->isRight = true;
 
-        }
-        else {
-            write_three_adress_code(CURRENTTOKEN + " ");
+        } else {
+            writeTAC(CURRENTTOKEN + " ");
             isRight = true;
         }
         nextToken();
@@ -660,10 +627,10 @@ void Parser::Parser::FINAL() {
     if (isalpha(CURRENTTOKEN[0])) {
 
         IDENTIFIER();
-        if (!isRight && this->exprTemp == 0){
-            write_three_adress_code("temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN  + " ");
+        if (!isRight && this->exprTemp == 0) {
+            writeTAC("temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN + " ");
         }
-        if (isRight){
+        if (isRight) {
             emit(CURRENTTOKEN + "\n");
             this->exprTemp++;
             this->isRight = false;
@@ -671,12 +638,12 @@ void Parser::Parser::FINAL() {
         nextToken();
     } else if (isdigit(CURRENTTOKEN[0])) {
         NUMBER();
-        if (!isRight && this->exprTemp == 0){
-            write_three_adress_code("temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN +  " ");
+        if (!isRight && this->exprTemp == 0) {
+            writeTAC("temp" + std::to_string(this->exprTemp) + " = " + CURRENTTOKEN + " ");
         }
-        if (isRight){
+        if (isRight) {
             emit(CURRENTTOKEN + "\n");
-            this->exprTemp ++;
+            this->exprTemp++;
             this->isRight = false;
         }
         nextToken();
@@ -692,6 +659,44 @@ void Parser::Parser::FINAL() {
                       << std::endl;
             exit(1);
         }
+    }
+    getOut();
+}
+
+void Parser::Parser::ADD_SUB() {
+    functionHeader(__func__, CURRENTTOKEN);
+
+    getIn();
+    if (match(__func__, CURRENTTOKEN, "+")) {
+        if (this->exprTemp != 0) {
+            writeTAC(
+                    "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
+                    " " + CURRENTTOKEN + " ");
+            this->isRight = true;
+
+        } else {
+            writeTAC(CURRENTTOKEN + " ");
+            isRight = true;
+        }
+        nextToken();
+        //right side
+        MUL_DIV();
+        ADD_SUB();
+    }
+    if (match(__func__, CURRENTTOKEN, "-")) {
+        if (this->exprTemp != 0) {
+            writeTAC(
+                    "temp" + std::to_string(this->exprTemp) + " = " + "temp" + std::to_string(this->exprTemp - 1) +
+                    " " + CURRENTTOKEN + " ");
+            this->isRight = true;
+
+        } else {
+            writeTAC(CURRENTTOKEN + " ");
+            isRight = true;
+        }
+        nextToken();
+        MUL_DIV();
+        ADD_SUB();
     }
     getOut();
 }
@@ -739,24 +744,24 @@ void Parser::Parser::LOOP() {
     int offset = 0;
     getIn();
     if (match(__func__, CURRENTTOKEN, "while")) {
-        write_three_adress_code("Wif ");
+        writeTAC("Wif ");
         nextToken();
         COMPARISON();
-        write_three_adress_code("goto  ");
-        goto_queue.push(this->three_add_code.length() -1);
-        int loop_start = this->line_num;
+        writeTAC("goto  ");
+        goto_queue.push(this->threeAddCode.length() - 1);
+        int loop_start = this->lineNum;
         emit("\n");
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
-            write_three_adress_code("goto  ");
-            goto_queue.push(this->three_add_code.length() -1);
+            writeTAC("goto  ");
+            goto_queue.push(this->threeAddCode.length() - 1);
             emit("\n");
 
             //getOut();
             if (match(__func__, CURRENTTOKEN, "{")) {
                 fillInTheHole(goto_queue.front());
                 goto_queue.pop();
-                offset = std::to_string(this->line_num).length();
+                offset = std::to_string(this->lineNum).length();
                 nextToken();
                 STATEMENT();
                 if (match(__func__, CURRENTTOKEN, "}")) {
@@ -786,7 +791,6 @@ void Parser::Parser::LOOP() {
 
     getOut();
 }
-
 
 
 void Parser::Parser::PRINTS() {
@@ -920,7 +924,7 @@ void Parser::Parser::CONDITIONAL() {
                   << " instead." << std::endl;
         exit(1);
     }
-    write_three_adress_code(CURRENTTOKEN + " ");
+    writeTAC(CURRENTTOKEN + " ");
     getOut();
 }
 
@@ -940,7 +944,7 @@ void Parser::Parser::ADDITIONAL_COMP() {
     functionHeader(__func__, CURRENTTOKEN);
 
     if (RELATIONALOPERATOR) {
-        write_three_adress_code(CURRENTTOKEN + " ");
+        writeTAC(CURRENTTOKEN + " ");
         nextToken();
         CONDITIONAL();
         nextToken();
@@ -955,7 +959,7 @@ void Parser::Parser::COMPARISON() {
     //std::cout << CURRENTTOKEN + " ";
     nextToken();
     RELATIONAL_OP();
-    write_three_adress_code(CURRENTTOKEN + " ");
+    writeTAC(CURRENTTOKEN + " ");
     nextToken();
     CONDITIONAL();
     //std::cout << CURRENTTOKEN + " ";
@@ -970,35 +974,35 @@ void Parser::Parser::IF() {
     getIn();
     int offset = 0;
     if (match(__func__, CURRENTTOKEN, "if")) {
-        write_three_adress_code("if ");
+        writeTAC("if ");
         nextToken();
         COMPARISON();
-        write_three_adress_code("goto  ");
-        goto_queue.push(this->three_add_code.length() -1);
+        writeTAC("goto  ");
+        goto_queue.push(this->threeAddCode.length() - 1);
         emit("\n");
 
         //nextToken();
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
-            write_three_adress_code("goto  ");
-            goto_queue.push(this->three_add_code.length() -1);
+            writeTAC("goto  ");
+            goto_queue.push(this->threeAddCode.length() - 1);
             emit("\n");
             if (match(__func__, CURRENTTOKEN, "{")) {
                 fillInTheHole(goto_queue.front());
                 goto_queue.pop();
-                offset = std::to_string(this->line_num).length();
+                offset = std::to_string(this->lineNum).length();
                 nextToken();
                 STATEMENT();
                 //nextToken();
                 if (match(__func__, CURRENTTOKEN, "}")) {
 
                     nextToken();
-                    write_three_adress_code("goto  ");
-                    goto_queue.push(this->three_add_code.length() -1);
+                    writeTAC("goto  ");
+                    goto_queue.push(this->threeAddCode.length() - 1);
                     emit("\n");
                     fillInTheHole(goto_queue.front() + offset);
                     goto_queue.pop();
-                    offset = std::to_string(this->line_num).length();
+                    offset = std::to_string(this->lineNum).length();
                     if (match(__func__, CURRENTTOKEN, "elif")) {
                         ELIF(goto_queue);
                         getOut();
@@ -1029,20 +1033,20 @@ void Parser::Parser::IF() {
         exit(1);
     }
 
-    std::cout << goto_queue.size()<< std::endl;
+    std::cout << goto_queue.size() << std::endl;
 
     int counter = 1;
     while (!goto_queue.empty()) {
         fillInTheHole(goto_queue.front() + (offset * counter));
         //std::cout <<"";
-        counter ++;
+        counter++;
         goto_queue.pop();
     }
     getOut();
 }
 
 
-void Parser::Parser::ELIF(std::queue<int> & outer_queue) {
+void Parser::Parser::ELIF(std::queue<int> &outer_queue) {
     functionHeader(__func__, CURRENTTOKEN);
     int offset = 0;
     std::queue<int> goto_queue;
@@ -1051,38 +1055,35 @@ void Parser::Parser::ELIF(std::queue<int> & outer_queue) {
     getIn();
     if (match(__func__, CURRENTTOKEN, "elif")) {
 
-        write_three_adress_code("elif ");
+        writeTAC("elif ");
         nextToken();
         COMPARISON();
-        write_three_adress_code("goto  ");
-        goto_queue.push(this->three_add_code.length() -1);
+        writeTAC("goto  ");
+        goto_queue.push(this->threeAddCode.length() - 1);
         emit("\n");
         //nextToken();
         if (match(__func__, CURRENTTOKEN, ":")) {
-            write_three_adress_code("goto  ");
-            goto_queue.push(this->three_add_code.length() -1);
+            writeTAC("goto  ");
+            goto_queue.push(this->threeAddCode.length() - 1);
             emit("\n");
             nextToken();
             if (match(__func__, CURRENTTOKEN, "{")) {
                 fillInTheHole(goto_queue.front());
                 goto_queue.pop();
-                offset = std::to_string(this->line_num).length();
+                offset = std::to_string(this->lineNum).length();
                 nextToken();
                 STATEMENT();
                 //nextToken(); //hmmm, im not sure about this
                 if (match(__func__, CURRENTTOKEN, "}")) {
                     get_out = true;
-
                     nextToken();
-                    write_three_adress_code("goto  ");
-                    outer_queue.push(this->three_add_code.length() -1);
+                    writeTAC("goto  ");
+                    outer_queue.push(this->threeAddCode.length() - 1);
                     emit("\n");
                     fillInTheHole(goto_queue.front() + offset);
                     goto_queue.pop();
-
                     if (match(__func__, CURRENTTOKEN, "elif")) {
                         ELIF(outer_queue);
-
                     }
                 } else {
                     std::cerr << TOKEN_METADATA << "Expected a }, but found " << CURRENTTOKEN
@@ -1179,7 +1180,6 @@ void Parser::Parser::ARGUMENTS() {
         nextToken();
         MORE_ARGS();
     }
-
 }
 
 void Parser::Parser::MORE_ARGS() {

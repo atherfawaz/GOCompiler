@@ -6,24 +6,28 @@ out "enter number"
 in i
 out i
 Wif i > 0 goto 10 
-goto 31 
+goto 35 
 Wif j < i goto 12 
 goto 15 
 temp0 = j + 1
 j = temp1 
 goto 10
 if j == 1 goto 17 
-goto 19 
-out "one"
-goto 28 
-elif j == 2 goto 21 
 goto 23 
-out "two"
-goto 28 
-elif a == 3 goto 25 
+out "one"
+if k == 2 goto 20 
+goto 22 
+out "three"
+goto 22 
+goto 32 
+elif j == 2 goto 25 
 goto 27 
+out "two"
+goto 32 
+elif a == 3 goto 29 
+goto 31 
 out "balalalal"
-goto 28 
+goto 32 
 out "others"
 temp0 = i - 1
 i = temp1 

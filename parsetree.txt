@@ -250,18 +250,66 @@ PROGRAM_START     func
 |   |   |   |   |   |   |   |---PRINTS     )
 |   |   |   |   |   |   |   |---PRINTS     ;
 |   |   |   |   |   |---STATEMENT     
-|   |   |   |   |   |---IF     }
-|   |   |   |   |   |---IF     elif
+|   |   |   |   |   |   |---IF     if
+|   |   |   |   |   |   |   |---IF     if
+|   |   |   |   |   |   |   |---COMPARISON     
+|   |   |   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |   |   |---IDENTIFIER     k
+|   |   |   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |   |   |---RELATIONAL_OP     ==
+|   |   |   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |   |   |---NUMBER     2
+|   |   |   |   |   |   |   |   |---ADDITIONAL_COMP     :
+|   |   |   |   |   |   |   |---IF     :
+|   |   |   |   |   |   |   |---IF     {
+|   |   |   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |   |   |---PRINTS     print
+|   |   |   |   |   |   |   |   |   |---PRINTS     print
+|   |   |   |   |   |   |   |   |   |---PRINTS     (
+|   |   |   |   |   |   |   |   |   |---TO_PRINT     
+|   |   |   |   |   |   |   |   |   |   |---STRING     "three"
+|   |   |   |   |   |   |   |   |   |---PRINTS     )
+|   |   |   |   |   |   |   |   |   |---PRINTS     ;
+|   |   |   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |   |---IF     }
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |---IF     }
+|   |   |   |   |---IF     elif
+|   |   |   |   |---ELIF     elif
+|   |   |   |   |   |---ELIF     elif
+|   |   |   |   |   |---COMPARISON     
+|   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---RELATIONAL_OP     ==
+|   |   |   |   |   |   |---CONDITIONAL     
+|   |   |   |   |   |   |   |---NUMBER     2
+|   |   |   |   |   |   |---ADDITIONAL_COMP     :
+|   |   |   |   |   |---ELIF     :
+|   |   |   |   |   |---ELIF     {
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |   |---PRINTS     print
+|   |   |   |   |   |   |   |---PRINTS     print
+|   |   |   |   |   |   |   |---PRINTS     (
+|   |   |   |   |   |   |   |---TO_PRINT     
+|   |   |   |   |   |   |   |   |---STRING     "two"
+|   |   |   |   |   |   |   |---PRINTS     )
+|   |   |   |   |   |   |   |---PRINTS     ;
+|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |   |---ELIF     }
+|   |   |   |   |   |---ELIF     elif
 |   |   |   |   |   |---ELIF     elif
 |   |   |   |   |   |   |---ELIF     elif
 |   |   |   |   |   |   |---COMPARISON     
 |   |   |   |   |   |   |   |---CONDITIONAL     
-|   |   |   |   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |   |   |---IDENTIFIER     a
 |   |   |   |   |   |   |   |   |   |---ALPHABET     
 |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
 |   |   |   |   |   |   |   |---RELATIONAL_OP     ==
 |   |   |   |   |   |   |   |---CONDITIONAL     
-|   |   |   |   |   |   |   |   |---NUMBER     2
+|   |   |   |   |   |   |   |   |---NUMBER     3
 |   |   |   |   |   |   |   |---ADDITIONAL_COMP     :
 |   |   |   |   |   |   |---ELIF     :
 |   |   |   |   |   |   |---ELIF     {
@@ -270,71 +318,47 @@ PROGRAM_START     func
 |   |   |   |   |   |   |   |   |---PRINTS     print
 |   |   |   |   |   |   |   |   |---PRINTS     (
 |   |   |   |   |   |   |   |   |---TO_PRINT     
-|   |   |   |   |   |   |   |   |   |---STRING     "two"
+|   |   |   |   |   |   |   |   |   |---STRING     "balalalal"
 |   |   |   |   |   |   |   |   |---PRINTS     )
 |   |   |   |   |   |   |   |   |---PRINTS     ;
 |   |   |   |   |   |   |---STATEMENT     
 |   |   |   |   |   |   |---ELIF     }
-|   |   |   |   |   |   |---ELIF     elif
-|   |   |   |   |   |   |---ELIF     elif
-|   |   |   |   |   |   |   |---ELIF     elif
-|   |   |   |   |   |   |   |---COMPARISON     
-|   |   |   |   |   |   |   |   |---CONDITIONAL     
-|   |   |   |   |   |   |   |   |   |---IDENTIFIER     a
-|   |   |   |   |   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |   |   |   |---RELATIONAL_OP     ==
-|   |   |   |   |   |   |   |   |---CONDITIONAL     
-|   |   |   |   |   |   |   |   |   |---NUMBER     3
-|   |   |   |   |   |   |   |   |---ADDITIONAL_COMP     :
-|   |   |   |   |   |   |   |---ELIF     :
-|   |   |   |   |   |   |   |---ELIF     {
-|   |   |   |   |   |   |   |---STATEMENT     
-|   |   |   |   |   |   |   |   |---PRINTS     print
-|   |   |   |   |   |   |   |   |   |---PRINTS     print
-|   |   |   |   |   |   |   |   |   |---PRINTS     (
-|   |   |   |   |   |   |   |   |   |---TO_PRINT     
-|   |   |   |   |   |   |   |   |   |   |---STRING     "balalalal"
-|   |   |   |   |   |   |   |   |   |---PRINTS     )
-|   |   |   |   |   |   |   |   |   |---PRINTS     ;
-|   |   |   |   |   |   |   |---STATEMENT     
-|   |   |   |   |   |   |   |---ELIF     }
-|   |   |   |   |---IF     else
+|   |   |   |---IF     else
+|   |   |   |---ELSE     else
 |   |   |   |   |---ELSE     else
-|   |   |   |   |   |---ELSE     else
-|   |   |   |   |   |---ELSE     {
-|   |   |   |   |   |---STATEMENT     
+|   |   |   |   |---ELSE     {
+|   |   |   |   |---STATEMENT     
+|   |   |   |   |   |---PRINTS     print
 |   |   |   |   |   |   |---PRINTS     print
-|   |   |   |   |   |   |   |---PRINTS     print
-|   |   |   |   |   |   |   |---PRINTS     (
-|   |   |   |   |   |   |   |---TO_PRINT     
-|   |   |   |   |   |   |   |   |---STRING     "others"
-|   |   |   |   |   |   |   |---PRINTS     )
-|   |   |   |   |   |   |   |---PRINTS     ;
-|   |   |   |   |   |---STATEMENT     
-|   |   |   |   |   |---ELSE     }
-|   |   |---STATEMENT     
-|   |   |   |---IDENTIFIER     i
-|   |   |   |   |---ALPHABET     
-|   |   |   |   |---ALPHANUMERIC     
-|   |   |   |---IDENTIFIER     i
-|   |   |   |   |---ALPHABET     
-|   |   |   |   |---ALPHANUMERIC     
-|   |   |   |---EXPRESSION     i
+|   |   |   |   |   |   |---PRINTS     (
+|   |   |   |   |   |   |---TO_PRINT     
+|   |   |   |   |   |   |   |---STRING     "others"
+|   |   |   |   |   |   |---PRINTS     )
+|   |   |   |   |   |   |---PRINTS     ;
+|   |   |   |   |---STATEMENT     
+|   |   |   |   |---ELSE     }
+|   |---STATEMENT     
+|   |   |---IDENTIFIER     i
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---IDENTIFIER     i
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---EXPRESSION     i
+|   |   |   |---MUL_DIV     
+|   |   |   |   |---FINAL     
+|   |   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---MUL_DIV_     -
+|   |   |   |---ADD_SUB     -
+|   |   |   |   |---ADD_SUB     -
 |   |   |   |   |---MUL_DIV     
 |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |---IDENTIFIER     i
-|   |   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |---MUL_DIV_     -
-|   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |---NUMBER     1
-|   |   |   |   |   |   |---MUL_DIV_     ;
-|   |   |   |   |   |---ADD_SUB     ;
-|   |   |---STATEMENT     
+|   |   |   |   |   |   |---NUMBER     1
+|   |   |   |   |   |---MUL_DIV_     ;
+|   |   |   |   |---ADD_SUB     ;
+|   |---STATEMENT     
 LOOP     }
 |   |---STATEMENT     
 |   |   |---IDENTIFIER     z
