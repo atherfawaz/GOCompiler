@@ -1,0 +1,5 @@
+char:a:0
+integer:first:1
+integer:i:5
+integer:j:9
+integer:temp:13
