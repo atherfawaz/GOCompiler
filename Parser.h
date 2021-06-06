@@ -31,7 +31,7 @@ namespace Parser {
         std::ofstream parsingTree;
         std::ofstream symbolTable;
         std::ofstream tac;
-        std::map<std::string, std::string> parserSymbolTable;
+        std::map<std::string, std::string> translatorSymbolTable;
         std::stack<std::string> stack;
         std::map<std::string, int> operatorPrecedence;
         std::string postfix;

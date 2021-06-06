@@ -97,7 +97,7 @@ void Parser::Parser::save() {
     std::map<std::string, std::string>::iterator it;
     int address = 0;
 
-    for (it = this->parserSymbolTable.begin(); it != this->parserSymbolTable.end(); it++) {
+    for (it = this->translatorSymbolTable.begin(); it != this->translatorSymbolTable.end(); it++) {
         this->symbolTable << it->second    // data type
                           << ':'
                           << it->first   // identifier
@@ -529,7 +529,7 @@ void Parser::Parser::INT_DECLARATION() {
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
-            this->parserSymbolTable[CURRENTTOKEN] = "integer";
+            this->translatorSymbolTable[CURRENTTOKEN] = "integer";
             nextToken();
             getOut();
             ADD_INT_DEC();
@@ -563,7 +563,7 @@ void Parser::Parser::ADD_INT_DEC() {
     if (match(__func__, CURRENTTOKEN, ",")) {
         nextToken();
         IDENTIFIER();
-        this->parserSymbolTable[CURRENTTOKEN] = "integer";
+        this->translatorSymbolTable[CURRENTTOKEN] = "integer";
         nextToken();
         getOut();
         ADD_INT_DEC();
@@ -580,7 +580,7 @@ void Parser::Parser::CHAR_DECLARATION() {
         if (match(__func__, CURRENTTOKEN, ":")) {
             nextToken();
             IDENTIFIER();
-            this->parserSymbolTable[CURRENTTOKEN] = "char";
+            this->translatorSymbolTable[CURRENTTOKEN] = "char";
             nextToken();
             getOut();
             ADD_CHAR_DEC();
@@ -613,7 +613,7 @@ void Parser::Parser::ADD_CHAR_DEC() {
     if (match(__func__, CURRENTTOKEN, ",")) {
         nextToken();
         IDENTIFIER();
-        this->parserSymbolTable[CURRENTTOKEN] = "char";
+        this->translatorSymbolTable[CURRENTTOKEN] = "char";
         nextToken();
         getOut();
         ADD_CHAR_DEC();
