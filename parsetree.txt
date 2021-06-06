@@ -43,6 +43,66 @@ PROGRAM_START     func
 |   |   |   |---LOOP     :
 |   |   |   |---LOOP     {
 |   |   |   |---STATEMENT     
+|   |   |   |   |---CHAR_DECLARATION     char
+|   |   |   |   |   |---CHAR_DECLARATION     char
+|   |   |   |   |   |---CHAR_DECLARATION     :
+|   |   |   |   |   |---IDENTIFIER     a
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---ADD_CHAR_DEC     ;
+|   |   |   |   |   |---CHAR_DECLARATION     ;
+|   |   |   |---STATEMENT     
+|   |   |   |   |---INT_DECLARATION     integer
+|   |   |   |   |   |---INT_DECLARATION     integer
+|   |   |   |   |   |---INT_DECLARATION     :
+|   |   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---ADD_INT_DEC     ,
+|   |   |   |   |   |---ADD_INT_DEC     ,
+|   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---ADD_INT_DEC     ,
+|   |   |   |   |   |---ADD_INT_DEC     ,
+|   |   |   |   |   |---IDENTIFIER     first
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---ADD_INT_DEC     ,
+|   |   |   |   |   |---ADD_INT_DEC     ,
+|   |   |   |   |   |---IDENTIFIER     temp
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---ADD_INT_DEC     ;
+|   |   |   |   |   |---INT_DECLARATION     ;
+|   |   |   |---STATEMENT     
+|   |   |   |   |---INT_DECLARATION     integer
+|   |   |   |   |   |---INT_DECLARATION     integer
+|   |   |   |   |   |---INT_DECLARATION     :
+|   |   |   |   |   |---IDENTIFIER     test
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---ADD_INT_DEC     ;
+|   |   |   |   |   |---INT_DECLARATION     ;
+|   |   |   |---STATEMENT     
+|   |   |   |   |---CHAR_DECLARATION     char
+|   |   |   |   |   |---CHAR_DECLARATION     char
+|   |   |   |   |   |---CHAR_DECLARATION     :
+|   |   |   |   |   |---IDENTIFIER     testu
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---ADD_CHAR_DEC     ;
+|   |   |   |   |   |---CHAR_DECLARATION     ;
+|   |   |   |---STATEMENT     
+|   |   |   |   |---IDENTIFIER     a
+|   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---ASSIGNMENT     :=
+|   |   |   |   |   |---ASSIGNMENT     :=
+|   |   |   |   |   |---TO_ASSIGN     
+|   |   |   |   |   |---LIT_CONST     'x'
+|   |   |   |   |   |---ASSIGNMENT     ;
+|   |   |   |---STATEMENT     
 |   |   |   |   |---LOOP     while
 |   |   |   |   |   |---LOOP     while
 |   |   |   |   |   |---COMPARISON     
@@ -215,6 +275,6 @@ PROGRAM_START     func
 |   |   |---STATEMENT     
 |   |---LOOP     }
 |   |   |   |---STATEMENT     
-|   |   |   |---LOOP     }
+LOOP     }
 |   |---STATEMENT     
 |   |---FUNC_HEADER     }

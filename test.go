@@ -1,6 +1,12 @@
 func integer: numPrint (integer: num, integer: length) {
    while i > 0 :
    	{
+   	    char : a;
+   		integer: i, j, first, temp;
+   		integer: test;
+   		char : testu;
+
+    	a := 'x';
    	    while j > 2 : {
 
    	        if i > 3: {
