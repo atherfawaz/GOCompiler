@@ -204,13 +204,15 @@ void Parser::Parser::evaluatePostfix(const std::string &expr, const std::string 
             this->evalStack.pop();
             auto leftOperand = this->evalStack.top();
             this->evalStack.pop();
-            writeTAC("temp" + std::to_string(counter) + " = " + leftOperand + " " + ch + " " + rightOperand + "\n");
+            writeTAC("temp" + std::to_string(counter) + " = " + leftOperand + " " + ch + " " + rightOperand);
+            emit("\n");
             this->evalStack.push("temp" + std::to_string(counter));
             counter++;
         }
     }
     while (!this->evalStack.empty()) this->evalStack.pop();
-    writeTAC(toAssign + " = " + "temp" + std::to_string(counter - 1) + "\n");
+    writeTAC(toAssign + " = " + "temp" + std::to_string(counter - 1));
+    emit("\n");
 }
 
 void Parser::Parser::cleanStack() {

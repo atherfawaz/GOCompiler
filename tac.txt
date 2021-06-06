@@ -1,51 +1,13 @@
-temp0 = b + d
-temp1 = temp0 * c
-temp2 = x + temp1
-temp3 = temp2 - y
-a = temp3
-temp0 = 3 * 5
-temp1 = temp0 + 24
-temp2 = 3 / a
-temp3 = temp1 - temp2
-temp4 = temp3 + 20
-temp5 = 3 / 4
-temp6 = temp5 - 2
-temp7 = temp4 + temp6
-z = temp7
-temp0 = 3 * 5
-temp1 = j + temp0
-temp2 = temp1 - 2
-j = temp2
-out "enter number"
-in i
-out i
-Wif i > 0 goto 6 
+Wif i > 0 goto 3 
+goto 30 
+Wif j > 2 goto 5 
+goto 29 
+if i > 3 goto 7 
 goto 27 
-Wif j < i goto 8 
-goto 9 
-temp0 = j + 1
-j = temp0
-goto 6
-if j == 1 goto 11 
-goto 17 
-out "one"
-if k == 2 goto 14 
-goto 16 
-out "three"
-goto 16 
-goto 26 
-elif j == 2 goto 19 
+if j < 0 goto 9 
 goto 21 
-out "two"
-goto 26 
-elif a == 3 goto 23 
-goto 25 
-out "balalalal"
-goto 26 
-out "others"
-temp0 = i - 1
-i = temp0
-goto 4
+in i
+out "enter number"
 temp0 = 3 * 5
 temp1 = temp0 + 24
 temp2 = 3 / a
@@ -55,5 +17,13 @@ temp5 = 3 / 4
 temp6 = temp5 - 2
 temp7 = temp4 + temp6
 z = temp7
-out "temp is"
-out temp
+goto 21 
+temp0 = 2 * 3
+temp1 = 5 / 2
+temp2 = temp1 - 3
+temp3 = temp0 + temp2
+x = temp3
+goto 27 
+out "enter number"
+goto 3
+goto 1
