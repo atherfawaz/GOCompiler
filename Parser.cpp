@@ -87,7 +87,7 @@ void Parser::Parser::nextToken() {
         std::cout << "Finished parsing.\n";
         std::cout << "Generated three-address-code.\n";
         save();
-        exit(0);
+        //exit(0);
     }
     //std::cout << "Current Token: " << CURRENTTOKEN << "\n";
 }
@@ -230,9 +230,7 @@ void Parser::Parser::storeExpression() {
 void Parser::Parser::START_PARSE() {
     functionHeader(__func__, "");
 
-    //getIn();
     PROGRAM_START();
-    //getOut();
 }
 
 void Parser::Parser::PROGRAM_START() {
@@ -255,7 +253,9 @@ void Parser::Parser::PROGRAM_START() {
 
 void Parser::Parser::PROG_S() {
     functionHeader(__func__, "");
-
+    if (this->cursor >= this->tokens.size()) {
+        return;
+    }
     if (match(__func__, CURRENTTOKEN, "func")) {
         getIn();
         FUNC_HEADER();

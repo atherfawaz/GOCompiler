@@ -5,6 +5,7 @@
 #include "Lexer.h"
 #include "Parser.h"
 #include "global_path.h"
+#include "Assembler.h"
 
 std::string dir_path;
 
@@ -27,9 +28,6 @@ std::string getSourceCode() {
         std::string sourceCode((std::istreambuf_iterator<char>(file)),
                                (std::istreambuf_iterator<char>()));
         file.close();
-//        sourceCode.erase(std::remove(sourceCode.begin(), sourceCode.end(), '\r'), sourceCode.end());
-//        sourceCode.erase(std::remove(sourceCode.begin(), sourceCode.end(), '\t'), sourceCode.end());
-//        sourceCode.erase(std::remove(sourceCode.begin(), sourceCode.end(), '\n'), sourceCode.end());
         return sourceCode;
     } else std::cout << "ERROR: FILE READING ERROR.";
     return "";
@@ -81,7 +79,15 @@ int main() {
     //std::cout << "PARSING PROGRAM.\n";
     Parser::Parser Parser(tokens, global_path + "parsetree.txt", global_path + "translator-symboltable.txt",
                           global_path + "tac.txt");
-    auto parseResult = Parser.parse();
+
+    Parser.parse();
+
+    std::cout << "Running Assembler...\n";
+    Assembler::Assembler Assembler;
+    Assembler.buildDataSegment(global_path + "translator-symboltable.txt");
+    Assembler.buildTacArray(global_path + "tac.txt");
+    Assembler.runAssembler();
+    std::cout << "Assembling complete.\n";
 
     return 0;
 }
