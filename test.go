@@ -1,5 +1,6 @@
 func integer: numPrint (integer: num, integer: length) {
-	integer: i, j, first, temp;
+	integer: i, j, first, temp, length;
+	length := 10;
 	char : a;
 	j := 2;
 	first := 4;

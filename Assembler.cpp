@@ -9,7 +9,6 @@
 #include <sstream>
 #include <iosfwd>
 #include "Assembler.h"
-#include "Quadruple.h"
 
 #define TACCODE words[0]
 
@@ -24,7 +23,7 @@ void Assembler::Assembler::buildTacArray(const std::string &filePath) {
     std::ifstream input(filePath);
     for (std::string line; getline(input, line);) {
         this->tacs.emplace_back(line);
-        std::cout << line << std::endl;
+        //std::cout << line << std::endl;
     }
 }
 
@@ -38,8 +37,26 @@ void Assembler::Assembler::runAssembler() {
 void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
     if (TACCODE == "out") {
         //handle printing
+        if(words[1][0] == '"') {
+            //printing something as a string
+            std::string toPrint;
+            for (int i = 1; i < words.size(); i++) {
+                toPrint += words[i] + " ";
+            }
+            toPrint.pop_back();
+            toPrint.pop_back();
+            toPrint.erase(toPrint.begin());
+            std::cout << toPrint << std::endl;
+        } else if (isdigit(words[1][0])) {
+            //printing number
+            std::cout << words[1] << std::endl;
+        } else {
+            //printing identifier
+            std::cout << this->dataSegment[words[1]] << std::endl;
+        }
     } else if (TACCODE == "in") {
         //handle cin
+        std::cin >> this->dataSegment[words[1]];
     } else if (TACCODE == "Wif") {
         //handle whiles
     } else if (TACCODE == "if") {
@@ -57,7 +74,7 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
         this->dataSegment[words[0]] = INT_MIN;
         if (words[3] == "+") {
             int result = this->dataSegment[words[2]] + this->dataSegment[words[4]];
-            std::cout << "Result: " << result << std::endl;
+            //std::cout << "Result: " << result << std::endl;
         } else if (words[3] == "-") {
             this->dataSegment[words[0]] = this->dataSegment[words[2]] - this->dataSegment[words[4]];
         } else if (words[3] == "*") {
@@ -67,8 +84,19 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
         }
     } else if (words.size() == 3) {
         //simple assignment
-        //a = 5
-        this->dataSegment[words[0]] = std::stoi(words[2]);
+        //a = 5 or a = 'x'
+        if (words[2][0] == '\'') {
+            //assign character
+            //assign the middle part of string('x')
+            char character = words[2][1];
+            this->dataSegment[words[0]] = character;
+        } else if (isalpha(words[2][0])) {
+            //assign identifier
+            this->dataSegment[words[0]] = this->dataSegment[words[2]];
+        } else {
+            //assign number
+            this->dataSegment[words[0]] = std::stoi(words[2]);
+        }
     }
 }
 

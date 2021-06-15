@@ -50,8 +50,23 @@ PROGRAM_START     func
 |   |   |   |---IDENTIFIER     temp
 |   |   |   |   |---ALPHABET     
 |   |   |   |   |---ALPHANUMERIC     
+|   |   |---ADD_INT_DEC     ,
+|   |   |   |---ADD_INT_DEC     ,
+|   |   |   |---IDENTIFIER     length
+|   |   |   |   |---ALPHABET     
+|   |   |   |   |---ALPHANUMERIC     
 |   |   |---ADD_INT_DEC     ;
 |   |   |   |---INT_DECLARATION     ;
+|   |---STATEMENT     
+|   |   |---IDENTIFIER     length
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---NUMBER     10
+|   |   |---ASSIGNMENT     :=
+|   |   |   |---ASSIGNMENT     :=
+|   |   |   |---TO_ASSIGN     
+|   |   |   |---NUMBER     10
+|   |   |   |---ASSIGNMENT     ;
 |   |---STATEMENT     
 |   |   |---CHAR_DECLARATION     char
 |   |   |   |---CHAR_DECLARATION     char

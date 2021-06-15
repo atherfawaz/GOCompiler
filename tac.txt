@@ -1,3 +1,4 @@
+length = 10
 j = 2
 first = 4
 temp = 5
@@ -11,35 +12,35 @@ out "enter number"
 in i
 out i
 i = length
-Wif i > 0 goto 16 
-goto 43 
+Wif i > 0 goto 17 
+goto 44 
 first = 0
 j = 1
-Wif j < i goto 20 
-goto 23 
+Wif j < i goto 21 
+goto 24 
 temp0 = j + 1
 j = temp0
-goto 18
-if j == 1 goto 25 
-goto 31 
+goto 19
+if j == 1 goto 26 
+goto 32 
 out "one"
-if k == 2 goto 28 
-goto 30 
+if k == 2 goto 29 
+goto 31 
 out "three"
-goto 30 
-goto 40 
-elif j == 2 goto 33 
-goto 35 
+goto 31 
+goto 41 
+elif j == 2 goto 34 
+goto 36 
 out "two"
+goto 41 
+elif a == 3 goto 38 
 goto 40 
-elif a == 3 goto 37 
-goto 39 
 out "balalalal"
-goto 40 
+goto 41 
 out "others"
 temp0 = i - 1
 i = temp0
-goto 14
+goto 15
 temp0 = 3 * 5
 temp1 = temp0 + 24
 temp2 = 3 / a
