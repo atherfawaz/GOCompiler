@@ -9,6 +9,7 @@
 #include <sstream>
 #include <iosfwd>
 #include "Assembler.h"
+#include "Quadruple.h"
 
 #define TACCODE words[0]
 
@@ -47,8 +48,26 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
         //handle elifs
     } else if (words.size() == 5) {
         //arithmetic assignment
+        //temp0 = b + d
+        //words[0] = temp0
+        //words[1] = =
+        //words[2] = b
+        //words[3] = +
+        //words[4] = d
+        this->dataSegment[words[0]] = INT_MIN;
+        if (words[3] == "+") {
+            int result = this->dataSegment[words[2]] + this->dataSegment[words[4]];
+            std::cout << "Result: " << result << std::endl;
+        } else if (words[3] == "-") {
+            this->dataSegment[words[0]] = this->dataSegment[words[2]] - this->dataSegment[words[4]];
+        } else if (words[3] == "*") {
+            this->dataSegment[words[0]] = this->dataSegment[words[2]] * this->dataSegment[words[4]];
+        } else {
+            this->dataSegment[words[0]] = this->dataSegment[words[2]] / this->dataSegment[words[4]];
+        }
     } else if (words.size() == 3) {
         //simple assignment
+        //a = 5
         this->dataSegment[words[0]] = std::stoi(words[2]);
     }
 }

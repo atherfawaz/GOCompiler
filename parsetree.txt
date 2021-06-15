@@ -29,151 +29,6 @@ PROGRAM_START     func
 |   |---FUNC_HEADER     )
 |   |---FUNC_HEADER     {
 |   |---STATEMENT     
-|   |   |---IDENTIFIER     a
-|   |   |   |---ALPHABET     
-|   |   |   |---ALPHANUMERIC     
-|   |   |---IDENTIFIER     x
-|   |   |   |---ALPHABET     
-|   |   |   |---ALPHANUMERIC     
-|   |   |---EXPRESSION     x
-|   |   |   |---MUL_DIV     
-|   |   |   |   |---FINAL     
-|   |   |   |   |   |---IDENTIFIER     x
-|   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |---MUL_DIV_     +
-|   |   |   |---ADD_SUB     +
-|   |   |   |   |---ADD_SUB     +
-|   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |---FINAL     (
-|   |   |   |   |   |   |---EXPRESSION     b
-|   |   |   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |   |   |---IDENTIFIER     b
-|   |   |   |   |   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |   |   |   |---MUL_DIV_     +
-|   |   |   |   |   |   |   |---ADD_SUB     +
-|   |   |   |   |   |   |   |   |---ADD_SUB     +
-|   |   |   |   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |   |   |   |---IDENTIFIER     d
-|   |   |   |   |   |   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |   |   |   |   |---MUL_DIV_     )
-|   |   |   |   |   |   |   |   |---ADD_SUB     )
-|   |   |   |   |   |   |---FINAL     )
-|   |   |   |   |   |---MUL_DIV_     *
-|   |   |   |   |   |   |---MUL_DIV_     *
-|   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |---IDENTIFIER     c
-|   |   |   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |   |---MUL_DIV_     -
-|   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |---IDENTIFIER     y
-|   |   |   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |   |---MUL_DIV_     ;
-|   |   |   |   |   |---ADD_SUB     ;
-|   |---STATEMENT     
-|   |   |---IDENTIFIER     z
-|   |   |   |---ALPHABET     
-|   |   |   |---ALPHANUMERIC     
-|   |   |---NUMBER     3
-|   |   |---EXPRESSION     3
-|   |   |   |---MUL_DIV     
-|   |   |   |   |---FINAL     
-|   |   |   |   |   |---NUMBER     3
-|   |   |   |   |---MUL_DIV_     *
-|   |   |   |   |   |---MUL_DIV_     *
-|   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |---NUMBER     5
-|   |   |   |   |   |---MUL_DIV_     +
-|   |   |   |---ADD_SUB     +
-|   |   |   |   |---ADD_SUB     +
-|   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |---NUMBER     24
-|   |   |   |   |   |---MUL_DIV_     -
-|   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |---NUMBER     3
-|   |   |   |   |   |   |---MUL_DIV_     /
-|   |   |   |   |   |   |   |---MUL_DIV_     /
-|   |   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |   |---IDENTIFIER     a
-|   |   |   |   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |   |   |---MUL_DIV_     +
-|   |   |   |   |   |---ADD_SUB     +
-|   |   |   |   |   |   |---ADD_SUB     +
-|   |   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |   |---NUMBER     20
-|   |   |   |   |   |   |   |---MUL_DIV_     +
-|   |   |   |   |   |   |---ADD_SUB     +
-|   |   |   |   |   |   |   |---ADD_SUB     +
-|   |   |   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |   |   |---FINAL     (
-|   |   |   |   |   |   |   |   |   |---EXPRESSION     3
-|   |   |   |   |   |   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |   |   |   |   |   |---NUMBER     3
-|   |   |   |   |   |   |   |   |   |   |   |---MUL_DIV_     /
-|   |   |   |   |   |   |   |   |   |   |   |   |---MUL_DIV_     /
-|   |   |   |   |   |   |   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |   |   |   |   |   |   |---NUMBER     4
-|   |   |   |   |   |   |   |   |   |   |   |   |---MUL_DIV_     -
-|   |   |   |   |   |   |   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |   |   |   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |   |   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |   |   |   |   |   |   |---NUMBER     2
-|   |   |   |   |   |   |   |   |   |   |   |   |---MUL_DIV_     )
-|   |   |   |   |   |   |   |   |   |   |   |---ADD_SUB     )
-|   |   |   |   |   |   |   |   |   |---FINAL     )
-|   |   |   |   |   |   |   |   |---MUL_DIV_     ;
-|   |   |   |   |   |   |   |---ADD_SUB     ;
-|   |---STATEMENT     
-|   |   |---IDENTIFIER     j
-|   |   |   |---ALPHABET     
-|   |   |   |---ALPHANUMERIC     
-|   |   |---IDENTIFIER     j
-|   |   |   |---ALPHABET     
-|   |   |   |---ALPHANUMERIC     
-|   |   |---EXPRESSION     j
-|   |   |   |---MUL_DIV     
-|   |   |   |   |---FINAL     
-|   |   |   |   |   |---IDENTIFIER     j
-|   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |---MUL_DIV_     +
-|   |   |   |---ADD_SUB     +
-|   |   |   |   |---ADD_SUB     +
-|   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |---NUMBER     3
-|   |   |   |   |   |---MUL_DIV_     *
-|   |   |   |   |   |   |---MUL_DIV_     *
-|   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |---NUMBER     5
-|   |   |   |   |   |   |---MUL_DIV_     -
-|   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |---ADD_SUB     -
-|   |   |   |   |   |---MUL_DIV     
-|   |   |   |   |   |   |---FINAL     
-|   |   |   |   |   |   |   |---NUMBER     2
-|   |   |   |   |   |   |---MUL_DIV_     ;
-|   |   |   |   |   |---ADD_SUB     ;
-|   |---STATEMENT     
 |   |   |---INT_DECLARATION     integer
 |   |   |   |---INT_DECLARATION     integer
 |   |   |   |---INT_DECLARATION     :
@@ -206,6 +61,88 @@ PROGRAM_START     func
 |   |   |   |   |---ALPHANUMERIC     
 |   |   |---ADD_CHAR_DEC     ;
 |   |   |   |---CHAR_DECLARATION     ;
+|   |---STATEMENT     
+|   |   |---IDENTIFIER     j
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---NUMBER     2
+|   |   |---ASSIGNMENT     :=
+|   |   |   |---ASSIGNMENT     :=
+|   |   |   |---TO_ASSIGN     
+|   |   |   |---NUMBER     2
+|   |   |   |---ASSIGNMENT     ;
+|   |---STATEMENT     
+|   |   |---IDENTIFIER     first
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---NUMBER     4
+|   |   |---ASSIGNMENT     :=
+|   |   |   |---ASSIGNMENT     :=
+|   |   |   |---TO_ASSIGN     
+|   |   |   |---NUMBER     4
+|   |   |   |---ASSIGNMENT     ;
+|   |---STATEMENT     
+|   |   |---IDENTIFIER     temp
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---NUMBER     5
+|   |   |---ASSIGNMENT     :=
+|   |   |   |---ASSIGNMENT     :=
+|   |   |   |---TO_ASSIGN     
+|   |   |   |---NUMBER     5
+|   |   |   |---ASSIGNMENT     ;
+|   |---STATEMENT     
+|   |   |---IDENTIFIER     i
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---IDENTIFIER     j
+|   |   |   |---ALPHABET     
+|   |   |   |---ALPHANUMERIC     
+|   |   |---EXPRESSION     j
+|   |   |   |---MUL_DIV     
+|   |   |   |   |---FINAL     
+|   |   |   |   |   |---IDENTIFIER     j
+|   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |---MUL_DIV_     +
+|   |   |   |---ADD_SUB     +
+|   |   |   |   |---ADD_SUB     +
+|   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |---FINAL     (
+|   |   |   |   |   |   |---EXPRESSION     first
+|   |   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |   |---IDENTIFIER     first
+|   |   |   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |   |   |---MUL_DIV_     +
+|   |   |   |   |   |   |   |---ADD_SUB     +
+|   |   |   |   |   |   |   |   |---ADD_SUB     +
+|   |   |   |   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |   |   |   |---IDENTIFIER     temp
+|   |   |   |   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |   |   |   |---MUL_DIV_     )
+|   |   |   |   |   |   |   |   |---ADD_SUB     )
+|   |   |   |   |   |   |---FINAL     )
+|   |   |   |   |   |---MUL_DIV_     *
+|   |   |   |   |   |   |---MUL_DIV_     *
+|   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |---IDENTIFIER     temp
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---MUL_DIV_     -
+|   |   |   |   |---ADD_SUB     -
+|   |   |   |   |   |---ADD_SUB     -
+|   |   |   |   |   |---MUL_DIV     
+|   |   |   |   |   |   |---FINAL     
+|   |   |   |   |   |   |   |---IDENTIFIER     first
+|   |   |   |   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |   |   |   |---MUL_DIV_     ;
+|   |   |   |   |   |---ADD_SUB     ;
 |   |---STATEMENT     
 |   |   |---IDENTIFIER     a
 |   |   |   |---ALPHABET     

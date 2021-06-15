@@ -480,6 +480,7 @@ void Parser::Parser::STATEMENT() {
                     exit(1);
                 }
             } else {
+                this->assignString += leftVar;
                 ASSIGNMENT();
                 getOut();
             }
@@ -777,6 +778,7 @@ void Parser::Parser::ASSIGNMENT() {
 
 void Parser::Parser::TO_ASSIGN() {
     functionHeader(__func__, "");
+    this->assignString += " = " + CURRENTTOKEN; //adding assignment statement
     if (CURRENTTOKEN[0] == '\'') {
         LIT_CONST();
     } else if (isdigit(CURRENTTOKEN[0])) {
@@ -788,6 +790,9 @@ void Parser::Parser::TO_ASSIGN() {
                   << CURRENTTOKEN << " instead." << std::endl;
         exit(1);
     }
+    writeTAC(this->assignString);
+    emit("\n");
+    this->assignString.clear();
 }
 
 void Parser::Parser::LOOP() {

@@ -1,9 +1,12 @@
 func integer: numPrint (integer: num, integer: length) {
-    a := x + (b + d) * c - y;
-    z := 3 * 5 + 24 - 3 / a + 20 + ( 3 / 4 -2);
-    j := j + 3 * 5 - 2;
 	integer: i, j, first, temp;
 	char : a;
+	j := 2;
+	first := 4;
+	temp := 5;
+    i := j + (first + temp) * temp - first;
+    /*z := 3 * 5 + 24 - 3 / a + 20 + ( 3 / 4 -2);*/
+    /*j := j + 3 * 5 - 2;*/
 	a := 'x';
 	print ("enter number");
 	in >> i;

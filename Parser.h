@@ -37,6 +37,7 @@ namespace Parser {
         std::string postfix;
         std::stack<std::string> evalStack;
         std::vector<std::string> expressionArray;
+        std::string assignString;
 
     public:
         Parser();
