@@ -31,13 +31,14 @@ void Assembler::Assembler::runAssembler() {
     for (auto &line : this->tacs) {
         std::vector<std::string> words = splitByDelimiter(line, " ");
         processQuadruple(words);
+        this->programCounter++; //increment pc
     }
 }
 
 void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
     if (TACCODE == "out") {
         //handle printing
-        if(words[1][0] == '"') {
+        if (words[1][0] == '"') {
             //printing something as a string
             std::string toPrint;
             for (int i = 1; i < words.size(); i++) {
@@ -56,11 +57,28 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
         }
     } else if (TACCODE == "in") {
         //handle cin
+        //in x
         std::cin >> this->dataSegment[words[1]];
     } else if (TACCODE == "Wif") {
         //handle whiles
     } else if (TACCODE == "if") {
         //handle ifs
+        //if j == 1 goto 26
+        /*
+         * words[0] = if
+         * words[1] = j
+         * words[2] = ==
+         * words[3] = 1
+         * words[4] = goto
+         * words[5] = 26
+         * */
+        if (isalpha(words[1][1])) {
+            //first is identifier
+            if (isalpha(words[3][1])) {
+                //second is identifier too
+                handleRelationalOperator(op = words[2], lop = words[1], rop = words[3]);
+            }
+        }
     } else if (TACCODE == "elif") {
         //handle elifs
     } else if (words.size() == 5) {
@@ -118,4 +136,9 @@ std::vector<std::string> Assembler::Assembler::splitByDelimiter(std::string toSp
     }
     words.emplace_back(toSplit);
     return words;
+}
+
+void
+Assembler::Assembler::handleRelationalOperator(const std::string &op, const std::string &lop, const std::string &rop) {
+
 }

@@ -30,6 +30,7 @@ namespace Assembler {
         std::vector<std::string> tacs;
         std::vector<Quadruple> quadruples;
         std::unordered_map<std::string, int> dataSegment;
+        int programCounter = 0;
     public:
         Assembler();
         ~Assembler();
@@ -38,6 +39,7 @@ namespace Assembler {
         void buildDataSegment(const std::string& filePath);
         void runAssembler();
         void processQuadruple(std::vector<std::string> words);
+        void handleRelationalOperator(const std::string& op, const std::string& lop, const std::string& rop);
     };
 }
 
