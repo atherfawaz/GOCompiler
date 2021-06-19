@@ -39,7 +39,7 @@ namespace Assembler {
         void buildDataSegment(const std::string& filePath);
         void runAssembler();
         void processQuadruple(std::vector<std::string> words);
-        void handleRelationalOperator(const std::string& op, const std::string& lop, const std::string& rop);
+        bool handleRelationalOperator(const std::string& op, const std::string& lop, const std::string& rop, int code);
     };
 }
 

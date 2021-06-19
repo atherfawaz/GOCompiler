@@ -59,9 +59,7 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
         //handle cin
         //in x
         std::cin >> this->dataSegment[words[1]];
-    } else if (TACCODE == "Wif") {
-        //handle whiles
-    } else if (TACCODE == "if") {
+    } else if (TACCODE == "if" || TACCODE == "Wif" || TACCODE == "elif") {
         //handle ifs
         //if j == 1 goto 26
         /*
@@ -72,15 +70,32 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
          * words[4] = goto
          * words[5] = 26
          * */
-        if (isalpha(words[1][1])) {
+        int code = -1;
+        if (isalpha(*words[1].begin())) {
             //first is identifier
-            if (isalpha(words[3][1])) {
+            if (isalpha(*words[3].begin())) {
                 //second is identifier too
-                handleRelationalOperator(op = words[2], lop = words[1], rop = words[3]);
+                code = 1;
+            } else if (isdigit(*words[3].begin())) {
+                //only left is identifier
+                code = 3;
+            }
+            bool result = handleRelationalOperator(words[2], words[1], words[3], code);
+            if (result) {
+                this->programCounter = std::stoi(words[5]) - 1;
+            }
+        } else if (isdigit(*words[1].begin())) {
+            //first is digit
+            if (isalpha(*words[3].begin())) {
+                code = 2;
+            } else if (isdigit(*words[3].begin())) {
+                code = 4;
+            }
+            bool result = handleRelationalOperator(words[2], words[1], words[3], code);
+            if (result) {
+                this->programCounter = std::stoi(words[5]) - 1;
             }
         }
-    } else if (TACCODE == "elif") {
-        //handle elifs
     } else if (words.size() == 5) {
         //arithmetic assignment
         //temp0 = b + d
@@ -138,7 +153,76 @@ std::vector<std::string> Assembler::Assembler::splitByDelimiter(std::string toSp
     return words;
 }
 
-void
-Assembler::Assembler::handleRelationalOperator(const std::string &op, const std::string &lop, const std::string &rop) {
-
+bool
+Assembler::Assembler::handleRelationalOperator(const std::string &op, const std::string &lop, const std::string &rop,
+                                               int code) {
+    if (code == 1) {
+        //both identifiers
+        if (op == "<") {
+            return this->dataSegment[lop] < this->dataSegment[rop];
+        } else if (op == "<=") {
+            return this->dataSegment[lop] <= this->dataSegment[rop];
+        } else if (op == ">") {
+            return this->dataSegment[lop] > this->dataSegment[rop];
+        } else if (op == ">=") {
+            return this->dataSegment[lop] >= this->dataSegment[rop];
+        } else if (op == "==") {
+            return this->dataSegment[lop] == this->dataSegment[rop];
+        } else if (op == "!=") {
+            return this->dataSegment[lop] >= this->dataSegment[rop];
+        } else {
+            std::cerr << "Expected a relational operator but found " << op << " instead" << std::endl;
+        }
+    } else if (code == 2) {
+        //only right identifier
+        if (op == "<") {
+            return std::stoi(lop) < this->dataSegment[rop];
+        } else if (op == "<=") {
+            return std::stoi(lop) <= this->dataSegment[rop];
+        } else if (op == ">") {
+            return std::stoi(lop) > this->dataSegment[rop];
+        } else if (op == ">=") {
+            return std::stoi(lop) >= this->dataSegment[rop];
+        } else if (op == "==") {
+            return std::stoi(lop) == this->dataSegment[rop];
+        } else if (op == "!=") {
+            return std::stoi(lop) >= this->dataSegment[rop];
+        } else {
+            std::cerr << "Expected a relational operator but found " << op << " instead" << std::endl;
+        }
+    } else if (code == 3) {
+        //only left identifier
+        if (op == "<") {
+            return this->dataSegment[lop] < std::stoi(rop);
+        } else if (op == "<=") {
+            return this->dataSegment[lop] <= std::stoi(rop);
+        } else if (op == ">") {
+            return this->dataSegment[lop] > std::stoi(rop);
+        } else if (op == ">=") {
+            return this->dataSegment[lop] >= std::stoi(rop);
+        } else if (op == "==") {
+            return this->dataSegment[lop] == std::stoi(rop);
+        } else if (op == "!=") {
+            return this->dataSegment[lop] >= std::stoi(rop);
+        } else {
+            std::cerr << "Expected a relational operator but found " << op << " instead" << std::endl;
+        }
+    } else {
+        //none identifier
+        if (op == "<") {
+            return std::stoi(lop) < std::stoi(rop);
+        } else if (op == "<=") {
+            return std::stoi(lop) <= std::stoi(rop);
+        } else if (op == ">") {
+            return std::stoi(lop) > std::stoi(rop);
+        } else if (op == ">=") {
+            return std::stoi(lop) >= std::stoi(rop);
+        } else if (op == "==") {
+            return std::stoi(lop) == std::stoi(rop);
+        } else if (op == "!=") {
+            return std::stoi(lop) >= std::stoi(rop);
+        } else {
+            std::cerr << "Expected a relational operator but found " << op << " instead" << std::endl;
+        }
+    }
 }
