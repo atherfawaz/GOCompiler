@@ -28,7 +28,8 @@ void Assembler::Assembler::buildTacArray(const std::string &filePath) {
 }
 
 void Assembler::Assembler::runAssembler() {
-    for (auto &line : this->tacs) {
+    while (this->programCounter <= this->tacs.size()) {
+        std::string line = this->tacs[programCounter];
         std::vector<std::string> words = splitByDelimiter(line, " ");
         processQuadruple(words);
         this->programCounter++; //increment pc
@@ -55,6 +56,15 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
             //printing identifier
             std::cout << this->dataSegment[words[1]] << std::endl;
         }
+    } else if (TACCODE == "goto") {
+        //handle jumps
+        /*
+         * goto 24
+         * words[0] = goto
+         * words[1] = 24
+         * */
+        std::cout << "The value of i: " << this->dataSegment["i"] << std::endl;
+        this->programCounter = std::stoi(words[1]) - 2;
     } else if (TACCODE == "in") {
         //handle cin
         //in x
@@ -82,7 +92,7 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
             }
             bool result = handleRelationalOperator(words[2], words[1], words[3], code);
             if (result) {
-                this->programCounter = std::stoi(words[5]) - 1;
+                this->programCounter = std::stoi(words[5]) - 2; //-1 for pc++ -1 for pc starting from 0
             }
         } else if (isdigit(*words[1].begin())) {
             //first is digit
@@ -93,7 +103,7 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
             }
             bool result = handleRelationalOperator(words[2], words[1], words[3], code);
             if (result) {
-                this->programCounter = std::stoi(words[5]) - 1;
+                this->programCounter = std::stoi(words[5]) - 2; //-1 for pc++ -1 for pc starting from 0
             }
         }
     } else if (words.size() == 5) {

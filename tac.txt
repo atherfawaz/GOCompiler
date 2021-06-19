@@ -1,4 +1,4 @@
-length = 10
+length = 1
 j = 2
 first = 4
 temp = 5
@@ -8,47 +8,39 @@ temp2 = j + temp1
 temp3 = temp2 - first
 i = temp3
 a = 'x'
-out "enter number"
+out "Enter number:"
 in i
 out i
 i = length
 Wif i > 0 goto 17 
-goto 44 
-first = 0
-j = 1
-Wif j < i goto 21 
-goto 24 
-temp0 = j + 1
-j = temp0
-goto 19
-if j == 1 goto 26 
-goto 32 
-out "one"
-if k == 2 goto 29 
-goto 31 
-out "three"
-goto 31 
-goto 41 
-elif j == 2 goto 34 
 goto 36 
-out "two"
-goto 41 
-elif a == 3 goto 38 
-goto 40 
-out "balalalal"
-goto 41 
-out "others"
+j = 1
+first = 3
+if j == 1 goto 21 
+goto 27 
+out "j is one"
+if first == 3 goto 24 
+goto 26 
+out "first is three"
+goto 26 
+goto 33 
+elif j == 2 goto 29 
+goto 33 
+out "j is two"
+first = 4
+out "but now first is four"
+goto 33 
 temp0 = i - 1
 i = temp0
 goto 15
 temp0 = 3 * 5
 temp1 = temp0 + 24
-temp2 = 3 / a
+temp2 = 3 / temp
 temp3 = temp1 - temp2
 temp4 = temp3 + 20
 temp5 = 3 / 4
 temp6 = temp5 - 2
 temp7 = temp4 + temp6
 z = temp7
-out "temp is"
+out "Temp is: "
 out temp
