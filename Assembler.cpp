@@ -111,19 +111,25 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
         //temp0 = b + d
         //words[0] = temp0
         //words[1] = =
-        //words[2] = b
+        //words[2] = b or 4
         //words[3] = +
-        //words[4] = d
+        //words[4] = d or 5
+        int left, right;
         this->dataSegment[words[0]] = INT_MIN;
+        if (this->dataSegment.find(words[2]) != this->dataSegment.end()) {
+            left = this->dataSegment[words[2]];
+        } else left = std::stoi(words[2]);
+        if (this->dataSegment.find(words[4]) != this->dataSegment.end()) {
+            right = this->dataSegment[words[4]];
+        } else right = std::stoi(words[4]);
         if (words[3] == "+") {
-            int result = this->dataSegment[words[2]] + this->dataSegment[words[4]];
-            //std::cout << "Result: " << result << std::endl;
+            this->dataSegment[words[0]] = left + right;
         } else if (words[3] == "-") {
-            this->dataSegment[words[0]] = this->dataSegment[words[2]] - this->dataSegment[words[4]];
+            this->dataSegment[words[0]] = left - right;
         } else if (words[3] == "*") {
-            this->dataSegment[words[0]] = this->dataSegment[words[2]] * this->dataSegment[words[4]];
+            this->dataSegment[words[0]] = left * right;
         } else {
-            this->dataSegment[words[0]] = this->dataSegment[words[2]] / this->dataSegment[words[4]];
+            this->dataSegment[words[0]] = left / right;
         }
     } else if (words.size() == 3) {
         //simple assignment

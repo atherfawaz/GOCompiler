@@ -7,9 +7,9 @@ func integer: numPrint (integer: num, integer: length) {
 	temp := 5;
     i := j + (first + temp) * temp - first;
 	a := 'x';
-	print("Enter number:");
-	in >> i;
 	println (i);
+	print("Enter number:");
+    in >> i;
 	i := length;
 	while i > 0 : {
 	    j := 1;

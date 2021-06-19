@@ -8,9 +8,9 @@ temp2 = j + temp1
 temp3 = temp2 - first
 i = temp3
 a = 'x'
+out i
 out "Enter number:"
 in i
-out i
 i = length
 Wif i > 0 goto 17 
 goto 36 

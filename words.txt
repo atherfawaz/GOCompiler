@@ -64,20 +64,20 @@ IDENTIFIER a row 8 col 6
 ASS_OP := row 8 col 9
 LIT_CONST 'x' row 8 col 13
 SEMICOLON ; row 8 col 14
-KEYWORD print row 9 col 10
-PRNT ( row 9 col 11
-STRING "Enter number:" row 9 col 26
-PRNT ) row 9 col 27
-SEMICOLON ; row 9 col 28
-KEYWORD in row 10 col 7
-INPUT_OP >> row 10 col 10
-IDENTIFIER i row 10 col 12
-SEMICOLON ; row 10 col 13
-KEYWORD println row 11 col 12
-PRNT ( row 11 col 14
-IDENTIFIER i row 11 col 15
-PRNT ) row 11 col 16
-SEMICOLON ; row 11 col 17
+KEYWORD println row 9 col 12
+PRNT ( row 9 col 14
+IDENTIFIER i row 9 col 15
+PRNT ) row 9 col 16
+SEMICOLON ; row 9 col 17
+KEYWORD print row 10 col 10
+PRNT ( row 10 col 11
+STRING "Enter number:" row 10 col 26
+PRNT ) row 10 col 27
+SEMICOLON ; row 10 col 28
+KEYWORD in row 11 col 6
+INPUT_OP >> row 11 col 9
+IDENTIFIER i row 11 col 11
+SEMICOLON ; row 11 col 12
 IDENTIFIER i row 12 col 6
 ASS_OP := row 12 col 9
 IDENTIFIER length row 12 col 16

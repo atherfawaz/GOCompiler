@@ -173,6 +173,16 @@ PROGRAM_START     func
 |   |   |   |---LIT_CONST     'x'
 |   |   |   |---ASSIGNMENT     ;
 |   |---STATEMENT     
+|   |   |---PRINTS     println
+|   |   |   |---PRINTS     println
+|   |   |   |---PRINTS     (
+|   |   |   |---TO_PRINT     
+|   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |---PRINTS     )
+|   |   |   |---PRINTS     ;
+|   |---STATEMENT     
 |   |   |---PRINTS     print
 |   |   |   |---PRINTS     print
 |   |   |   |---PRINTS     (
@@ -188,16 +198,6 @@ PROGRAM_START     func
 |   |   |   |   |---ALPHABET     
 |   |   |   |   |---ALPHANUMERIC     
 |   |   |---INPUT     ;
-|   |---STATEMENT     
-|   |   |---PRINTS     println
-|   |   |   |---PRINTS     println
-|   |   |   |---PRINTS     (
-|   |   |   |---TO_PRINT     
-|   |   |   |   |---IDENTIFIER     i
-|   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |---PRINTS     )
-|   |   |   |---PRINTS     ;
 |   |---STATEMENT     
 |   |   |---IDENTIFIER     i
 |   |   |   |---ALPHABET     
