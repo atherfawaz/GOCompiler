@@ -27,7 +27,12 @@ void Assembler::Assembler::buildTacArray(const std::string &filePath) {
     }
 }
 
+void Assembler::Assembler::generateMachineCode() {
+
+}
+
 void Assembler::Assembler::runAssembler() {
+    generateMachineCode();
     while (this->programCounter <= this->tacs.size()) {
         std::string line = this->tacs[programCounter];
         std::vector<std::string> words = splitByDelimiter(line, " ");
@@ -63,7 +68,6 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
          * words[0] = goto
          * words[1] = 24
          * */
-        std::cout << "The value of i: " << this->dataSegment["i"] << std::endl;
         this->programCounter = std::stoi(words[1]) - 2;
     } else if (TACCODE == "in") {
         //handle cin
@@ -80,32 +84,11 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
          * words[4] = goto
          * words[5] = 26
          * */
-        int code = -1;
-        if (isalpha(*words[1].begin())) {
-            //first is identifier
-            if (isalpha(*words[3].begin())) {
-                //second is identifier too
-                code = 1;
-            } else if (isdigit(*words[3].begin())) {
-                //only left is identifier
-                code = 3;
-            }
-            bool result = handleRelationalOperator(words[2], words[1], words[3], code);
-            if (result) {
-                this->programCounter = std::stoi(words[5]) - 2; //-1 for pc++ -1 for pc starting from 0
-            }
-        } else if (isdigit(*words[1].begin())) {
-            //first is digit
-            if (isalpha(*words[3].begin())) {
-                code = 2;
-            } else if (isdigit(*words[3].begin())) {
-                code = 4;
-            }
-            bool result = handleRelationalOperator(words[2], words[1], words[3], code);
-            if (result) {
-                this->programCounter = std::stoi(words[5]) - 2; //-1 for pc++ -1 for pc starting from 0
-            }
+        bool result = handleRelationalOperator(words[2], words[1], words[3]);
+        if (result) {
+            this->programCounter = std::stoi(words[5]) - 2; //-1 for pc++ -1 for pc starting from 0
         }
+
     } else if (words.size() == 5) {
         //arithmetic assignment
         //temp0 = b + d
@@ -170,75 +153,29 @@ std::vector<std::string> Assembler::Assembler::splitByDelimiter(std::string toSp
 }
 
 bool
-Assembler::Assembler::handleRelationalOperator(const std::string &op, const std::string &lop, const std::string &rop,
-                                               int code) {
-    if (code == 1) {
-        //both identifiers
-        if (op == "<") {
-            return this->dataSegment[lop] < this->dataSegment[rop];
-        } else if (op == "<=") {
-            return this->dataSegment[lop] <= this->dataSegment[rop];
-        } else if (op == ">") {
-            return this->dataSegment[lop] > this->dataSegment[rop];
-        } else if (op == ">=") {
-            return this->dataSegment[lop] >= this->dataSegment[rop];
-        } else if (op == "==") {
-            return this->dataSegment[lop] == this->dataSegment[rop];
-        } else if (op == "!=") {
-            return this->dataSegment[lop] >= this->dataSegment[rop];
-        } else {
-            std::cerr << "Expected a relational operator but found " << op << " instead" << std::endl;
-        }
-    } else if (code == 2) {
-        //only right identifier
-        if (op == "<") {
-            return std::stoi(lop) < this->dataSegment[rop];
-        } else if (op == "<=") {
-            return std::stoi(lop) <= this->dataSegment[rop];
-        } else if (op == ">") {
-            return std::stoi(lop) > this->dataSegment[rop];
-        } else if (op == ">=") {
-            return std::stoi(lop) >= this->dataSegment[rop];
-        } else if (op == "==") {
-            return std::stoi(lop) == this->dataSegment[rop];
-        } else if (op == "!=") {
-            return std::stoi(lop) >= this->dataSegment[rop];
-        } else {
-            std::cerr << "Expected a relational operator but found " << op << " instead" << std::endl;
-        }
-    } else if (code == 3) {
-        //only left identifier
-        if (op == "<") {
-            return this->dataSegment[lop] < std::stoi(rop);
-        } else if (op == "<=") {
-            return this->dataSegment[lop] <= std::stoi(rop);
-        } else if (op == ">") {
-            return this->dataSegment[lop] > std::stoi(rop);
-        } else if (op == ">=") {
-            return this->dataSegment[lop] >= std::stoi(rop);
-        } else if (op == "==") {
-            return this->dataSegment[lop] == std::stoi(rop);
-        } else if (op == "!=") {
-            return this->dataSegment[lop] >= std::stoi(rop);
-        } else {
-            std::cerr << "Expected a relational operator but found " << op << " instead" << std::endl;
-        }
+Assembler::Assembler::handleRelationalOperator(const std::string &op, const std::string &lop, const std::string &rop) {
+    int left, right;
+    if (this->dataSegment.find(lop) != this->dataSegment.end()) {
+        left = this->dataSegment[lop];
+    } else left = std::stoi(lop);
+    if (this->dataSegment.find(rop) != this->dataSegment.end()) {
+        right = this->dataSegment[rop];
+    } else right = std::stoi(rop);
+    if (op == "<") {
+        return left < right;
+    } else if (op == "<=") {
+        return left <= right;
+    } else if (op == ">") {
+        return left > right;
+    } else if (op == ">=") {
+        return left >= right;
+    } else if (op == "==") {
+        return left == right;
+    } else if (op == "!=") {
+        return left >= right;
     } else {
-        //none identifier
-        if (op == "<") {
-            return std::stoi(lop) < std::stoi(rop);
-        } else if (op == "<=") {
-            return std::stoi(lop) <= std::stoi(rop);
-        } else if (op == ">") {
-            return std::stoi(lop) > std::stoi(rop);
-        } else if (op == ">=") {
-            return std::stoi(lop) >= std::stoi(rop);
-        } else if (op == "==") {
-            return std::stoi(lop) == std::stoi(rop);
-        } else if (op == "!=") {
-            return std::stoi(lop) >= std::stoi(rop);
-        } else {
-            std::cerr << "Expected a relational operator but found " << op << " instead" << std::endl;
-        }
+        std::cerr << "Expected a relational operator but found " << op << " instead" << std::endl;
     }
+
+
 }

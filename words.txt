@@ -120,12 +120,8 @@ PRNT ) row 19 col 40
 SEMICOLON ; row 19 col 41
 BRACES } row 20 col 14
 BRACES } row 21 col 10
-KEYWORD elif row 22 col 13
-IDENTIFIER j row 22 col 15
-RO_OP == row 22 col 18
-NUMBER 2 row 22 col 20
-VAR_DEC : row 22 col 22
-BRACES { row 22 col 24
+KEYWORD else row 22 col 13
+BRACES { row 22 col 15
 KEYWORD print row 23 col 18
 PRNT ( row 23 col 19
 STRING "j is two" row 23 col 29

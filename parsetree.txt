@@ -294,20 +294,10 @@ PROGRAM_START     func
 |   |   |   |   |   |   |   |---IF     }
 |   |   |   |   |   |---STATEMENT     
 |   |   |   |   |---IF     }
-|   |   |   |   |---IF     elif
-|   |   |   |   |---ELIF     elif
-|   |   |   |   |   |---ELIF     elif
-|   |   |   |   |   |---COMPARISON     
-|   |   |   |   |   |   |---CONDITIONAL     
-|   |   |   |   |   |   |   |---IDENTIFIER     j
-|   |   |   |   |   |   |   |   |---ALPHABET     
-|   |   |   |   |   |   |   |   |---ALPHANUMERIC     
-|   |   |   |   |   |   |---RELATIONAL_OP     ==
-|   |   |   |   |   |   |---CONDITIONAL     
-|   |   |   |   |   |   |   |---NUMBER     2
-|   |   |   |   |   |   |---ADDITIONAL_COMP     :
-|   |   |   |   |   |---ELIF     :
-|   |   |   |   |   |---ELIF     {
+|   |   |   |   |---IF     else
+|   |   |   |   |---ELSE     else
+|   |   |   |   |   |---ELSE     else
+|   |   |   |   |   |---ELSE     {
 |   |   |   |   |   |---STATEMENT     
 |   |   |   |   |   |   |---PRINTS     print
 |   |   |   |   |   |   |   |---PRINTS     print
@@ -335,29 +325,29 @@ PROGRAM_START     func
 |   |   |   |   |   |   |   |---PRINTS     )
 |   |   |   |   |   |   |   |---PRINTS     ;
 |   |   |   |   |   |---STATEMENT     
-|   |   |   |---ELIF     }
-STATEMENT     
-|---IDENTIFIER     i
-|   |---ALPHABET     
-|   |---ALPHANUMERIC     
-|---IDENTIFIER     i
-|   |---ALPHABET     
-|   |---ALPHANUMERIC     
-|---EXPRESSION     i
-|   |---MUL_DIV     
-|   |   |---FINAL     
-|   |   |   |---IDENTIFIER     i
-|   |   |   |   |---ALPHABET     
-|   |   |   |   |---ALPHANUMERIC     
-|   |   |---MUL_DIV_     -
-|   |---ADD_SUB     -
-|   |   |---ADD_SUB     -
+|   |   |   |---ELSE     }
+|---STATEMENT     
+|   |---IDENTIFIER     i
+|   |   |---ALPHABET     
+|   |   |---ALPHANUMERIC     
+|   |---IDENTIFIER     i
+|   |   |---ALPHABET     
+|   |   |---ALPHANUMERIC     
+|   |---EXPRESSION     i
 |   |   |---MUL_DIV     
 |   |   |   |---FINAL     
-|   |   |   |   |---NUMBER     1
-|   |   |   |---MUL_DIV_     ;
-|   |   |---ADD_SUB     ;
-STATEMENT     
+|   |   |   |   |---IDENTIFIER     i
+|   |   |   |   |   |---ALPHABET     
+|   |   |   |   |   |---ALPHANUMERIC     
+|   |   |   |---MUL_DIV_     -
+|   |   |---ADD_SUB     -
+|   |   |   |---ADD_SUB     -
+|   |   |   |---MUL_DIV     
+|   |   |   |   |---FINAL     
+|   |   |   |   |   |---NUMBER     1
+|   |   |   |   |---MUL_DIV_     ;
+|   |   |   |---ADD_SUB     ;
+|---STATEMENT     
 LOOP     }
 |   |---STATEMENT     
 |   |   |---IDENTIFIER     z

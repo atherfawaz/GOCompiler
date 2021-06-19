@@ -4,6 +4,7 @@
 
 #ifndef MAIN_CPP_ASSEMBLER_H
 #define MAIN_CPP_ASSEMBLER_H
+
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -16,7 +17,7 @@ namespace Assembler {
         IF,
         ELIF,
         ELSE,
-        SUMTHREE,
+        SUMTHREELEFTIDENRIGHTIDEN,
         SUBTHREE,
         MULTHREE,
         DIVTHREE,
@@ -33,13 +34,22 @@ namespace Assembler {
         int programCounter = 0;
     public:
         Assembler();
+
         ~Assembler();
+
         static std::vector<std::string> splitByDelimiter(std::string toSplit, const std::string &delim);
-        void buildTacArray(const std::string& filePath);
-        void buildDataSegment(const std::string& filePath);
+
+        void buildTacArray(const std::string &filePath);
+
+        void buildDataSegment(const std::string &filePath);
+
         void runAssembler();
+
         void processQuadruple(std::vector<std::string> words);
-        bool handleRelationalOperator(const std::string& op, const std::string& lop, const std::string& rop, int code);
+
+        bool handleRelationalOperator(const std::string &op, const std::string &lop, const std::string &rop);
+
+        void generateMachineCode();
     };
 }
 

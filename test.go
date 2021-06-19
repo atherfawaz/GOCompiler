@@ -20,7 +20,7 @@ func integer: numPrint (integer: num, integer: length) {
 	            print("first is three");
 	        }
 	    }
-	    elif j == 2 : {
+	    else {
 	        print("j is two");
 	        first := 4;
 	        print("but now first is four");

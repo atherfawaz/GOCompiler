@@ -13,7 +13,7 @@ out "Enter number:"
 in i
 i = length
 Wif i > 0 goto 17 
-goto 36 
+goto 33 
 j = 1
 first = 3
 if j == 1 goto 21 
@@ -23,13 +23,10 @@ if first == 3 goto 24
 goto 26 
 out "first is three"
 goto 26 
-goto 33 
-elif j == 2 goto 29 
-goto 33 
+goto 30 
 out "j is two"
 first = 4
 out "but now first is four"
-goto 33 
 temp0 = i - 1
 i = temp0
 goto 15
