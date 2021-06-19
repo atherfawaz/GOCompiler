@@ -6,6 +6,7 @@
 #include "Parser.h"
 #include "global_path.h"
 #include "Assembler.h"
+#include "Tac-Mac.h"
 
 std::string dir_path;
 
@@ -56,38 +57,40 @@ void exportTokens(const std::vector<Lexer::Token> &tokens) {
 // 4. Print those token and write them to the file
 int main() {
 
-    std::string sourceCode = getSourceCode();
+//    std::string sourceCode = getSourceCode();
+//
+//    Lexer::Lexer Lexer(sourceCode);
+//
+//    //std::cout << "GENERATING TOKENS.\n";
+//    std::vector<Lexer::Token> tokens = Lexer.generateTokens();
+//    //std::cout << "GENERATED TOKENS.\n";
+//
+//    Lexer::init_mapping();
+//
+//    for (int i = 0; i < tokens.size(); i++) {
+//        auto test = tokens[i].getToken();
+//        if (!tokens[i].non_empty()) {
+//            tokens.erase(tokens.begin() + i);
+//            i--;
+//        }
+//    }
+//
+//    exportTokens(tokens);
+//
+//    //std::cout << "PARSING PROGRAM.\n";
+//    Parser::Parser Parser(tokens, global_path + "parsetree.txt", global_path + "translator-symboltable.txt",
+//                          global_path + "tac.txt");
+//
+//    Parser.parse();
+//
+//    std::cout << "Running Assembler...\n";
+//    Assembler::Assembler Assembler;
+//    Assembler.buildDataSegment(global_path + "translator-symboltable.txt");
+//    Assembler.buildTacArray(global_path + "tac.txt");
+//    Assembler.runAssembler();
+//    std::cout << "Assembling complete.\n";
 
-    Lexer::Lexer Lexer(sourceCode);
-
-    //std::cout << "GENERATING TOKENS.\n";
-    std::vector<Lexer::Token> tokens = Lexer.generateTokens();
-    //std::cout << "GENERATED TOKENS.\n";
-
-    Lexer::init_mapping();
-
-    for (int i = 0; i < tokens.size(); i++) {
-        auto test = tokens[i].getToken();
-        if (!tokens[i].non_empty()) {
-            tokens.erase(tokens.begin() + i);
-            i--;
-        }
-    }
-
-    exportTokens(tokens);
-
-    //std::cout << "PARSING PROGRAM.\n";
-    Parser::Parser Parser(tokens, global_path + "parsetree.txt", global_path + "translator-symboltable.txt",
-                          global_path + "tac.txt");
-
-    Parser.parse();
-
-    std::cout << "Running Assembler...\n";
-    Assembler::Assembler Assembler;
-    Assembler.buildDataSegment(global_path + "translator-symboltable.txt");
-    Assembler.buildTacArray(global_path + "tac.txt");
-    Assembler.runAssembler();
-    std::cout << "Assembling complete.\n";
-
+    machineTranslator::translator translator( global_path + "tac.txt", global_path + "mac.txt");
+    translator.generateMacCode();
     return 0;
 }

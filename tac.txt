@@ -7,29 +7,23 @@ temp1 = temp0 * temp
 temp2 = j + temp1
 temp3 = temp2 - first
 i = temp3
-a = 'x'
 out i
-out "Enter number:"
 in i
 i = length
-Wif i > 0 goto 17 
-goto 33 
+Wif i > 0 goto 15
+goto 27
 j = 1
 first = 3
-if j == 1 goto 21 
-goto 27 
-out "j is one"
-if first == 3 goto 24 
-goto 26 
-out "first is three"
-goto 26 
-goto 30 
-out "j is two"
+if j == 1 goto 19
+goto 23
+if first == 3 goto 21
+goto 22
+goto 22
+goto 24
 first = 4
-out "but now first is four"
 temp0 = i - 1
 i = temp0
-goto 15
+goto 13
 temp0 = 3 * 5
 temp1 = temp0 + 24
 temp2 = 3 / temp
@@ -39,5 +33,6 @@ temp5 = 3 / 4
 temp6 = temp5 - 2
 temp7 = temp4 + temp6
 z = temp7
-out "Temp is: "
 out temp
+out z
+out 25

@@ -1,7 +1,6 @@
-char:a:0
-integer:first:1
-integer:i:5
-integer:j:9
-integer:length:13
-integer:temp:17
-integer:z:21
+integer:first:0
+integer:i:4
+integer:j:8
+integer:length:12
+integer:temp:16
+integer:z:20
