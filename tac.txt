@@ -8,19 +8,18 @@ temp2 = j + temp1
 temp3 = temp2 - first
 i = temp3
 out i
-out i
 in i
 i = length
-Wif i > 0 goto 15
-goto 27
+Wif i > 0 goto 15 
+goto 27 
 j = 1
 first = 3
-if j == 1 goto 19
-goto 23
-if first == 3 goto 21
-goto 22
-goto 22
-goto 24
+if j == 1 goto 19 
+goto 23 
+if first == 3 goto 21 
+goto 22 
+goto 22 
+goto 24 
 first = 4
 temp0 = i - 1
 i = temp0
