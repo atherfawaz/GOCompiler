@@ -8,6 +8,7 @@ temp2 = j + temp1
 temp3 = temp2 - first
 i = temp3
 out i
+out i
 in i
 i = length
 Wif i > 0 goto 15

@@ -12,6 +12,7 @@
 
 namespace machineTranslator{
 
+
     class translator {
     private:
         std::map<std::string, int> translatorTable;
@@ -24,7 +25,6 @@ namespace machineTranslator{
 
         std::vector<std::string> split(const std::string str, const std::string regex_str);
         bool isArithmetic(std::string opp);
-        bool isRelational(std::string opp);
 
     public:
         int memory[1000] = {0};
@@ -33,6 +33,8 @@ namespace machineTranslator{
         ~translator();
 
         void generateMacCode();
+
+        int findAddress(auto var);
 
 
 

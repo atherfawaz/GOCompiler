@@ -48,9 +48,19 @@ bool machineTranslator::translator::isArithmetic(std::string opp) {
     return false;
 }
 
-bool machineTranslator::translator::isRelational(std::string opp) {
-    if (opp == "==" || opp == "<" || opp == ">" || opp == "<=" || opp == ">=") return true;
-    return false;
+
+
+int machineTranslator::translator::findAddress(auto var) {
+    if (isdigit(var[0])){
+        this->location[this->temp_name + std::to_string(this->temp_number++)] = this->arr_pos;
+        memory[this->arr_pos++] = std::stoi(var);
+        return this->arr_pos -1;
+    }else {
+        if (this->location[var] == 0){ this->location[var]= this->arr_pos++;}
+        return this->location[var];
+    }
+
+
 }
 
 void machineTranslator::translator::generateMacCode() {
@@ -66,100 +76,42 @@ void machineTranslator::translator::generateMacCode() {
             std::string regex_str = " ";
             int machineCode[4] = {-1, -1, -1, -1};
             auto tokens = split(line, regex_str);
-            int index = tokens.size() -1;
+            int index = tokens.size() -2;
             std::string token = tokens[index];
 
+            machineCode[0] = this->translatorTable[token];
 
+            if (token == "goto"){
+                // only goto
+                if (token == tokens[0]){
+                   machineCode[1] = std::stoi(tokens[index +1]);    // the line to jump too
 
-            if (isdigit(token[0])) {
-
-                if( tokens[index - 1] == "goto"){
-
-                    // case of simple goto statement
-                    if (index -1 == 0){
-                        machineCode[0] = this->translatorTable["goto"];
-                        machineCode[1] = std::stoi(tokens[index]);
-                    }
-                    // case of complex jump
-                    else {
-                        machineCode[3] = std::stoi(tokens[index]);
-                        index -= 2;
-                        // case of jump with number of rhs
-                        if (isdigit(tokens[index][0])){
-                            machineCode[0] = translatorTable[tokens[index -1]];
-                            this->location[this->temp_name + std::to_string(this->temp_number++)] = this->arr_pos;
-                            memory[this->arr_pos++] = std::stoi(tokens[index]);
-                            machineCode[2] = this->arr_pos -1;
-                        }
-                        else {
-                            machineCode[2] = this->location[tokens[index]];
-                        }
-                        // assuming lhs always identifier
-                        machineCode[1] = this->location[tokens[index - 2]];
-
-                    }
-
-                } else if (tokens[index - 1] == "=" || tokens[index - 1] == "out") {
-                    this->location[this->temp_name + std::to_string(this->temp_number++)] = this->arr_pos;
-                    memory[this->arr_pos++] = std::stoi(tokens[index]);
-                    machineCode[1] = this->arr_pos -1;
-                    // for the case of printing out
-                    if (tokens[index - 1] == "out"){
-                        machineCode[0] = this->translatorTable["out"];
-
-                    } else {    // for the case of assignment
-                        machineCode[0] = this->translatorTable["="];
-
-                        if (this->location[tokens[0]] == 0){ this->location[tokens[0]]= this->arr_pos++;}
-                        machineCode[2] = this->location[tokens[0]];
-
-                    }
-                    // the case of expressoin starting with number
-                } else if (isArithmetic(tokens[index -1])) {
-
-                    machineCode[0] = this->translatorTable[tokens[index -1]];
-                    this->location[this->temp_name + std::to_string(this->temp_number++)] = this->arr_pos;
-                    memory[this->arr_pos++] = std::stoi(tokens[index]);
-                    machineCode[2] = this->arr_pos -1;
-
-                    if (isdigit(tokens[index -2][0])){
-                        this->location[this->temp_name + std::to_string(this->temp_number++)] = this->arr_pos;
-                        memory[this->arr_pos++] = std::stoi(tokens[index - 2]);
-                        machineCode[1] = this->arr_pos -1;
-                    } else {
-                        machineCode[1] = this->location[tokens[index -2]];
-                    }
-
-                    if (this->location[tokens[0]] == 0){ this->location[tokens[0]]= this->arr_pos++;}
-                    machineCode[3] = this->location[tokens[0]];
-
-
+                }else { // the gump
+                    machineCode[3] = std::stoi(tokens[index + 1]);
+                    index -= 2;
+                    machineCode[0] = this->translatorTable[tokens[index]];
+                    machineCode[2] = this->findAddress(tokens[index+1]);
+                    machineCode[1] = this->findAddress(tokens[index -1]);
                 }
 
+            } else if (token == "in" || token == "out"){
+                machineCode[1] = this->findAddress(tokens[index + 1]);
 
-            } else {
-                // possible = out, in, =, art
-                machineCode[0] = this->translatorTable[tokens[index -1]];
-                if( tokens[index - 1] == "out" || tokens[index -1] == "in"){
-                    machineCode[1] = this->location[token];
-                } else if (tokens[index -1] == "="){
-                    machineCode[1] = this->location[token];
-                    if (this->location[tokens[0]] == 0){ this->location[tokens[0]]= this->arr_pos++;}
-                    machineCode[2] = this->location[tokens[0]];
+            }else if (token == "="){
+                machineCode[1] = this->findAddress(tokens[index +1]);
+                machineCode[2] = this->findAddress(tokens[index -1]);
 
-                } else if (isArithmetic(tokens[index -1])){
-                    machineCode[2] = this->location[token];
-                    if (isdigit(tokens[index -2][0])){
-                        this->location[this->temp_name + std::to_string(this->temp_number++)] = this->arr_pos;
-                        memory[this->arr_pos++] = std::stoi(tokens[index - 2]);
-                        machineCode[1] = this->arr_pos -1;
-                    } else {machineCode[1] = this->location[tokens[index -2]];}
-                    if (this->location[tokens[0]] == 0){ this->location[tokens[0]]= this->arr_pos++;}
-                    machineCode[3] = this->location[tokens[0]];
 
-                }
+            }else if (isArithmetic(token)){
+                machineCode[3] = this->findAddress(tokens[0]);
+                machineCode[2] = this->findAddress(tokens[index +1]);
+                machineCode[1] = this->findAddress(tokens[index - 1]);
+
+            }else {
+                std::cout << "invalid tac code \n";
 
             }
+
 
             for(int i = 0; i < 4; i ++){
                 if (machineCode[i] != -1){
