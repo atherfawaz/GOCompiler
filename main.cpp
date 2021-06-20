@@ -83,16 +83,40 @@ int main() {
 
     Parser.parse();
 
-    std::cout << "Running Assembler...\n";
     Assembler::Assembler Assembler;
     Assembler.buildDataSegment(global_path + "translator-symboltable.txt");
     Assembler.buildTacArray(global_path + "tac.txt");
-    Assembler.runAssembler();
-    std::cout << "Assembling complete.\n";
-
-    machineTranslator::translator translator( global_path + "tac.txt", global_path + "mac.txt");
-    translator.generateMacCode();
     VirtualMachine::VirtualMachine vm(global_path + "tac.txt", global_path + "mac.txt");
-    vm.execute();
+
+    bool input_verfied = false;
+    while (!input_verfied) {
+        char user_input;
+        std::cout << "\n Input a for running assembler and v for running virutal machine \n";
+        std::cin >> user_input;
+        switch (user_input) {
+            case 'a':
+                input_verfied = true;
+                std::cout << "Running Assembler...\n";
+
+                Assembler.runAssembler();
+
+                break;
+            case 'v':
+                input_verfied = true;
+
+                std::cout << "Running VM...\n";
+                vm.execute();
+                std::cout << "VM complete.\n";
+                break;
+            default:
+                std::cout << "Invalid selection \n";
+                break;
+
+        }
+    }
+
+
+
+
     return 0;
 }

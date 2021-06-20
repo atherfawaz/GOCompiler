@@ -1,6 +1,4 @@
-integer:first:0
-integer:i:4
-integer:j:8
-integer:length:12
-integer:temp:16
-integer:z:20
+integer:i:0
+integer:j:4
+integer:sqr:8
+integer:z:12

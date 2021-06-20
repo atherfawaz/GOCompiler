@@ -72,6 +72,7 @@ void Assembler::Assembler::processQuadruple(std::vector<std::string> words) {
     } else if (TACCODE == "in") {
         //handle cin
         //in x
+        std::cout<< "Input some value\n";
         std::cin >> this->dataSegment[words[1]];
     } else if (TACCODE == "if" || TACCODE == "Wif" || TACCODE == "elif") {
         //handle ifs

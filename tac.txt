@@ -1,38 +1,18 @@
-length = 1
-j = 2
-first = 4
-temp = 5
-temp0 = first + temp
-temp1 = temp0 * temp
-temp2 = j + temp1
-temp3 = temp2 - first
-i = temp3
-out i
-in i
-i = length
-Wif i > 0 goto 15 
-goto 27 
-j = 1
-first = 3
-if j == 1 goto 19 
-goto 23 
-if first == 3 goto 21 
-goto 22 
-goto 22 
-goto 24 
-first = 4
-temp0 = i - 1
-i = temp0
-goto 13
-temp0 = 3 * 5
-temp1 = temp0 + 24
-temp2 = 3 / temp
-temp3 = temp1 - temp2
-temp4 = temp3 + 20
-temp5 = 3 / 4
-temp6 = temp5 - 2
-temp7 = temp4 + temp6
-z = temp7
-out temp
+i = 2
+in j
+if j > 3 goto 5 
+goto 9 
+temp0 = 3 * i
+temp1 = temp0 + j
+z = temp1
+goto 10 
+z = 42
 out z
-out 25
+Wif i < 10 goto 13 
+goto 19 
+temp0 = i * i
+sqr = temp0
+out sqr
+temp0 = i + 1
+i = temp0
+goto 11
