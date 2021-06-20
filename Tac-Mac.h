@@ -15,6 +15,8 @@ namespace machineTranslator{
 
     class translator {
     private:
+
+
         std::map<std::string, int> translatorTable;
         std::map<std::string, int> location;
         std::string tac_file;
@@ -28,7 +30,7 @@ namespace machineTranslator{
 
     public:
         int memory[1000] = {0};
-
+        std::vector<std::vector<int>> instructions;
         translator(const std::string &tac_file, const std::string &mac_file);
         ~translator();
 

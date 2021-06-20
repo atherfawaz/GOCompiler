@@ -16,17 +16,16 @@ machineTranslator::translator::translator(const std::string &tac_file, const std
     translatorTable["="] = 1;
     translatorTable["+"] = 2;
     translatorTable["-"] = 3;
-    translatorTable["/"] = 4;
-    translatorTable["*"] = 5;
+    translatorTable["*"] = 4;
+    translatorTable["/"] = 5;
     translatorTable["<"] = 6;
     translatorTable[">"] = 7;
     translatorTable["=="] = 8;
     translatorTable["<="] = 9;
     translatorTable[">="] = 10;
-    translatorTable["if"] = 11;
-    translatorTable["in"] = 12;
-    translatorTable["out"] = 13;
-    translatorTable["goto"] = 14;
+    translatorTable["in"] = 11;
+    translatorTable["out"] = 12;
+    translatorTable["goto"] = 13;
 
 }
 
@@ -74,7 +73,7 @@ void machineTranslator::translator::generateMacCode() {
         while ( getline (myfile,line) )
         {
             std::string regex_str = " ";
-            int machineCode[4] = {-1, -1, -1, -1};
+            std::vector<int> machineCode(4,-1);
             auto tokens = split(line, regex_str);
             int index = tokens.size() -2;
             std::string token = tokens[index];
@@ -84,7 +83,7 @@ void machineTranslator::translator::generateMacCode() {
             if (token == "goto"){
                 // only goto
                 if (token == tokens[0]){
-                   machineCode[1] = std::stoi(tokens[index +1]);    // the line to jump too
+                    machineCode[1] = std::stoi(tokens[index +1]);    // the line to jump too
 
                 }else { // the gump
                     machineCode[3] = std::stoi(tokens[index + 1]);
@@ -119,6 +118,7 @@ void machineTranslator::translator::generateMacCode() {
                     //std::cout <<  machineCode[i];
                 }
             }
+            instructions.push_back(machineCode);
             macFile << std::endl;
 
         }
